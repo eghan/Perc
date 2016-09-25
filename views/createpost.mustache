@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+	{{>head}}
+	<title>Create Post</title>
+</head>
+
+<body>
+	<div class="stretched side-header">		
+		<div id="wrapper" class="clearfix">
+			{{>sidebar}}
+
+			<section id="content">
+				<div class="content-wrap container clearfix">
+					<form action="/api/post" method="post">
+						<input name="title" type="text" placeholder="Title" /><br />
+						<input name="address" type="text" placeholder="Address" /><br />
+						<input name="city" type="text" placeholder="City" /><br />
+						<input name="state" type="text" placeholder="State" /><br />
+						<input name="description" type="text" placeholder="Description" /><br />
+						<input name="price" type="text" placeholder="Price" /><br />
+						<select name="type">
+							<option value="apartment">Apartment Rental</option>
+							<option value="job">Job</option>
+						</select>
+						<br />
+						<input type="submit" value="Create Post" />
+					</form>
+			            
+				</div>
+			</section>
+
+			{{>footer}}
+		</div>
+	</div>
+
+	{{>javascripts}}
+</body>
+</html>
