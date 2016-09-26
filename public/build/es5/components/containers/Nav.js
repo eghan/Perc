@@ -84,18 +84,32 @@ var Nav = (function (Component) {
 					"div",
 					{ style: styles.nav },
 					React.createElement(
-						"span",
-						null,
-						React.createElement(
-							"a",
-							{ style: styles.menuItem, href: "/" },
-							"Search"
-						)
+						"a",
+						{ href: "/register" },
+						React.createElement("img", { src: "/images/logo.png", style: { color: "#fff", marginLeft: 64 } })
 					),
 					React.createElement(
 						"span",
 						null,
 						accountLink
+					),
+					React.createElement(
+						"span",
+						null,
+						React.createElement(
+							"a",
+							{ style: styles.menuItem, href: "/register" },
+							"About"
+						)
+					),
+					React.createElement(
+						"span",
+						null,
+						React.createElement(
+							Link,
+							{ style: styles.menuItem, to: "/" },
+							"Search"
+						)
 					),
 					React.createElement(Login, { isVisible: this.state.showLogin, hide: this.toggleLogin, login: this.login, redirect: "/account" })
 				);
@@ -110,9 +124,8 @@ var Nav = (function (Component) {
 
 var styles = {
 	nav: {
-		paddingTop: 20,
+		paddingTop: 16,
 		paddingRight: 44,
-		textAlign: "right",
 		width: 100 + "%",
 		height: 64,
 		background: "rgba(0,0,0,0.85)",
@@ -124,9 +137,11 @@ var styles = {
 		display: "block"
 	},
 	menuItem: {
+		float: "right",
 		color: "#fff",
-		marginLeft: 64,
-		fontWeight: 200
+		marginLeft: 40,
+		fontWeight: 400,
+		marginTop: 4
 	}
 };
 

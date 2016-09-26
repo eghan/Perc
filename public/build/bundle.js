@@ -22588,6 +22588,16 @@ var _reactLoader = __webpack_require__(209);
 
 var _reactLoader2 = _interopRequireDefault(_reactLoader);
 
+var _actions = __webpack_require__(66);
+
+var _actions2 = _interopRequireDefault(_actions);
+
+var _store = __webpack_require__(54);
+
+var _store2 = _interopRequireDefault(_store);
+
+var _reactRouter = __webpack_require__(105);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22626,7 +22636,7 @@ var CreatePost = function (_Component) {
 		key: 'updatePost',
 		value: function updatePost(event) {
 			var value = event.target.value;
-			console.log('updatePost: ' + value);
+			//		console.log('updatePost: '+value)
 
 			var updatedPost = Object.assign({}, this.state.post);
 			if (event.target.id == 'location') {
@@ -22659,6 +22669,9 @@ var CreatePost = function (_Component) {
 				}
 
 				console.log(JSON.stringify(response));
+				var post = response.result;
+				_store2.default.currentStore().dispatch(_actions2.default.postsReceived([post]));
+				_reactRouter.browserHistory.push('/post/' + post.slug);
 			});
 		}
 	}, {
@@ -22726,14 +22739,18 @@ var CreatePost = function (_Component) {
 					{ className: 'row' },
 					_react2.default.createElement(
 						'div',
-						{ className: 'col-md-12' },
+						{ className: 'col-md-6' },
 						_react2.default.createElement('input', { id: 'title', onChange: this.updatePost.bind(this), style: styles.input, type: 'text', placeholder: 'Title', defaultValue: post.title }),
 						_react2.default.createElement('input', { id: 'contact', onChange: this.updatePost.bind(this), style: styles.input, type: 'text', placeholder: 'Email', defaultValue: post.contact }),
-						_react2.default.createElement('input', { id: 'price', onChange: this.updatePost.bind(this), style: styles.input, type: 'text', placeholder: 'Price (USD)', defaultValue: post.contact }),
+						_react2.default.createElement('input', { id: 'price', onChange: this.updatePost.bind(this), style: styles.input, type: 'text', placeholder: 'Price (USD)', defaultValue: post.contact })
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'col-md-6' },
 						_react2.default.createElement('input', { id: 'address', onChange: this.updatePost.bind(this), style: styles.input, type: 'text', placeholder: 'Address', defaultValue: post.address }),
 						_react2.default.createElement(
 							'select',
-							{ id: 'location', onChange: this.updatePost.bind(this), style: { marginBottom: 20 }, className: 'form-control' },
+							{ id: 'location', onChange: this.updatePost.bind(this), style: styles.select },
 							_react2.default.createElement(
 								'option',
 								{ value: 'new york, ny' },
@@ -22752,7 +22769,7 @@ var CreatePost = function (_Component) {
 						),
 						_react2.default.createElement(
 							'select',
-							{ id: 'type', onChange: this.updatePost.bind(this), style: { marginBottom: 20 }, className: 'form-control' },
+							{ id: 'type', onChange: this.updatePost.bind(this), style: styles.select },
 							_react2.default.createElement(
 								'option',
 								{ value: 'rental' },
@@ -22763,7 +22780,11 @@ var CreatePost = function (_Component) {
 								{ value: 'job' },
 								'Help Wanted'
 							)
-						),
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'col-md-12' },
 						_react2.default.createElement('textarea', { id: 'description', onChange: this.updatePost.bind(this), style: styles.description, placeholder: 'Description', defaultValue: post.description }),
 						_react2.default.createElement(
 							'div',
@@ -22813,6 +22834,15 @@ var styles = {
 		marginTop: 16
 	},
 	input: {
+		border: 'none',
+		borderBottom: '1px solid #eee',
+		width: 100 + '%',
+		marginBottom: 20,
+		paddingLeft: 8
+	},
+	select: {
+		borderRadius: 0,
+		background: '#fff',
 		border: 'none',
 		borderBottom: '1px solid #eee',
 		width: 100 + '%',
@@ -23066,18 +23096,32 @@ var Nav = function (_Component) {
 				'div',
 				{ style: styles.nav },
 				_react2.default.createElement(
-					'span',
-					null,
-					_react2.default.createElement(
-						'a',
-						{ style: styles.menuItem, href: '/' },
-						'Search'
-					)
+					'a',
+					{ href: '/register' },
+					_react2.default.createElement('img', { src: '/images/logo.png', style: { color: '#fff', marginLeft: 64 } })
 				),
 				_react2.default.createElement(
 					'span',
 					null,
 					accountLink
+				),
+				_react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(
+						'a',
+						{ style: styles.menuItem, href: '/register' },
+						'About'
+					)
+				),
+				_react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ style: styles.menuItem, to: '/' },
+						'Search'
+					)
 				),
 				_react2.default.createElement(_view.Login, { isVisible: this.state.showLogin, hide: this.toggleLogin, login: this.login, redirect: '/account' })
 			);
@@ -23089,9 +23133,8 @@ var Nav = function (_Component) {
 
 var styles = {
 	nav: {
-		paddingTop: 20,
+		paddingTop: 16,
 		paddingRight: 44,
-		textAlign: 'right',
 		width: 100 + '%',
 		height: 64,
 		background: 'rgba(0,0,0,0.85)',
@@ -23103,9 +23146,11 @@ var styles = {
 		display: 'block'
 	},
 	menuItem: {
+		float: 'right',
 		color: '#fff',
-		marginLeft: 64,
-		fontWeight: 200
+		marginLeft: 40,
+		fontWeight: 400,
+		marginTop: 4
 	}
 };
 

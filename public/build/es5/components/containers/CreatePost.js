@@ -20,6 +20,11 @@ var Dropzone = _interopRequire(require("react-dropzone"));
 var APIManager = require("../../utils").APIManager;
 var Loader = _interopRequire(require("react-loader"));
 
+var actions = _interopRequire(require("../../actions/actions"));
+
+var store = _interopRequire(require("../../stores/store"));
+
+var browserHistory = require("react-router").browserHistory;
 var CreatePost = (function (Component) {
 	function CreatePost(props, context) {
 		_classCallCheck(this, CreatePost);
@@ -47,7 +52,7 @@ var CreatePost = (function (Component) {
 		updatePost: {
 			value: function updatePost(event) {
 				var value = event.target.value;
-				console.log("updatePost: " + value);
+				//		console.log('updatePost: '+value)
 
 				var updatedPost = Object.assign({}, this.state.post);
 				if (event.target.id == "location") {
@@ -82,6 +87,9 @@ var CreatePost = (function (Component) {
 					}
 
 					console.log(JSON.stringify(response));
+					var post = response.result;
+					store.currentStore().dispatch(actions.postsReceived([post]));
+					browserHistory.push("/post/" + post.slug);
 				});
 			},
 			writable: true,
@@ -156,14 +164,18 @@ var CreatePost = (function (Component) {
 						{ className: "row" },
 						React.createElement(
 							"div",
-							{ className: "col-md-12" },
+							{ className: "col-md-6" },
 							React.createElement("input", { id: "title", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Title", defaultValue: post.title }),
 							React.createElement("input", { id: "contact", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Email", defaultValue: post.contact }),
-							React.createElement("input", { id: "price", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Price (USD)", defaultValue: post.contact }),
+							React.createElement("input", { id: "price", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Price (USD)", defaultValue: post.contact })
+						),
+						React.createElement(
+							"div",
+							{ className: "col-md-6" },
 							React.createElement("input", { id: "address", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Address", defaultValue: post.address }),
 							React.createElement(
 								"select",
-								{ id: "location", onChange: this.updatePost.bind(this), style: { marginBottom: 20 }, className: "form-control" },
+								{ id: "location", onChange: this.updatePost.bind(this), style: styles.select },
 								React.createElement(
 									"option",
 									{ value: "new york, ny" },
@@ -182,7 +194,7 @@ var CreatePost = (function (Component) {
 							),
 							React.createElement(
 								"select",
-								{ id: "type", onChange: this.updatePost.bind(this), style: { marginBottom: 20 }, className: "form-control" },
+								{ id: "type", onChange: this.updatePost.bind(this), style: styles.select },
 								React.createElement(
 									"option",
 									{ value: "rental" },
@@ -193,7 +205,11 @@ var CreatePost = (function (Component) {
 									{ value: "job" },
 									"Help Wanted"
 								)
-							),
+							)
+						),
+						React.createElement(
+							"div",
+							{ className: "col-md-12" },
 							React.createElement("textarea", { id: "description", onChange: this.updatePost.bind(this), style: styles.description, placeholder: "Description", defaultValue: post.description }),
 							React.createElement(
 								"div",
@@ -246,6 +262,15 @@ var styles = {
 		marginTop: 16
 	},
 	input: {
+		border: "none",
+		borderBottom: "1px solid #eee",
+		width: 100 + "%",
+		marginBottom: 20,
+		paddingLeft: 8
+	},
+	select: {
+		borderRadius: 0,
+		background: "#fff",
 		border: "none",
 		borderBottom: "1px solid #eee",
 		width: 100 + "%",

@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
 import { APIManager } from '../../utils'
 import Loader from 'react-loader'
+import actions from '../../actions/actions'
+import store from '../../stores/store'
+import { browserHistory } from 'react-router'
 
 class CreatePost extends Component {
 	constructor(props, context){
@@ -25,7 +28,7 @@ class CreatePost extends Component {
 
 	updatePost(event){
 		const value = event.target.value
-		console.log('updatePost: '+value)
+//		console.log('updatePost: '+value)
 
 		var updatedPost = Object.assign({}, this.state.post)
 		if (event.target.id == 'location'){
@@ -58,6 +61,9 @@ class CreatePost extends Component {
 			}
 
 			console.log(JSON.stringify(response))
+			const post = response.result
+			store.currentStore().dispatch(actions.postsReceived([post]))
+			browserHistory.push('/post/'+post.slug)
 		})
 	}
 
@@ -114,20 +120,28 @@ class CreatePost extends Component {
 				<Loader options={styles.loader} className="loader" loaded={!this.state.showLoader} loadedClassName="loadedContent" />
 				<h2>Create Listing</h2>
 				<div className="row">
-					<div className="col-md-12">
+					<div className="col-md-6">
 						<input id="title" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Title" defaultValue={post.title} />
 						<input id="contact" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Email" defaultValue={post.contact} />
 						<input id="price" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Price (USD)" defaultValue={post.contact} />
+					</div>
+
+
+					<div className="col-md-6">
 						<input id="address" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Address" defaultValue={post.address} />
-						<select id="location" onChange={this.updatePost.bind(this)} style={{marginBottom:20}} className="form-control">
+						<select id="location" onChange={this.updatePost.bind(this)} style={styles.select}>
 							<option value="new york, ny">New York, NY</option>
 							<option value="los angeles, ca">Los Angeles, CA</option>
 							<option value="san francisco, ca">San Francisco, CA</option>
 						</select>
-						<select id="type" onChange={this.updatePost.bind(this)} style={{marginBottom:20}} className="form-control">
+						<select id="type" onChange={this.updatePost.bind(this)} style={styles.select}>
 							<option value="rental">Apartment For Rent</option>
 							<option value="job">Help Wanted</option>
 						</select>
+
+					</div>
+
+					<div className="col-md-12">
 						<textarea id="description" onChange={this.updatePost.bind(this)} style={styles.description} placeholder="Description" defaultValue={post.description}></textarea>
 
 						<div className="row">
@@ -163,6 +177,15 @@ const styles = {
 	},
 	input: {
 		border:'none',
+		borderBottom: '1px solid #eee',
+		width: 100+'%',
+		marginBottom: 20,
+		paddingLeft: 8
+	},
+	select: {
+		borderRadius: 0,
+		background: '#fff',
+		border: 'none',
 		borderBottom: '1px solid #eee',
 		width: 100+'%',
 		marginBottom: 20
