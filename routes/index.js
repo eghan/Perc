@@ -36,6 +36,12 @@ router.get('/', function(req, res, next) {
 
 	var initialStore = null
 	var reducers = {}
+	var tags = {
+		title: 'Perc',
+		type: 'article',
+		description: '',
+		image: ''
+	}
 
 	var accountController = controllers.account
 	accountController.currentUser(req)
@@ -59,59 +65,18 @@ router.get('/', function(req, res, next) {
 	})
 	.then(function(renderProps){
 		var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
-	    res.render('index', {react: html, preloadedState:JSON.stringify(initialStore.getState())})		
+	    res.render('index', {
+	    	react: html,
+	    	tags: tags,
+	    	preloadedState:JSON.stringify(initialStore.getState())
+	    })		
 	})
 	.catch(function(err){
 
 	})
 })
 
-
-// router.get('/', function(req, res, next) {
-
-// 	var initialStore = null
-// 	var reducers = {}
-
-// 	var postController = controllers.post
-// 	postController.get({}, function(err, results){
-
-// 		var postsMap = {}
-// 		for (var i=0; i<results.length; i++){
-// 			var post = results[i]
-// 			postsMap[post.id] = post
-// 		}
-
-// 		var postReducer = {
-// 			posts: postsMap,
-// 			postsArray: results
-// 		}
-
-// 		reducers['postReducer'] = postReducer
-// 		initialStore = store.configureStore(reducers)
-
-// 		var routes = {
-// 			path: '/',
-// 			component: ServerApp,
-// 			initial: initialStore,
-// 			indexRoute: {
-// 				component: PostsContainer
-// 			}
-// 		}
-
-// 		matchRoutes(req, routes, initialStore)
-// 		.then(function(renderProps){
-// 			var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
-// 		    res.render('index', {react: html, preloadedState:JSON.stringify(initialStore.getState())})
-// 		})
-// 		.catch(function(err){
-// 			console.log('ERROR: '+err)
-// 		})
-// 	})
-// })
-
-
 router.get('/:page', function(req, res, next) {
-
 	var page = req.params.page
 	console.log('Request Page: '+page)
 
@@ -155,7 +120,6 @@ router.get('/:page', function(req, res, next) {
 })
 
 router.get('/:page/:slug', function(req, res, next) {
-
 	var page = req.params.page
 	if (page == 'api'){
 		next()
@@ -172,6 +136,7 @@ router.get('/:page/:slug', function(req, res, next) {
 	// react page
 	var initialStore = null
 	var reducers = {}
+	var tags = {}
 
 	var accountController = controllers.account
 	accountController.currentUser(req)
@@ -207,80 +172,31 @@ router.get('/:page/:slug', function(req, res, next) {
 			}
 		}
 
+		var post = posts[0]
+		var description = post.description
+		if (description.length > 200)
+			description = description.substring(0, 200)+'...'
+
+		tags['title'] = post.title
+		tags['url'] = req.protocol+'://'+req.headers.host+req.url
+		tags['image'] = 'https://media-service.appspot.com/site/images/'+post.image+'?crop=260',
+		tags['description'] = description
+
 		return matchRoutes(req, routes, initialStore)
 	})
 	.then(function(renderProps){
 		var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
-	    res.render('index', {react: html, preloadedState:JSON.stringify(initialStore.getState())})		
+	    res.render('index', {
+	    	react: html,
+	    	tags: tags,
+	    	preloadedState:JSON.stringify(initialStore.getState())
+	    })		
 	})
 	.catch(function(err){
 
 	})
 })
 
-// router.get('/:page/:slug', function(req, res, next) {
-
-// 	var page = req.params.page
-// 	if (page == 'api'){
-// 		next()
-// 		return
-// 	}
-
-// 	console.log('Request Page: '+page)
-
-// 	if (templates.indexOf(page) >= 0){ // this is a regular template page
-// 	    res.render(page, null)
-// 	    return
-// 	}
-
-// 	// react page
-// 	var initialStore = null
-// 	var reducers = {}
-
-// 	var accountController = controllers.account
-// 	accountController.currentUser(req)
-// 	.then(function(user){
-// 		reducers['accountReducer'] = {
-// 			currentUser: user
-// 		}
-
-// 		var postController = controllers.post
-// 		return postController.find({slug: req.params.slug}, false)
-// 	})
-// 	.then(function(posts){
-// 		var postsMap = {}
-// 		for (var i=0; i<posts.length; i++){
-// 			var post = posts[i]
-// 			postsMap[post.slug] = post
-// 		}
-
-// 		reducers['postReducer'] = {
-// 			posts: postsMap,
-// 			postsArray: posts
-// 		}
-
-// 		initialStore = store.configureStore(reducers)
-// 		var routes = {
-// 			path: '/:page/:slug',
-// 			component: ServerApp,
-// 			initial: initialStore,
-// 			indexRoute: {
-// 				component: PostDetail
-// 			}
-// 		}
-
-// 		return matchRoutes(req, routes, initialStore)
-// 	})
-// 	.then(function(renderProps){
-// 		console.log('TEST 1')
-// 		var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
-// 		console.log('TEST 2: '+html)
-// 	    res.render('index', {react: html, preloadedState:JSON.stringify(initialStore.getState())})		
-// 	})
-// 	.catch(function(err){
-
-// 	})
-// })
 
 
 module.exports = router

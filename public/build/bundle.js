@@ -23691,12 +23691,19 @@ var PostDetail = function (_Component) {
 			};
 
 			var icons = post.images.map(function (icon, i) {
+				var url = 'https://media-service.appspot.com/site/images/' + icon;
 				return _react2.default.createElement(
 					'div',
 					{ key: i, className: 'col-md-2' },
-					_react2.default.createElement('img', { style: { marginTop: 12 }, src: 'https://media-service.appspot.com/site/images/' + icon + '?crop=420' })
+					_react2.default.createElement(
+						'a',
+						{ href: url, target: '_blank', className: 'left-icon', 'data-lightbox': 'image' },
+						_react2.default.createElement('img', { style: { marginTop: 12 }, src: url + '?crop=420' })
+					)
 				);
 			});
+
+			var imageUrl = 'https://media-service.appspot.com/site/images/' + post.image;
 
 			return _react2.default.createElement(
 				'div',
@@ -23743,7 +23750,11 @@ var PostDetail = function (_Component) {
 								_react2.default.createElement(
 									'div',
 									{ className: 'col-md-4' },
-									_react2.default.createElement('img', { style: styles.postImage, src: 'https://media-service.appspot.com/site/images/' + post.image + '?crop=420' })
+									_react2.default.createElement(
+										'a',
+										{ href: imageUrl, target: '_blank', className: 'left-icon', 'data-lightbox': 'image' },
+										_react2.default.createElement('img', { style: styles.postImage, src: imageUrl + '?crop=420' })
+									)
 								)
 							)
 						)
@@ -23765,7 +23776,9 @@ var styles = {
 	},
 	postImage: {
 		width: 100 + '%',
-		marginTop: 12
+		marginTop: 12,
+		border: '1px solid #ddd',
+		padding: 8
 	},
 	description: {
 		minHeight: 220

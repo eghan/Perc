@@ -30,12 +30,17 @@ class PostDetail extends Component {
 		}
 
 		const icons = post.images.map((icon, i) => {
+			const url = 'https://media-service.appspot.com/site/images/'+icon
 			return (
 				<div key={i} className="col-md-2">
-					<img style={{marginTop:12}} src={'https://media-service.appspot.com/site/images/'+icon+'?crop=420'} />
+					<a href={url} target="_blank" className="left-icon" data-lightbox="image">
+						<img style={{marginTop:12}} src={url+'?crop=420'} />
+					</a>
 				</div>
 			)
 		})
+
+		const imageUrl = 'https://media-service.appspot.com/site/images/'+post.image
 
 		return (
 			<div className="clearfix">
@@ -58,7 +63,10 @@ class PostDetail extends Component {
 									<div className="row">{icons}</div>
 								</div>
 								<div className="col-md-4">
-									<img style={styles.postImage} src={'https://media-service.appspot.com/site/images/'+post.image+'?crop=420'} />
+								<a href={imageUrl} target="_blank" className="left-icon" data-lightbox="image">
+									<img style={styles.postImage} src={imageUrl+'?crop=420'} />
+								</a>
+
 								</div>
 							</div>
 
@@ -80,7 +88,9 @@ const styles = {
 	},
 	postImage: {
 		width: 100+'%',
-		marginTop: 12
+		marginTop: 12,
+		border: '1px solid #ddd',
+		padding: 8
 	},
 	description: {
 		minHeight: 220
