@@ -18,10 +18,13 @@ module.exports = function (_x, action) {
 			//			console.log('POSTS_RECEIVED: '+JSON.stringify(posts))
 			var newState = Object.assign({}, state);
 			var array = Object.assign([], newState.postsArray);
-			var postsMap = Object.assign({}, newState.postsArray);
+			var postsMap = Object.assign({}, newState.posts);
 
 			for (var i = 0; i < posts.length; i++) {
 				var post = posts[i];
+				if (postsMap[post.slug] != null) // already there
+					continue;
+
 				postsMap[post.slug] = post;
 				array.push(post);
 			}
