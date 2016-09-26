@@ -12,15 +12,16 @@ export default (state = intial, action) => {
 			const posts = action.posts
 //			console.log('POSTS_RECEIVED: '+JSON.stringify(posts))
 			var newState = Object.assign({}, state)
-			newState['postsArray'] = posts
-
-			var postsMap = Object.assign({}, newState.posts)
+			var array = Object.assign([], newState.postsArray)
+			var postsMap = Object.assign({}, newState.postsArray)
 
 			for (var i=0; i<posts.length; i++){
 				var post = posts[i]
 				postsMap[post.slug] = post
+				array.push(post)
 			}
 
+			newState['postsArray'] = array
 			newState['posts'] = postsMap
 
 			return newState
