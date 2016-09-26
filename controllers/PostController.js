@@ -73,6 +73,8 @@ module.exports = {
 
 	post: function(params, completion){
 		params['slug'] = TextUtils.slugVersion(params.title)
+
+		// https://maps.googleapis.com/maps/api/geocode/json?address=172+lexington+avenue,new+york,ny&key=AIzaSyA7ubOEswjvE09Hdpii4ZRi__SndjdE7ds
 	    var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+params.address+','+params.city+','+params.state
 
 	    Request.get(url, {key:'AIzaSyA7ubOEswjvE09Hdpii4ZRi__SndjdE7ds'})
@@ -85,6 +87,28 @@ module.exports = {
 	    	var location = geometry.location
 	    	var geo = [location.lat, location.lng]
 	    	params['geo'] = geo
+
+	    	var address_components = locationInfo['address_components'] // this is an array
+	    	if (address_components != null){ // find zip code...
+
+	    		var zip = ''
+		    	for (var i=0; i<address_components.length; i++){
+		    		var component = address_components[i]
+		    		var types = component['types'] // this is an array
+		    		if (types == null)
+		    			continue
+
+		    		if (types.indexOf('postal_code') == -1)
+		    			continue
+
+		    		if (component['long_name'] != null){
+			    		zip = component['long_name'] // found it, break
+			    		break
+		    		}
+		    	}
+
+			    params['zip'] = zip
+	    	}
 
 			Post.create(params, function(error, post){
 				if (error){
