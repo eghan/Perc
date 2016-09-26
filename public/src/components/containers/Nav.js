@@ -39,7 +39,6 @@ class Nav extends Component {
 
 			store.currentStore().dispatch(actions.currentUserReceived(response.user))
 		})
-
 	}
 
 	render(){
@@ -47,7 +46,7 @@ class Nav extends Component {
 		const accountLink = (currentUser == null) ? <a onClick={this.toggleLogin} style={styles.menuItem} href="#">Login</a> : <Link style={styles.menuItem} to="/account">{ currentUser.firstName.toUpperCase() }</Link>
 		return (
 			<div style={styles.nav}>
-				<span><a style={styles.menuItem} href="/">Home</a></span>
+				<span><a style={styles.menuItem} href="/">Search</a></span>
 				<span>{accountLink}</span>
 	            <Login isVisible={this.state.showLogin} hide={this.toggleLogin} login={this.login} redirect={'/account'} />
 			</div>

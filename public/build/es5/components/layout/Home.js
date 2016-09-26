@@ -20,10 +20,7 @@ var _view = require("../view");
 
 var Map = _view.Map;
 var Post = _view.Post;
-var _containers = require("../containers");
-
-var Nav = _containers.Nav;
-var Posts = _containers.Posts;
+var Posts = require("../containers").Posts;
 var actions = _interopRequire(require("../../actions/actions"));
 
 var store = _interopRequire(require("../../stores/store"));

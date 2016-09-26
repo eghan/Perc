@@ -23,7 +23,7 @@ module.exports = function (_x, action) {
 
 			for (var i = 0; i < posts.length; i++) {
 				var post = posts[i];
-				postsMap[post.id] = post;
+				postsMap[post.slug] = post;
 			}
 
 			newState.posts = postsMap;

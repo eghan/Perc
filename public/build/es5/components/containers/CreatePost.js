@@ -18,6 +18,8 @@ var Component = _react.Component;
 var Dropzone = _interopRequire(require("react-dropzone"));
 
 var APIManager = require("../../utils").APIManager;
+var Loader = _interopRequire(require("react-loader"));
+
 var CreatePost = (function (Component) {
 	function CreatePost(props, context) {
 		_classCallCheck(this, CreatePost);
@@ -25,6 +27,7 @@ var CreatePost = (function (Component) {
 		_get(Object.getPrototypeOf(CreatePost.prototype), "constructor", this).call(this, props, context);
 		this.uploadImage = this.uploadImage.bind(this);
 		this.state = {
+			showLoader: false,
 			post: {
 				title: "",
 				address: "",
@@ -137,6 +140,7 @@ var CreatePost = (function (Component) {
 				return React.createElement(
 					"div",
 					{ style: styles.container },
+					React.createElement(Loader, { options: styles.loader, className: "loader", loaded: !this.state.showLoader, loadedClassName: "loadedContent" }),
 					React.createElement(
 						"h2",
 						null,
@@ -267,6 +271,24 @@ var styles = {
 		width: 64,
 		marginRight: 12,
 		marginTop: 12
+	},
+	loader: {
+		lines: 13,
+		length: 20,
+		width: 10,
+		radius: 30,
+		corners: 1,
+		rotate: 0,
+		direction: 1,
+		color: "#fff",
+		speed: 1,
+		trail: 60,
+		shadow: false,
+		hwaccel: false,
+		zIndex: 2000000000,
+		top: "50%",
+		left: "50%",
+		scale: 1
 	}
 };
 

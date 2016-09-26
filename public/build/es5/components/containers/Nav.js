@@ -89,7 +89,7 @@ var Nav = (function (Component) {
 						React.createElement(
 							"a",
 							{ style: styles.menuItem, href: "/" },
-							"Home"
+							"Search"
 						)
 					),
 					React.createElement(

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { APIManager } from '../../utils'
 import { Map, Post } from '../view'
-import { Nav, Posts } from '../containers'
+import { Posts } from '../containers'
 import actions from '../../actions/actions'
 import store from '../../stores/store'
 import { connect } from 'react-redux'

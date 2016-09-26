@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { TextUtils } from '../../utils'
+import { Link } from 'react-router'
 
 class Post extends Component {
 	constructor(props, context){
@@ -22,13 +24,14 @@ class Post extends Component {
 	            <img className="visible-xs" style={styles.postImageMobile} src={image} />
 	            <div style={{padding:16}}>
 	                <h4 className="list-group-item-heading">
-	                	<a onClick={this.viewPost.bind(this)} style={{color:this.props.color}} href={'/post/'+post.slug}>{post.title}</a>
+	                	<Link style={{color:this.props.color}} to={'/post/'+post.slug}>{post.title}</Link>
 	                </h4>
 	                <hr style={{marginBottom:0, marginTop:12}} />
 	                <p className="list-group-item-text" style={styles.description}>
-	                	{post.description}
+	                	{TextUtils.truncateText(post.description, 220)}
 	                </p>
-					<a onClick={this.viewPost.bind(this)} style={styles.btnView} href={'/post/'+post.slug} className="button button-border button-dark button-rounded noleftmargin">View</a>
+					<Link to={'/post/'+post.slug}  style={styles.btnView} className="button button-border button-dark button-rounded noleftmargin">View</Link>
+					<Link to={'/post/'+post.slug} style={styles.btnView} className="button button-border button-dark button-rounded noleftmargin">${post.price}</Link>
 	            </div>
             </div>
 		)
@@ -43,15 +46,16 @@ const styles = {
 	},
 	postImage: {
 		float:'left',
-		width:180,
-		marginRight:16
+		width: 224,
+		marginRight: 16
 	},
 	postImageMobile: {
 		width: 100+'%'
 	},
 	btnView: {
-		float:'right',
-		marginBottom: 20
+		float: 'right',
+		marginBottom: 20,
+		marginLeft: 24
 	},
 	description: {
 		marginTop: 6,

@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
 import { APIManager } from '../../utils'
+import Loader from 'react-loader'
 
 class CreatePost extends Component {
 	constructor(props, context){
 		super(props, context)
 		this.uploadImage = this.uploadImage.bind(this)
 		this.state = {
+			showLoader: false,
 			post: {
 				title: '',
 				address: '',
@@ -104,6 +106,7 @@ class CreatePost extends Component {
 
 		return (
 			<div style={styles.container}>
+				<Loader options={styles.loader} className="loader" loaded={!this.state.showLoader} loadedClassName="loadedContent" />
 				<h2>Create Listing</h2>
 				<div className="row">
 					<div className="col-md-12">
@@ -141,7 +144,6 @@ class CreatePost extends Component {
 						<a onClick={this.submitPost.bind(this)} style={styles.btnNext} href="#" className="button button-border button-dark button-rounded noleftmargin">Create Post</a>
 					</div>
 				</div>
-
 			</div>
 		)
 	}
@@ -185,7 +187,25 @@ const styles = {
 		width:64,
 		marginRight:12,
 		marginTop:12
-	}
+	},
+	loader: {
+	    lines: 13,
+	    length: 20,
+	    width: 10,
+	    radius: 30,
+	    corners: 1,
+	    rotate: 0,
+	    direction: 1,
+	    color: '#fff',
+	    speed: 1,
+	    trail: 60,
+	    shadow: false,
+	    hwaccel: false,
+	    zIndex: 2e9,
+	    top: '50%',
+	    left: '50%',
+	    scale: 1.00
+	}	
 }
 
 

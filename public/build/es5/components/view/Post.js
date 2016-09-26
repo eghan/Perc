@@ -15,6 +15,8 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+var TextUtils = require("../../utils").TextUtils;
+var Link = require("react-router").Link;
 var Post = (function (Component) {
 	function Post(props, context) {
 		_classCallCheck(this, Post);
@@ -50,8 +52,8 @@ var Post = (function (Component) {
 							"h4",
 							{ className: "list-group-item-heading" },
 							React.createElement(
-								"a",
-								{ onClick: this.viewPost.bind(this), style: { color: this.props.color }, href: "/post/" + post.slug },
+								Link,
+								{ style: { color: this.props.color }, to: "/post/" + post.slug },
 								post.title
 							)
 						),
@@ -59,12 +61,18 @@ var Post = (function (Component) {
 						React.createElement(
 							"p",
 							{ className: "list-group-item-text", style: styles.description },
-							post.description
+							TextUtils.truncateText(post.description, 220)
 						),
 						React.createElement(
-							"a",
-							{ onClick: this.viewPost.bind(this), style: styles.btnView, href: "/post/" + post.slug, className: "button button-border button-dark button-rounded noleftmargin" },
+							Link,
+							{ to: "/post/" + post.slug, style: styles.btnView, className: "button button-border button-dark button-rounded noleftmargin" },
 							"View"
+						),
+						React.createElement(
+							Link,
+							{ to: "/post/" + post.slug, style: styles.btnView, className: "button button-border button-dark button-rounded noleftmargin" },
+							"$",
+							post.price
 						)
 					)
 				);
@@ -85,7 +93,7 @@ var styles = {
 	},
 	postImage: {
 		float: "left",
-		width: 180,
+		width: 224,
 		marginRight: 16
 	},
 	postImageMobile: {
@@ -93,7 +101,8 @@ var styles = {
 	},
 	btnView: {
 		float: "right",
-		marginBottom: 20
+		marginBottom: 20,
+		marginLeft: 24
 	},
 	description: {
 		marginTop: 6,

@@ -111,7 +111,7 @@ var Posts = (function (Component) {
 
 				APIManager.handleGet("/api/post", location, function (err, response) {
 					if (err) {
-						alert(err.message);
+						alert("ERROR: " + err.message);
 						return;
 					}
 

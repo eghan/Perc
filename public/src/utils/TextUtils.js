@@ -1,13 +1,13 @@
-module.exports = {
+export default {
 
-	truncateText: function(str, limit){
+	truncateText: (str, limit) => {
 		if (str.length < limit)
 			return str
 
 		return str.substring(0, limit)+'...'
 	},
 
-	capitalize: function(str){
+	capitalize: (str) => {
 		if (str.length == 1)
 			return str.toUpperCase()
 
@@ -15,7 +15,7 @@ module.exports = {
 		return firstLetter.toUpperCase() + str.substring(1)
 	},
 
-	convertToHtml: function(str){
+	convertToHtml: (str) => {
 		var find = '\n'
 		var re = new RegExp(find, 'g')
         var html = str.replace(re, '<br />')
@@ -26,7 +26,7 @@ module.exports = {
         return html
 	},
 
-	stringToArray: function(str, separator){
+	stringToArray: (str, separator) => {
 		var t = str.split(separator)
 		var array = []
 		for (var i=0; i<t.length; i++){
@@ -38,20 +38,6 @@ module.exports = {
 		}
 
 		return array
-	},
-
-	slugVersion: function(str){
-		var parts = str.split(' ')
-		var slug = ''
-		for (var i=0; i<parts.length; i++){
-			var word = parts[i].replace(',', '')
-			word = word.replace('?', '')
-			slug += word
-			if (i != parts.length-1)
-				slug += '-'
-		}
-
-		return slug.toLowerCase()
 	}
 
 }

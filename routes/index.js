@@ -9,6 +9,7 @@ var ReactDOMServer = require('react-dom/server')
 var ServerApp = require('../public/build/es5/serverapp')
 var store = require('../public/build/es5/stores/store')
 var Home = require('../public/build/es5/components/layout/Home')
+var PostDetail = require('../public/build/es5/components/layout/PostDetail')
 var Account = require('../public/build/es5/components/layout/Account')
 var controllers = require('../controllers')
 
@@ -153,17 +154,133 @@ router.get('/:page', function(req, res, next) {
 	})
 })
 
-router.post('/:page', function(req, res, next) {
+router.get('/:page/:slug', function(req, res, next) {
 
 	var page = req.params.page
-	console.log('Request Page: '+JSON.stringify(req.body))
-
-	if (page == 'register'){
-		var resp = req.body
-		resp['confirmation'] = 'success'
-		res.json(resp)
+	if (page == 'api'){
+		next()
 		return
 	}
+
+	console.log('Request Page: '+page)
+
+	if (templates.indexOf(page) >= 0){ // this is a regular template page
+	    res.render(page, null)
+	    return
+	}
+
+	// react page
+	var initialStore = null
+	var reducers = {}
+
+	var accountController = controllers.account
+	accountController.currentUser(req)
+	.then(function(user){
+		reducers['accountReducer'] = {
+			currentUser: user
+		}
+
+		var postController = controllers.post
+		return postController.find({slug: req.params.slug}, false)
+
+	})
+	.then(function(posts){
+		var postsMap = {}
+		for (var i=0; i<posts.length; i++){
+			var post = posts[i]
+			postsMap[post.slug] = post
+		}
+
+		reducers['postReducer'] = {
+			posts: postsMap,
+			postsArray: posts
+		}		
+
+		initialStore = store.configureStore(reducers)
+
+		var routes = {
+			path: '/:page/:slug',
+			component: ServerApp,
+			initial: initialStore,
+			indexRoute: {
+				component: PostDetail
+			}
+		}
+
+		return matchRoutes(req, routes, initialStore)
+	})
+	.then(function(renderProps){
+		var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
+	    res.render('index', {react: html, preloadedState:JSON.stringify(initialStore.getState())})		
+	})
+	.catch(function(err){
+
+	})
 })
+
+// router.get('/:page/:slug', function(req, res, next) {
+
+// 	var page = req.params.page
+// 	if (page == 'api'){
+// 		next()
+// 		return
+// 	}
+
+// 	console.log('Request Page: '+page)
+
+// 	if (templates.indexOf(page) >= 0){ // this is a regular template page
+// 	    res.render(page, null)
+// 	    return
+// 	}
+
+// 	// react page
+// 	var initialStore = null
+// 	var reducers = {}
+
+// 	var accountController = controllers.account
+// 	accountController.currentUser(req)
+// 	.then(function(user){
+// 		reducers['accountReducer'] = {
+// 			currentUser: user
+// 		}
+
+// 		var postController = controllers.post
+// 		return postController.find({slug: req.params.slug}, false)
+// 	})
+// 	.then(function(posts){
+// 		var postsMap = {}
+// 		for (var i=0; i<posts.length; i++){
+// 			var post = posts[i]
+// 			postsMap[post.slug] = post
+// 		}
+
+// 		reducers['postReducer'] = {
+// 			posts: postsMap,
+// 			postsArray: posts
+// 		}
+
+// 		initialStore = store.configureStore(reducers)
+// 		var routes = {
+// 			path: '/:page/:slug',
+// 			component: ServerApp,
+// 			initial: initialStore,
+// 			indexRoute: {
+// 				component: PostDetail
+// 			}
+// 		}
+
+// 		return matchRoutes(req, routes, initialStore)
+// 	})
+// 	.then(function(renderProps){
+// 		console.log('TEST 1')
+// 		var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
+// 		console.log('TEST 2: '+html)
+// 	    res.render('index', {react: html, preloadedState:JSON.stringify(initialStore.getState())})		
+// 	})
+// 	.catch(function(err){
+
+// 	})
+// })
+
 
 module.exports = router

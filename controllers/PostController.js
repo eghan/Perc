@@ -2,9 +2,29 @@ var Post = require('../models/Post')
 var resource = require('../utils/Resource')
 var Request = require('../utils/Request')
 var TextUtils = require('../utils/TextUtils')
+var Promise = require('bluebird')
 
 module.exports = {
 	plural: 'posts',
+
+	find: function(params, isRaw){
+		return new Promise(function(resolve, reject){
+			var limit = params.limit
+			if (limit == null)
+				limit = '0'
+			
+			delete params['limit']
+
+			Post.find(params, null, {limit:limit, sort:{timestamp: -1}}, function(err, posts){
+				if (err){
+					reject(err)
+					return
+				}
+
+				resolve(resource.convertToJson(posts))
+			})
+		})
+	},
 
 	get: function(params, isRaw, completion){
 

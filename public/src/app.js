@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import Main from './components/Main'
-import { Home, Account } from './components/layout'
+import { Home, Account, PostDetail } from './components/layout'
 import store from './stores/store'
 import { Provider } from 'react-redux' 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
@@ -14,6 +14,7 @@ const app = (
 			<Route path="/" component={Main}>
 				<IndexRoute component={Home}></IndexRoute>
 				<Route path="/account" component={Account}></Route>
+				<Route path="/post/:slug" component={PostDetail}></Route>
 			</Route>
 		</Router>
 
