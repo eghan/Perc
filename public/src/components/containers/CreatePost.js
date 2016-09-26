@@ -45,8 +45,13 @@ class CreatePost extends Component {
 	submitPost(event){
 		event.preventDefault()
 		console.log('submitPost: '+JSON.stringify(this.state.post))
+		var post = Object.assign({}, this.state.post)
+		post['profile'] = {
+			id: this.props.profile.id,
+			name: this.props.profile.firstName
+		}
 
-		APIManager.handlePost('/api/post', this.state.post, (err, response) => {
+		APIManager.handlePost('/api/post', post, (err, response) => {
 			if (err){
 				alert(err)
 				return
@@ -111,7 +116,7 @@ class CreatePost extends Component {
 				<div className="row">
 					<div className="col-md-12">
 						<input id="title" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Title" defaultValue={post.title} />
-						<input id="email" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Email" defaultValue={post.contact} />
+						<input id="contact" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Email" defaultValue={post.contact} />
 						<input id="price" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Price (USD)" defaultValue={post.contact} />
 						<input id="address" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Address" defaultValue={post.address} />
 						<select id="location" onChange={this.updatePost.bind(this)} style={{marginBottom:20}} className="form-control">

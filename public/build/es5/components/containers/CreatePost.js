@@ -69,8 +69,13 @@ var CreatePost = (function (Component) {
 			value: function submitPost(event) {
 				event.preventDefault();
 				console.log("submitPost: " + JSON.stringify(this.state.post));
+				var post = Object.assign({}, this.state.post);
+				post.profile = {
+					id: this.props.profile.id,
+					name: this.props.profile.firstName
+				};
 
-				APIManager.handlePost("/api/post", this.state.post, function (err, response) {
+				APIManager.handlePost("/api/post", post, function (err, response) {
 					if (err) {
 						alert(err);
 						return;
@@ -153,7 +158,7 @@ var CreatePost = (function (Component) {
 							"div",
 							{ className: "col-md-12" },
 							React.createElement("input", { id: "title", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Title", defaultValue: post.title }),
-							React.createElement("input", { id: "email", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Email", defaultValue: post.contact }),
+							React.createElement("input", { id: "contact", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Email", defaultValue: post.contact }),
 							React.createElement("input", { id: "price", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Price (USD)", defaultValue: post.contact }),
 							React.createElement("input", { id: "address", onChange: this.updatePost.bind(this), style: styles.input, type: "text", placeholder: "Address", defaultValue: post.address }),
 							React.createElement(

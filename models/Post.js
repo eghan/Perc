@@ -14,7 +14,7 @@ var PostSchema = new mongoose.Schema({
 	type: {type:String, trim:true, default:'job'}, // job, for sale, rental, etc
 	description: {type:String, trim:true, default:''},
 	price: {type:Number, default:0},
-	profile: {type:String, trim:true, default:''},
+	profile: {type:mongoose.Schema.Types.Mixed, default:{}},
 	geo: {
 		type: [Number], // array of Numbers
 		index: '2d'
