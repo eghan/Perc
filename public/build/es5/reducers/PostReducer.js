@@ -5,7 +5,7 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 var constants = _interopRequire(require("../constants/constants"));
 
 var intial = {
-	posts: {},
+	posts: {}, // organized by slug
 	postsArray: []
 };
 
@@ -31,6 +31,12 @@ module.exports = function (_x, action) {
 
 			newState.postsArray = array;
 			newState.posts = postsMap;
+
+			return newState;
+
+		case constants.USER_POSTS_RECEIVED:
+			console.log("USER_POSTS_RECEIVED: " + JSON.stringify(action.posts));
+			var newState = Object.assign({}, state);
 
 			return newState;
 

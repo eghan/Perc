@@ -70,13 +70,14 @@ class Home extends Component {
 	}
 
 	render(){
+		const currentLocation = this.state.currentLocation
 
 		return (
 			<div className="clearfix">
 				<header id="header" className="no-sticky" style={{marginTop:64}}>
 		            <div id="header-wrap">
 		            	<Map 
-		            		center={this.state.currentLocation}
+		            		center={currentLocation}
 		            		onCenterChanged={this.mapMoved}
 		            		selectPost={this.selectPost}
 		            		markers={this.props.posts} />
@@ -84,7 +85,7 @@ class Home extends Component {
 		        </header>
 
 				<section id="content">
-					<Posts selected={this.state.selected} />
+					<Posts selected={this.state.selected} location={currentLocation} />
 				</section>
 			</div>
 		)

@@ -18,8 +18,13 @@ module.exports = {
 			type: constants.POSTS_RECEIVED,
 			posts: posts
 		};
+	},
+
+	userPostsReceived: function (posts) {
+		return {
+			type: constants.USER_POSTS_RECEIVED,
+			posts: posts
+		};
 	}
-
-
 
 };

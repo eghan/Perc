@@ -110,6 +110,8 @@ var Home = (function (Component) {
 		},
 		render: {
 			value: function render() {
+				var currentLocation = this.state.currentLocation;
+
 				return React.createElement(
 					"div",
 					{ className: "clearfix" },
@@ -120,7 +122,7 @@ var Home = (function (Component) {
 							"div",
 							{ id: "header-wrap" },
 							React.createElement(Map, {
-								center: this.state.currentLocation,
+								center: currentLocation,
 								onCenterChanged: this.mapMoved,
 								selectPost: this.selectPost,
 								markers: this.props.posts })
@@ -129,7 +131,7 @@ var Home = (function (Component) {
 					React.createElement(
 						"section",
 						{ id: "content" },
-						React.createElement(Posts, { selected: this.state.selected })
+						React.createElement(Posts, { selected: this.state.selected, location: currentLocation })
 					)
 				);
 			},

@@ -47,7 +47,8 @@ router.get('/', function(req, res, next) {
 	accountController.currentUser(req)
 	.then(function(user){
 		reducers['accountReducer'] = {
-			currentUser: user
+			currentUser: user,
+			posts: []
 		}
 
 		initialStore = store.configureStore(reducers)
@@ -94,7 +95,8 @@ router.get('/:page', function(req, res, next) {
 	accountController.currentUser(req)
 	.then(function(user){
 		reducers['accountReducer'] = {
-			currentUser: user
+			currentUser: user,
+			posts: []
 		}
 
 		initialStore = store.configureStore(reducers)
@@ -142,7 +144,8 @@ router.get('/:page/:slug', function(req, res, next) {
 	accountController.currentUser(req)
 	.then(function(user){
 		reducers['accountReducer'] = {
-			currentUser: user
+			currentUser: user,
+			posts: []
 		}
 
 		var postController = controllers.post

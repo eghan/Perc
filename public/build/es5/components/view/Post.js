@@ -28,14 +28,6 @@ var Post = (function (Component) {
 	_inherits(Post, Component);
 
 	_prototypeProperties(Post, null, {
-		viewPost: {
-			value: function viewPost(event) {
-				event.preventDefault();
-				this.props.clickHandler(this.props.post);
-			},
-			writable: true,
-			configurable: true
-		},
 		render: {
 			value: function render() {
 				var post = this.props.post;

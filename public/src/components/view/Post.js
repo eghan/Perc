@@ -10,11 +10,6 @@ class Post extends Component {
 		}
 	}
 
-	viewPost(event){
-		event.preventDefault()
-		this.props.clickHandler(this.props.post)
-	}
-
 	render(){
 		const post = this.props.post
 		const image = 'https://media-service.appspot.com/site/images/'+post.image+'?crop=420'
