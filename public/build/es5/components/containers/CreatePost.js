@@ -71,8 +71,8 @@ var CreatePost = (function (Component) {
 				console.log("submitPost: " + JSON.stringify(this.state.post));
 				var post = Object.assign({}, this.state.post);
 				post.profile = {
-					id: this.props.profile.id,
-					name: this.props.profile.firstName
+					id: this.props.user.id,
+					name: this.props.user.firstName
 				};
 
 				APIManager.handlePost("/api/post", post, function (err, response) {
