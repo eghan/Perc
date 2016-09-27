@@ -42,7 +42,7 @@ class PostDetail extends Component {
 			id: post.profile.id,
 			firstName: post.profile.firstName,
 			lastName: post.profile.lastName,
-			email: post.profile.email
+			email: post.contact
 		}
 
 		APIManager.handlePost('/api/reply', reply, (err, result) => {

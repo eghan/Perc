@@ -24,7 +24,7 @@ module.exports = function (_x, action) {
 			return newState;
 
 		case constants.USER_POSTS_RECEIVED:
-			console.log("USER_POSTS_RECEIVED: " + JSON.stringify(action.posts));
+			//			console.log('USER_POSTS_RECEIVED: '+JSON.stringify(action.posts))
 			var newState = Object.assign({}, state);
 			newState.posts = action.posts;
 
