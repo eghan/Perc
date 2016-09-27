@@ -37880,6 +37880,7 @@ var Home = function (_Component) {
 						{ id: 'header-wrap' },
 						_react2.default.createElement(_view.Map, {
 							center: currentLocation,
+							zoom: 13,
 							onCenterChanged: this.mapMoved,
 							selectPost: this.selectPost,
 							markers: this.props.posts })
@@ -38405,6 +38406,7 @@ var Map = function (_Component) {
 			}
 
 			var mapContainer = _react2.default.createElement('div', { style: { height: '100%', width: '100%' } });
+			var zoom = this.props.zoom == null ? 15 : this.props.zoom;
 
 			return _react2.default.createElement(_reactGoogleMaps.GoogleMapLoader, {
 				containerElement: mapContainer,
@@ -38417,7 +38419,7 @@ var Map = function (_Component) {
 							_this2.setState({ map: map });
 						},
 						onDragend: this.mapDragged.bind(this),
-						defaultZoom: 15,
+						defaultZoom: zoom,
 						defaultCenter: this.props.center,
 						options: { streetViewControl: false, mapTypeControl: false } },
 					markers

@@ -78,6 +78,7 @@ class Home extends Component {
 		            <div id="header-wrap">
 		            	<Map 
 		            		center={currentLocation}
+		            		zoom={13}
 		            		onCenterChanged={this.mapMoved}
 		            		selectPost={this.selectPost}
 		            		markers={this.props.posts} />

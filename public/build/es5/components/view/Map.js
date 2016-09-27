@@ -73,6 +73,7 @@ var Map = (function (Component) {
 				}
 
 				var mapContainer = React.createElement("div", { style: { height: "100%", width: "100%" } });
+				var zoom = this.props.zoom == null ? 15 : this.props.zoom;
 
 				return React.createElement(GoogleMapLoader, {
 					containerElement: mapContainer,
@@ -85,7 +86,7 @@ var Map = (function (Component) {
 								_this.setState({ map: map });
 							},
 							onDragend: this.mapDragged.bind(this),
-							defaultZoom: 15,
+							defaultZoom: zoom,
 							defaultCenter: this.props.center,
 							options: { streetViewControl: false, mapTypeControl: false } },
 						markers

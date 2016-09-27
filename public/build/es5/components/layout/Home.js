@@ -123,6 +123,7 @@ var Home = (function (Component) {
 							{ id: "header-wrap" },
 							React.createElement(Map, {
 								center: currentLocation,
+								zoom: 13,
 								onCenterChanged: this.mapMoved,
 								selectPost: this.selectPost,
 								markers: this.props.posts })

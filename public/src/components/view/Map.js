@@ -40,6 +40,7 @@ class Map extends Component {
 		}
 
 		const mapContainer = <div style={{height: '100%', width:'100%'}}></div>
+		const zoom = (this.props.zoom==null) ? 15 : this.props.zoom
 
 		return (
 		    <GoogleMapLoader
@@ -54,7 +55,7 @@ class Map extends Component {
 			             	} 
 			         	}
 			            onDragend={this.mapDragged.bind(this)}
-			            defaultZoom={15}
+			            defaultZoom={zoom}
 			            defaultCenter={this.props.center}
 			            options={{streetViewControl: false, mapTypeControl: false}}>
 			            { markers }
