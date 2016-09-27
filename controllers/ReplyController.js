@@ -75,7 +75,7 @@ module.exports = {
 			})
 			.catch(function(err){
 				if (completion != null)
-					completion(null, reply.summary())
+					completion(err, null)
 			})
 		})		
 	},
