@@ -46,7 +46,7 @@ class Account extends Component {
 
 		return (
 			<div className="clearfix">
-				<header id="header" className="no-sticky">
+				<header id="header" className="no-sticky hidden-xs">
 		            <div id="header-wrap">
 						<div className="container clearfix">
 

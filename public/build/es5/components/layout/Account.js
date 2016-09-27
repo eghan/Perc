@@ -88,7 +88,7 @@ var Account = (function (Component) {
 					{ className: "clearfix" },
 					React.createElement(
 						"header",
-						{ id: "header", className: "no-sticky" },
+						{ id: "header", className: "no-sticky hidden-xs" },
 						React.createElement(
 							"div",
 							{ id: "header-wrap" },

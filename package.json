@@ -31,6 +31,7 @@
     "react-time": "^4.2.0",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
+    "sendgrid": "^4.3.0",
     "serve-favicon": "~2.3.0",
     "superagent": "^2.3.0"
   },

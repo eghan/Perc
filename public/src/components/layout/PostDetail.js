@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { APIManager, TextUtils } from '../../utils'
+import { APIManager, TextUtils, DateUtils } from '../../utils'
 import { Map, Post } from '../view'
 import actions from '../../actions/actions'
 import store from '../../stores/store'
@@ -11,7 +11,7 @@ class PostDetail extends Component {
 		this.state = {
 			markers: [],
 			reply: {
-				text: ''
+				message: ''
 			}
 		}
 	}
@@ -32,16 +32,34 @@ class PostDetail extends Component {
 		reply['profile'] = {
 			id: user.id,
 			firstName: user.firstName,
-			lastName: user.lastName
+			lastName: user.lastName,
+			email: user.email
 		}
 
-		console.log('submitReply:'+JSON.stringify(reply))
+		const post = this.props.posts[this.props.params.slug]
+		reply['recipient'] = {
+			id: post.profile.id,
+			firstName: post.profile.firstName,
+			lastName: post.profile.lastName,
+			email: post.profile.email
+		}
+
+		APIManager.handlePost('/api/reply', reply, (err, result) => {
+			if (err){
+				alert(err)
+				return
+			}
+
+			console.log('submitReply:'+JSON.stringify(result))
+			alert('Notification Sent')
+		})
+
 	}
 
 	updateReply(event){
 //		console.log('updateReply:'+event.target.value)
 		var updatedReply = Object.assign({}, this.state.reply)
-		updatedReply['text'] = event.target.value
+		updatedReply['message'] = event.target.value
 		this.setState({
 			reply: updatedReply
 		})
@@ -80,6 +98,7 @@ class PostDetail extends Component {
 				<section id="content">
 					<div className="content-wrap container clearfix">
 						<div style={styles.container}>
+		            <span style={{float:'right'}}>{ DateUtils.formattedDate(post.timestamp) }</span>
 							<h2>{post.title}</h2>
 							<hr />
 							<div className="row">

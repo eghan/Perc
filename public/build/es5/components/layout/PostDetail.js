@@ -19,6 +19,7 @@ var _utils = require("../../utils");
 
 var APIManager = _utils.APIManager;
 var TextUtils = _utils.TextUtils;
+var DateUtils = _utils.DateUtils;
 var _view = require("../view");
 
 var Map = _view.Map;
@@ -36,7 +37,7 @@ var PostDetail = (function (Component) {
 		this.state = {
 			markers: [],
 			reply: {
-				text: ""
+				message: ""
 			}
 		};
 	}
@@ -64,10 +65,27 @@ var PostDetail = (function (Component) {
 				reply.profile = {
 					id: user.id,
 					firstName: user.firstName,
-					lastName: user.lastName
+					lastName: user.lastName,
+					email: user.email
 				};
 
-				console.log("submitReply:" + JSON.stringify(reply));
+				var post = this.props.posts[this.props.params.slug];
+				reply.recipient = {
+					id: post.profile.id,
+					firstName: post.profile.firstName,
+					lastName: post.profile.lastName,
+					email: post.profile.email
+				};
+
+				APIManager.handlePost("/api/reply", reply, function (err, result) {
+					if (err) {
+						alert(err);
+						return;
+					}
+
+					console.log("submitReply:" + JSON.stringify(result));
+					alert("Notification Sent");
+				});
 			},
 			writable: true,
 			configurable: true
@@ -76,7 +94,7 @@ var PostDetail = (function (Component) {
 			value: function updateReply(event) {
 				//		console.log('updateReply:'+event.target.value)
 				var updatedReply = Object.assign({}, this.state.reply);
-				updatedReply.text = event.target.value;
+				updatedReply.message = event.target.value;
 				this.setState({
 					reply: updatedReply
 				});
@@ -130,6 +148,11 @@ var PostDetail = (function (Component) {
 							React.createElement(
 								"div",
 								{ style: styles.container },
+								React.createElement(
+									"span",
+									{ style: { float: "right" } },
+									DateUtils.formattedDate(post.timestamp)
+								),
 								React.createElement(
 									"h2",
 									null,
