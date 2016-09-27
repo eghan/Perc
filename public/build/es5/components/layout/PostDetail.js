@@ -206,9 +206,60 @@ var PostDetail = (function (Component) {
 								),
 								React.createElement("hr", null),
 								React.createElement(
-									"p",
-									null,
-									"Get notified when the next listing similar this one gets posted."
+									"div",
+									{ className: "row" },
+									React.createElement(
+										"div",
+										{ className: "col-md-6" },
+										React.createElement(
+											"h4",
+											{ className: "nobottommargin" },
+											"Never Lose an Apartment"
+										),
+										React.createElement(
+											"p",
+											{ style: { marginTop: 6 } },
+											"The apartment search in large cities like New York is extremely competitive. Often, an apartment is rented merely hours after it is posted on a search board simply because someone else got to it first. On Perc, you can hear about apartments before anyone else by bidding for notifications."
+										)
+									),
+									React.createElement(
+										"div",
+										{ className: "col-md-6" },
+										React.createElement(
+											"h4",
+											{ className: "nobottommargin" },
+											"How it Works"
+										),
+										React.createElement(
+											"ol",
+											{ style: { padding: 16, paddingLeft: 32, fontWeight: 200, background: "#f9f9f9", marginTop: 6 } },
+											React.createElement(
+												"li",
+												null,
+												"Specify the apartments you want to know about according to price and location."
+											),
+											React.createElement(
+												"li",
+												null,
+												"Place a bid for each notification."
+											),
+											React.createElement(
+												"li",
+												null,
+												"* You will be notified of new listings that fit your criteria ahead of others who placed bids lower than your. Likewise, those with higher bids get notified before you."
+											),
+											React.createElement(
+												"li",
+												null,
+												"Once notified, you have 24 hours before the next round of notifications are sent for the apartment."
+											),
+											React.createElement(
+												"li",
+												null,
+												"You will be charged according to your bid price and the number of notifications received."
+											)
+										)
+									)
 								)
 							)
 						)
