@@ -128,7 +128,7 @@ var CreatePost = (function (Component) {
 						return;
 					}
 
-					console.log("UPLOAD IMAGE: " + JSON.stringify(response));
+					//			console.log('UPLOAD IMAGE: '+JSON.stringify(response))
 
 					var updatedPost = Object.assign({}, _this.state.post);
 					if (type == "primary") updatedPost.image = response.id;else {

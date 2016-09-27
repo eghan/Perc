@@ -91,7 +91,7 @@ class CreatePost extends Component {
 				return
 			}
 
-			console.log('UPLOAD IMAGE: '+JSON.stringify(response))
+//			console.log('UPLOAD IMAGE: '+JSON.stringify(response))
 
 			var updatedPost = Object.assign({}, this.state.post)
 			if (type == 'primary')
