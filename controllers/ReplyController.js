@@ -73,9 +73,10 @@ module.exports = {
 				if (completion != null)
 					completion(null, reply.summary())
 			})
-			.catch(function(err){
+			.catch(function(error){
+				console.log('ERROR: '+error)
 				if (completion != null)
-					completion(err, null)
+					completion(error, null)
 			})
 		})		
 	},
