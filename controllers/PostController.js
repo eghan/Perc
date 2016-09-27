@@ -11,7 +11,7 @@ module.exports = {
 		return new Promise(function(resolve, reject){
 			var limit = params.limit
 			if (limit == null)
-				limit = '0'
+				limit = 0
 			
 			delete params['limit']
 
