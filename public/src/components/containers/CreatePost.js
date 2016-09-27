@@ -50,9 +50,11 @@ class CreatePost extends Component {
 		event.preventDefault()
 		console.log('submitPost: '+JSON.stringify(this.state.post))
 		var post = Object.assign({}, this.state.post)
+		const user = this.props.user
 		post['profile'] = {
-			id: this.props.user.id,
-			name: this.props.user.firstName
+			id: user.id,
+			name: user.firstName,
+			email: user.email
 		}
 
 		APIManager.handlePost('/api/post', post, (err, response) => {
