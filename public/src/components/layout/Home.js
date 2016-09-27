@@ -74,7 +74,7 @@ class Home extends Component {
 
 		return (
 			<div className="clearfix">
-				<header id="header" className="no-sticky" style={{marginTop:64}}>
+				<header id="header" className="no-sticky">
 		            <div id="header-wrap">
 		            	<Map 
 		            		center={currentLocation}

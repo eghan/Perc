@@ -43,13 +43,25 @@ class Nav extends Component {
 
 	render(){
 		const currentUser = this.props.currentUser
-		const accountLink = (currentUser == null) ? <a onClick={this.toggleLogin} style={styles.menuItem} href="#">Login</a> : <Link style={styles.menuItem} to="/account">{ currentUser.firstName.toUpperCase() }</Link>
+		const accountLink = (currentUser == null) ? <a onClick={this.toggleLogin} href="#"><div>Login</div></a> : <Link to="/account">{ currentUser.firstName.toUpperCase() }</Link>
 		return (
-			<div style={styles.nav}>
-				<a href="/register"><img src="/images/logo.png" style={{color:'#fff', marginLeft: 64}} /></a>
-				<span>{accountLink}</span>
-				<span><a style={styles.menuItem} href="/register">About</a></span>
-				<span><Link style={styles.menuItem} to="/">Search</Link></span>
+			<div id="page-menu">
+				<div id="page-menu-wrap">
+					<div className="container clearfix">
+						<div className="menu-title">
+							<a href="/"><img style={{marginBottom:6}} src="/images/logo.png" /></a>
+						</div>
+						<nav className="one-page-menu">
+							<ul>
+								<li><Link to="/"><div>Search</div></Link></li>
+								<li><a href="/register"><div>About</div></a></li>
+								<li><a href="#"><div>Work</div></a></li>
+								<li>{accountLink}</li>
+							</ul>
+						</nav>
+						<div id="page-submenu-trigger"><i className="icon-reorder"></i></div>
+					</div>
+				</div>
 	            <Login isVisible={this.state.showLogin} hide={this.toggleLogin} login={this.login} redirect={'/account'} />
 			</div>
 

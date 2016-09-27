@@ -117,7 +117,7 @@ var Home = (function (Component) {
 					{ className: "clearfix" },
 					React.createElement(
 						"header",
-						{ id: "header", className: "no-sticky", style: { marginTop: 64 } },
+						{ id: "header", className: "no-sticky" },
 						React.createElement(
 							"div",
 							{ id: "header-wrap" },

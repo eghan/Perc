@@ -73,42 +73,92 @@ var Nav = (function (Component) {
 				var currentUser = this.props.currentUser;
 				var accountLink = currentUser == null ? React.createElement(
 					"a",
-					{ onClick: this.toggleLogin, style: styles.menuItem, href: "#" },
-					"Login"
+					{ onClick: this.toggleLogin, href: "#" },
+					React.createElement(
+						"div",
+						null,
+						"Login"
+					)
 				) : React.createElement(
 					Link,
-					{ style: styles.menuItem, to: "/account" },
+					{ to: "/account" },
 					currentUser.firstName.toUpperCase()
 				);
 				return React.createElement(
 					"div",
-					{ style: styles.nav },
+					{ id: "page-menu" },
 					React.createElement(
-						"a",
-						{ href: "/register" },
-						React.createElement("img", { src: "/images/logo.png", style: { color: "#fff", marginLeft: 64 } })
-					),
-					React.createElement(
-						"span",
-						null,
-						accountLink
-					),
-					React.createElement(
-						"span",
-						null,
+						"div",
+						{ id: "page-menu-wrap" },
 						React.createElement(
-							"a",
-							{ style: styles.menuItem, href: "/register" },
-							"About"
-						)
-					),
-					React.createElement(
-						"span",
-						null,
-						React.createElement(
-							Link,
-							{ style: styles.menuItem, to: "/" },
-							"Search"
+							"div",
+							{ className: "container clearfix" },
+							React.createElement(
+								"div",
+								{ className: "menu-title" },
+								React.createElement(
+									"a",
+									{ href: "/" },
+									React.createElement("img", { style: { marginBottom: 6 }, src: "/images/logo.png" })
+								)
+							),
+							React.createElement(
+								"nav",
+								{ className: "one-page-menu" },
+								React.createElement(
+									"ul",
+									null,
+									React.createElement(
+										"li",
+										null,
+										React.createElement(
+											Link,
+											{ to: "/" },
+											React.createElement(
+												"div",
+												null,
+												"Search"
+											)
+										)
+									),
+									React.createElement(
+										"li",
+										null,
+										React.createElement(
+											"a",
+											{ href: "/register" },
+											React.createElement(
+												"div",
+												null,
+												"About"
+											)
+										)
+									),
+									React.createElement(
+										"li",
+										null,
+										React.createElement(
+											"a",
+											{ href: "#" },
+											React.createElement(
+												"div",
+												null,
+												"Work"
+											)
+										)
+									),
+									React.createElement(
+										"li",
+										null,
+										accountLink
+									)
+								)
+							),
+							React.createElement(
+								"div",
+								{ id: "page-submenu-trigger" },
+								React.createElement("i", { className: "icon-reorder" })
+							)
 						)
 					),
 					React.createElement(Login, { isVisible: this.state.showLogin, hide: this.toggleLogin, login: this.login, redirect: "/account" })

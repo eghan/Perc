@@ -8,9 +8,8 @@ class Main extends Component {
 				<Nav />
 				<div id="wrapper">
 					{this.props.children}
-
 				</div>
-
+				
 			</div>
 		)
 	}
