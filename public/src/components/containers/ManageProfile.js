@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styles from '../containers/Style'
 
 class ManageProfile extends Component {
 
@@ -27,21 +28,6 @@ class ManageProfile extends Component {
 
 			</div>
 		)
-	}
-}
-
-const styles = {
-	container: {
-		background:'#fff',
-		padding: 24,
-		border: '1px solid #ddd',
-		marginTop: 16
-	},
-	input: {
-		border:'none',
-		borderBottom: '1px solid #eee',
-		width: 100+'%',
-		marginBottom: 20
 	}
 }
 

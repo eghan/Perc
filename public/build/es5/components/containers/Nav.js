@@ -23,6 +23,8 @@ var actions = _interopRequire(require("../../actions/actions"));
 var store = _interopRequire(require("../../stores/store"));
 
 var Link = require("react-router").Link;
+var styles = _interopRequire(require("../containers/Style"));
+
 var Nav = (function (Component) {
 	function Nav(props, context) {
 		_classCallCheck(this, Nav);
@@ -171,29 +173,6 @@ var Nav = (function (Component) {
 
 	return Nav;
 })(Component);
-
-var styles = {
-	nav: {
-		paddingTop: 16,
-		paddingRight: 44,
-		width: 100 + "%",
-		height: 64,
-		background: "rgba(0,0,0,0.85)",
-		position: "fixed",
-		top: 0,
-		left: 0,
-		right: 0,
-		zIndex: 2,
-		display: "block"
-	},
-	menuItem: {
-		float: "right",
-		color: "#fff",
-		marginLeft: 40,
-		fontWeight: 400,
-		marginTop: 4
-	}
-};
 
 var stateToProps = function (state) {
 	return {

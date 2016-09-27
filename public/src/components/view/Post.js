@@ -25,7 +25,7 @@ class Post extends Component {
 	                <p className="list-group-item-text" style={styles.description}>
 	                	{TextUtils.truncateText(post.description, 220)}
 	                </p>
-					<Link to={'/post/'+post.slug}  style={styles.btnView} className="button button-border button-dark button-rounded noleftmargin">View</Link>
+					<Link to={'/post/'+post.slug} style={styles.btnView} className="button button-border button-dark button-rounded noleftmargin">View</Link>
 					<Link to={'/post/'+post.slug} style={styles.btnView} className="button button-border button-dark button-rounded noleftmargin">${post.price}</Link>
 	            </div>
             </div>

@@ -4,6 +4,7 @@ import { Nav, ManageProfile, Posts, CreatePost } from '../containers'
 import actions from '../../actions/actions'
 import store from '../../stores/store'
 import { connect } from 'react-redux'
+import styles from '../layout/Style'
 
 class Account extends Component {
 	constructor(props, context){
@@ -68,29 +69,6 @@ class Account extends Component {
 	}
 }
 
-const styles = {
-	container: {
-		background:'#fff',
-		padding: 24,
-		border: '1px solid #ddd',
-		marginTop: 16
-	},
-	input: {
-		border:'none',
-		borderBottom: '1px solid #eee',
-		width: 100+'%',
-		marginBottom: 20
-	},
-	selected: {
-		padding: 8,
-		background:'#f9f9f9',
-		borderRadius: 2
-	},
-	menuItem: {
-		padding:8,
-		background:'#fff'
-	}
-}
 
 const stateToProps = function(state){
 	return {

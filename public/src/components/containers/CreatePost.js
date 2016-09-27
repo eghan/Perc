@@ -5,6 +5,7 @@ import Loader from 'react-loader'
 import actions from '../../actions/actions'
 import store from '../../stores/store'
 import { browserHistory } from 'react-router'
+import styles from '../containers/Style'
 
 class CreatePost extends Component {
 	constructor(props, context){
@@ -166,74 +167,6 @@ class CreatePost extends Component {
 			</div>
 		)
 	}
-}
-
-const styles = {
-	container: {
-		background:'#fff',
-		padding: 24,
-		border: '1px solid #ddd',
-		marginTop: 16
-	},
-	input: {
-		border:'none',
-		borderBottom: '1px solid #eee',
-		width: 100+'%',
-		marginBottom: 20,
-		paddingLeft: 8
-	},
-	select: {
-		borderRadius: 0,
-		background: '#fff',
-		border: 'none',
-		borderBottom: '1px solid #eee',
-		width: 100+'%',
-		marginBottom: 20
-	},
-	description: {
-		width: 100+'%',
-		marginBottom: 20,
-		background: '#f9f9f9',
-		borderColor: '#ddd',
-		height: 160,
-		padding: 12
-	},
-	btnNext: {
-		float:'right',
-		marginBottom: 20
-	},
-	upload: {
-		width: 100+'%',
-		marginBottom: 24,
-		background: '#f9f9f9',
-		border: '1px solid #ddd',
-		color: '#777',
-		minHeight: 180,
-		padding: 16
-	},
-	icon: {
-		width:64,
-		marginRight:12,
-		marginTop:12
-	},
-	loader: {
-	    lines: 13,
-	    length: 20,
-	    width: 10,
-	    radius: 30,
-	    corners: 1,
-	    rotate: 0,
-	    direction: 1,
-	    color: '#fff',
-	    speed: 1,
-	    trail: 60,
-	    shadow: false,
-	    hwaccel: false,
-	    zIndex: 2e9,
-	    top: '50%',
-	    left: '50%',
-	    scale: 1.00
-	}	
 }
 
 

@@ -34,8 +34,10 @@ var PostDetail = (function (Component) {
 
 		_get(Object.getPrototypeOf(PostDetail.prototype), "constructor", this).call(this, props, context);
 		this.state = {
-			markers: []
-
+			markers: [],
+			reply: {
+				text: ""
+			}
 		};
 	}
 
@@ -44,10 +46,39 @@ var PostDetail = (function (Component) {
 	_prototypeProperties(PostDetail, null, {
 		componentDidMount: {
 			value: function componentDidMount() {
+				window.scrollTo(0, 0);
 				var post = this.props.posts[this.props.params.slug];
 				var postArray = [post];
 				this.setState({
 					markers: postArray
+				});
+			},
+			writable: true,
+			configurable: true
+		},
+		submitReply: {
+			value: function submitReply(event) {
+				event.preventDefault();
+				var user = this.props.currentUser;
+				var reply = Object.assign({}, this.state.reply);
+				reply.profile = {
+					id: user.id,
+					firstName: user.firstName,
+					lastName: user.lastName
+				};
+
+				console.log("submitReply:" + JSON.stringify(reply));
+			},
+			writable: true,
+			configurable: true
+		},
+		updateReply: {
+			value: function updateReply(event) {
+				//		console.log('updateReply:'+event.target.value)
+				var updatedReply = Object.assign({}, this.state.reply);
+				updatedReply.text = event.target.value;
+				this.setState({
+					reply: updatedReply
 				});
 			},
 			writable: true,
@@ -127,6 +158,36 @@ var PostDetail = (function (Component) {
 											React.createElement("img", { style: styles.postImage, src: imageUrl + "?crop=420" })
 										)
 									)
+								),
+								React.createElement("hr", null),
+								React.createElement(
+									"div",
+									{ className: "row" },
+									React.createElement(
+										"div",
+										{ className: "col-md-12" },
+										React.createElement("textarea", { onChange: this.updateReply.bind(this), style: styles.reply, placeholder: "Reply" }),
+										React.createElement(
+											"a",
+											{ onClick: this.submitReply.bind(this), href: "#", className: "button button-border button-dark button-rounded noleftmargin" },
+											"Submit"
+										)
+									)
+								)
+							),
+							React.createElement(
+								"div",
+								{ style: styles.container },
+								React.createElement(
+									"h2",
+									null,
+									"Notifications"
+								),
+								React.createElement("hr", null),
+								React.createElement(
+									"p",
+									null,
+									"Get notified when the next listing similar this one gets posted."
 								)
 							)
 						)
@@ -146,7 +207,7 @@ var styles = {
 		background: "#fff",
 		padding: 24,
 		border: "1px solid #ddd",
-		marginTop: 16
+		marginBottom: 36
 	},
 	postImage: {
 		width: 100 + "%",
@@ -156,12 +217,21 @@ var styles = {
 	},
 	description: {
 		minHeight: 220
+	},
+	reply: {
+		width: 100 + "%",
+		background: "#f9f9f9",
+		border: "1px solid #ddd",
+		height: 160,
+		padding: 12,
+		marginBottom: 12
 	}
 };
 
 var stateToProps = function (state) {
 	return {
-		posts: state.postReducer.posts
+		posts: state.postReducer.posts,
+		currentUser: state.accountReducer.currentUser
 	};
 };
 

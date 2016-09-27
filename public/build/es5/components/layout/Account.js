@@ -27,6 +27,8 @@ var actions = _interopRequire(require("../../actions/actions"));
 var store = _interopRequire(require("../../stores/store"));
 
 var connect = require("react-redux").connect;
+var styles = _interopRequire(require("../layout/Style"));
+
 var Account = (function (Component) {
 	function Account(props, context) {
 		_classCallCheck(this, Account);
@@ -124,29 +126,8 @@ var Account = (function (Component) {
 	return Account;
 })(Component);
 
-var styles = {
-	container: {
-		background: "#fff",
-		padding: 24,
-		border: "1px solid #ddd",
-		marginTop: 16
-	},
-	input: {
-		border: "none",
-		borderBottom: "1px solid #eee",
-		width: 100 + "%",
-		marginBottom: 20
-	},
-	selected: {
-		padding: 8,
-		background: "#f9f9f9",
-		borderRadius: 2
-	},
-	menuItem: {
-		padding: 8,
-		background: "#fff"
-	}
-};
+
+
 
 var stateToProps = function (state) {
 	return {

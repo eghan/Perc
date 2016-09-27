@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import actions from '../../actions/actions'
 import store from '../../stores/store'
 import { Link } from 'react-router'
+import styles from '../containers/Style'
 
 class Nav extends Component {
 	constructor(props, context){
@@ -66,29 +67,6 @@ class Nav extends Component {
 			</div>
 
 		)
-	}
-}
-
-const styles = {
-	nav: {
-		paddingTop: 16,
-		paddingRight: 44,
-		width: 100+'%',
-		height: 64,
-		background:'rgba(0,0,0,0.85)',
-		position:'fixed',
-		top: 0,
-		left: 0,
-		right: 0,
-		zIndex: 2,
-		display: 'block'
-	},
-	menuItem: {
-		float: 'right',
-		color: '#fff',
-		marginLeft: 40,
-		fontWeight: 400,
-		marginTop: 4
 	}
 }
 

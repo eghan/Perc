@@ -13,6 +13,8 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+var styles = _interopRequire(require("../containers/Style"));
+
 var ManageProfile = (function (Component) {
 	function ManageProfile() {
 		_classCallCheck(this, ManageProfile);
@@ -73,21 +75,5 @@ var ManageProfile = (function (Component) {
 
 	return ManageProfile;
 })(Component);
-
-var styles = {
-	container: {
-		background: "#fff",
-		padding: 24,
-		border: "1px solid #ddd",
-		marginTop: 16
-	},
-	input: {
-		border: "none",
-		borderBottom: "1px solid #eee",
-		width: 100 + "%",
-		marginBottom: 20
-	}
-};
-
 
 module.exports = ManageProfile;

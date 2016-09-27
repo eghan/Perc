@@ -9,16 +9,41 @@ class PostDetail extends Component {
 	constructor(props, context){
 		super(props, context)
 		this.state = {
-			markers: []
-
+			markers: [],
+			reply: {
+				text: ''
+			}
 		}
 	}
 
 	componentDidMount(){
+		window.scrollTo(0, 0)
 		const post = this.props.posts[this.props.params.slug]
 		var postArray = [post]
 		this.setState({
 			markers: postArray
+		})
+	}
+
+	submitReply(event){
+		event.preventDefault()
+		const user = this.props.currentUser
+		var reply = Object.assign({}, this.state.reply)
+		reply['profile'] = {
+			id: user.id,
+			firstName: user.firstName,
+			lastName: user.lastName
+		}
+
+		console.log('submitReply:'+JSON.stringify(reply))
+	}
+
+	updateReply(event){
+//		console.log('updateReply:'+event.target.value)
+		var updatedReply = Object.assign({}, this.state.reply)
+		updatedReply['text'] = event.target.value
+		this.setState({
+			reply: updatedReply
 		})
 	}
 
@@ -63,14 +88,31 @@ class PostDetail extends Component {
 									<div className="row">{icons}</div>
 								</div>
 								<div className="col-md-4">
-								<a href={imageUrl} target="_blank" className="left-icon" data-lightbox="image">
-									<img style={styles.postImage} src={imageUrl+'?crop=420'} />
-								</a>
-
+									<a href={imageUrl} target="_blank" className="left-icon" data-lightbox="image">
+										<img style={styles.postImage} src={imageUrl+'?crop=420'} />
+									</a>
+								</div>
+							</div>
+							<hr />
+							<div className="row">
+								<div className="col-md-12">
+									<textarea onChange={this.updateReply.bind(this)} style={styles.reply} placeholder="Reply"></textarea>
+									<a onClick={this.submitReply.bind(this)} href="#" className="button button-border button-dark button-rounded noleftmargin">Submit</a>
 								</div>
 							</div>
 
 						</div>
+
+						<div style={styles.container}>
+							<h2>Notifications</h2>
+							<hr />
+							<p>
+								Get notified when the next listing similar this one gets posted.
+
+							</p>
+
+						</div>
+
 					</div>
 
 				</section>
@@ -84,7 +126,7 @@ const styles = {
 		background:'#fff',
 		padding: 24,
 		border: '1px solid #ddd',
-		marginTop: 16
+		marginBottom: 36
 	},
 	postImage: {
 		width: 100+'%',
@@ -94,12 +136,21 @@ const styles = {
 	},
 	description: {
 		minHeight: 220
+	},
+	reply: {
+		width:100+'%',
+		background:'#f9f9f9',
+		border:'1px solid #ddd',
+		height: 160,
+		padding: 12,
+		marginBottom: 12
 	}
 }
 
 const stateToProps = function(state){
 	return {
-		posts: state.postReducer.posts
+		posts: state.postReducer.posts,
+		currentUser: state.accountReducer.currentUser
 	}
 
 }
