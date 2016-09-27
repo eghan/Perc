@@ -3,13 +3,15 @@ var mongoose = require('mongoose')
 var ReplySchema = new mongoose.Schema({
 	profile: {type:mongoose.Schema.Types.Mixed, default:{}},
 	recipient: {type:mongoose.Schema.Types.Mixed, default:{}},
-	message: {type:String, trim:true, lowercase:true, default:''},
+	subject: {type:String, trim:true, default:''},
+	message: {type:String, trim:true, default:''},
 	timestamp: {type:Date, default:Date.now}
 })
 
 ReplySchema.methods.summary = function(){
 	var summary = {
 		profile: this.profile,
+		subject: this.subject,
 		message: this.message,
 		recipient: this.recipient,
 		timestamp: this.timestamp,

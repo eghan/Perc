@@ -78,6 +78,8 @@ var PostDetail = (function (Component) {
 					email: post.contact
 				};
 
+				reply.subject = post.title;
+
 				APIManager.handlePost("/api/reply", reply, function (err, result) {
 					if (err) {
 						alert(err);

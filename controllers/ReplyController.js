@@ -68,13 +68,12 @@ module.exports = {
 				return
 			}
 
-			EmailUtils.sendEmail(process.env.ADMIN_EMAIL, reply.recipient.email, 'TEST', 'This is a TEST EMAIL')
+			EmailUtils.sendEmail(process.env.ADMIN_EMAIL, reply.recipient.email, reply.subject, reply.message)
 			.then(function(){
 				if (completion != null)
 					completion(null, reply.summary())
 			})
 			.catch(function(error){
-				console.log('ERROR: '+error)
 				if (completion != null)
 					completion(error, null)
 			})

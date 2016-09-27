@@ -45,6 +45,8 @@ class PostDetail extends Component {
 			email: post.contact
 		}
 
+		reply['subject'] = post.title
+
 		APIManager.handlePost('/api/reply', reply, (err, result) => {
 			if (err){
 				alert(err)

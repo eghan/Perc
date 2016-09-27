@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt')
 
 module.exports = {
 	login: function(params, completion){
-		Profile.find({email:params.email}, function(err, profiles) {
+		Profile.find({email:params.email.toLowerCase()}, function(err, profiles) {
 			if (err) {
 				completion({message:err.message}, null)
 				return

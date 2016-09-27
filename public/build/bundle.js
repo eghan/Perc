@@ -37993,6 +37993,8 @@ var PostDetail = function (_Component) {
 				email: post.contact
 			};
 
+			reply['subject'] = post.title;
+
 			_utils.APIManager.handlePost('/api/reply', reply, function (err, result) {
 				if (err) {
 					alert(err);
