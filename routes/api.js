@@ -7,7 +7,7 @@ router.get('/:resource', function(req, res, next) {
 	var controller = controllers[resource]
 	if (controller == null){
 	    res.json({
-	    	confirmation: 'error',
+	    	confirmation: 'fail',
 	    	message: 'Invalid Resource'
 	    })
 
@@ -17,7 +17,7 @@ router.get('/:resource', function(req, res, next) {
 	controller.get(req.query, false, function(err, results){
 		if (err){
 		    res.json({
-		    	confirmation: 'error',
+		    	confirmation: 'fail',
 		    	message: err
 		    })
 
@@ -36,7 +36,7 @@ router.get('/:resource/:id', function(req, res, next) {
 	var controller = controllers[resource]
 	if (controller == null){
 	    res.json({
-	    	confirmation: 'error',
+	    	confirmation: 'fail',
 	    	message: 'Invalid Resource'
 	    })
 
@@ -46,7 +46,7 @@ router.get('/:resource/:id', function(req, res, next) {
 	controller.getById(req.params.id, false, function(err, result){
 		if (err){
 		    res.json({
-		    	confirmation: 'error',
+		    	confirmation: 'fail',
 		    	message: err.message
 		    })
 
@@ -65,7 +65,7 @@ router.post('/:resource', function(req, res, next) {
 	var controller = controllers[resource]
 	if (controller == null){
 	    res.json({
-	    	confirmation: 'error',
+	    	confirmation: 'fail',
 	    	message: 'Invalid Resource'
 	    })
 
@@ -75,7 +75,7 @@ router.post('/:resource', function(req, res, next) {
 	controller.post(req.body, function(err, result){
 		if (err){
 		    res.json({
-		    	confirmation: 'error',
+		    	confirmation: 'fail',
 		    	message: err
 		    })
 
