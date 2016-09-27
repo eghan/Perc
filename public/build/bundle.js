@@ -38060,11 +38060,6 @@ var PostDetail = function (_Component) {
 							'div',
 							{ style: styles.container },
 							_react2.default.createElement(
-								'span',
-								{ style: { float: 'right' } },
-								_utils.DateUtils.formattedDate(post.timestamp)
-							),
-							_react2.default.createElement(
 								'h2',
 								null,
 								post.title

@@ -149,11 +149,6 @@ var PostDetail = (function (Component) {
 								"div",
 								{ style: styles.container },
 								React.createElement(
-									"span",
-									{ style: { float: "right" } },
-									DateUtils.formattedDate(post.timestamp)
-								),
-								React.createElement(
 									"h2",
 									null,
 									post.title

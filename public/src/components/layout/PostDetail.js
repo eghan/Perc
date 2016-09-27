@@ -98,7 +98,6 @@ class PostDetail extends Component {
 				<section id="content">
 					<div className="content-wrap container clearfix">
 						<div style={styles.container}>
-		            <span style={{float:'right'}}>{ DateUtils.formattedDate(post.timestamp) }</span>
 							<h2>{post.title}</h2>
 							<hr />
 							<div className="row">
