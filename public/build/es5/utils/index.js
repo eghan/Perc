@@ -6,8 +6,11 @@ var APIManager = _interopRequire(require("../utils/APIManager"));
 
 var TextUtils = _interopRequire(require("../utils/TextUtils"));
 
+var DateUtils = _interopRequire(require("../utils/DateUtils"));
+
 exports.APIManager = APIManager;
 exports.TextUtils = TextUtils;
+exports.DateUtils = DateUtils;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });

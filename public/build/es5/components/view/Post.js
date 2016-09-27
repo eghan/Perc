@@ -15,8 +15,13 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var TextUtils = require("../../utils").TextUtils;
+var _utils = require("../../utils");
+
+var TextUtils = _utils.TextUtils;
+var DateUtils = _utils.DateUtils;
 var Link = require("react-router").Link;
+var styles = _interopRequire(require("../view/Style"));
+
 var Post = (function (Component) {
 	function Post(props, context) {
 		_classCallCheck(this, Post);
@@ -40,6 +45,11 @@ var Post = (function (Component) {
 					React.createElement(
 						"div",
 						{ style: { padding: 16 } },
+						React.createElement(
+							"span",
+							{ style: { float: "right" } },
+							DateUtils.formattedDate(post.timestamp)
+						),
 						React.createElement(
 							"h4",
 							{ className: "list-group-item-heading" },
@@ -76,30 +86,5 @@ var Post = (function (Component) {
 
 	return Post;
 })(Component);
-
-var styles = {
-	container: {
-		background: "#fff",
-		marginTop: 16,
-		border: "1px solid #ddd"
-	},
-	postImage: {
-		float: "left",
-		width: 224,
-		marginRight: 16
-	},
-	postImageMobile: {
-		width: 100 + "%"
-	},
-	btnView: {
-		float: "right",
-		marginBottom: 20,
-		marginLeft: 24
-	},
-	description: {
-		marginTop: 6,
-		marginBottom: 20
-	}
-};
 
 module.exports = Post;

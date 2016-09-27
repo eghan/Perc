@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { TextUtils } from '../../utils'
+import { TextUtils, DateUtils } from '../../utils'
 import { Link } from 'react-router'
+import styles from '../view/Style'
 
 class Post extends Component {
 	constructor(props, context){
@@ -18,6 +19,7 @@ class Post extends Component {
 	            <img className="hidden-xs" style={styles.postImage} src={image} />
 	            <img className="visible-xs" style={styles.postImageMobile} src={image} />
 	            <div style={{padding:16}}>
+		            <span style={{float:'right'}}>{ DateUtils.formattedDate(post.timestamp) }</span>
 	                <h4 className="list-group-item-heading">
 	                	<Link style={{color:this.props.color}} to={'/post/'+post.slug}>{post.title}</Link>
 	                </h4>
@@ -33,29 +35,5 @@ class Post extends Component {
 	}
 }
 
-const styles = {
-	container: {
-		background:'#fff',
-		marginTop:16,
-		border:'1px solid #ddd'
-	},
-	postImage: {
-		float:'left',
-		width: 224,
-		marginRight: 16
-	},
-	postImageMobile: {
-		width: 100+'%'
-	},
-	btnView: {
-		float: 'right',
-		marginBottom: 20,
-		marginLeft: 24
-	},
-	description: {
-		marginTop: 6,
-		marginBottom: 20
-	}
-}
 
 export default Post

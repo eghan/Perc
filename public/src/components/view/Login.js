@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ReactBootstrap, { Modal } from 'react-bootstrap'
 import Loader from 'react-loader'
+import styles from '../view/Style'
+
 
 class Login extends Component {
 	constructor(props, context){
@@ -61,45 +63,5 @@ class Login extends Component {
 	}
 }
 
-const styles = {
-	modal: {
-		background:'#f9f9f9',
-		padding:24,
-		borderRadius:3
-	},
-	btnLoginContainer: {
-		textAlign:'center',
-		marginTop:24
-	},
-	textField: {
-		marginBottom:12
-	},
-	logo: {
-		width:96,
-		borderRadius:48,
-		border:'1px solid #ddd',
-		background:'#fff',
-		marginBottom:24
-	},
-	loader: {
-	    lines: 13,
-	    length: 20,
-	    width: 10,
-	    radius: 30,
-	    corners: 1,
-	    rotate: 0,
-	    direction: 1,
-	    color: '#fff',
-	    speed: 1,
-	    trail: 60,
-	    shadow: false,
-	    hwaccel: false,
-	    zIndex: 2e9,
-	    top: '50%',
-	    left: '50%',
-	    scale: 1.00
-	}	
-
-}
 
 export default Login
