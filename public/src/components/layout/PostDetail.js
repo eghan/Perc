@@ -18,6 +18,7 @@ class PostDetail extends Component {
 
 	componentDidMount(){
 		window.scrollTo(0, 0)
+
 		const post = this.props.posts[this.props.params.slug]
 		var postArray = [post]
 		this.setState({

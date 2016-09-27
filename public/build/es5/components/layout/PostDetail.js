@@ -48,6 +48,7 @@ var PostDetail = (function (Component) {
 		componentDidMount: {
 			value: function componentDidMount() {
 				window.scrollTo(0, 0);
+
 				var post = this.props.posts[this.props.params.slug];
 				var postArray = [post];
 				this.setState({
