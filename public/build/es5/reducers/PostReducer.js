@@ -11,7 +11,7 @@ var intial = {
 
 
 var update = function (state, posts) {
-	console.log("UPDATE");
+	//	console.log('UPDATE')
 
 	var newState = Object.assign({}, state);
 	var array = Object.assign([], newState.postsArray);

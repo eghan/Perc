@@ -49,6 +49,7 @@ var Home = (function (Component) {
 	_prototypeProperties(Home, null, {
 		selectPost: {
 			value: function selectPost(post) {
+				//		console.log('selectPost: '+post.id)
 				$("html, body").animate({
 					scrollTop: $("#" + post.id).offset().top - 200
 				}, 750);
@@ -75,7 +76,7 @@ var Home = (function (Component) {
 		mapMoved: {
 			value: function mapMoved(location) {
 				var dist = this.calculateDistance(location);
-				console.log("MAP MOVED: " + dist);
+				//		console.log('MAP MOVED: '+dist)
 				if (dist < 0.02) {
 					return;
 				}this.fetchPosts(location);
@@ -97,13 +98,6 @@ var Home = (function (Component) {
 
 					store.currentStore().dispatch(actions.postsReceived(response.results));
 				});
-			},
-			writable: true,
-			configurable: true
-		},
-		viewPost: {
-			value: function viewPost(post) {
-				console.log("ViewPost: " + JSON.stringify(post));
 			},
 			writable: true,
 			configurable: true

@@ -14,12 +14,15 @@ class Map extends Component {
 
 	mapDragged(){
 		var latLng = this.state.map.getCenter().toJSON()
-		this.props.onCenterChanged(latLng)
+		if (this.props.onCenterChanged != null)
+			this.props.onCenterChanged(latLng)
 	}
 
 	handleMarkerClick(marker){
-		console.log('handleMarkerClick: '+JSON.stringify(marker))
-		this.props.selectPost(marker)
+//		console.log('handleMarkerClick: '+JSON.stringify(marker))
+
+		if (this.props.selectPost != null)
+			this.props.selectPost(marker)
 	}
 
 	render(){
@@ -34,7 +37,7 @@ class Map extends Component {
 				}
 				
 		        return (
-		            <Marker key={i} onClick={this.handleMarkerClick.bind(marker)} clickable={true} icon={marker.icon} label={marker.title} title={marker.key} {...marker} />
+		            <Marker key={i} onClick={this.handleMarkerClick.bind(this, marker)} clickable={true} icon={marker.icon} label={marker.title} title={marker.key} {...marker} />
 		        )
 			})
 		}

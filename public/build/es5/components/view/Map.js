@@ -42,15 +42,16 @@ var Map = (function (Component) {
 		mapDragged: {
 			value: function mapDragged() {
 				var latLng = this.state.map.getCenter().toJSON();
-				this.props.onCenterChanged(latLng);
+				if (this.props.onCenterChanged != null) this.props.onCenterChanged(latLng);
 			},
 			writable: true,
 			configurable: true
 		},
 		handleMarkerClick: {
 			value: function handleMarkerClick(marker) {
-				console.log("handleMarkerClick: " + JSON.stringify(marker));
-				this.props.selectPost(marker);
+				//		console.log('handleMarkerClick: '+JSON.stringify(marker))
+
+				if (this.props.selectPost != null) this.props.selectPost(marker);
 			},
 			writable: true,
 			configurable: true
@@ -68,7 +69,7 @@ var Map = (function (Component) {
 							lng: marker.geo[1]
 						};
 
-						return React.createElement(Marker, _extends({ key: i, onClick: _this.handleMarkerClick.bind(marker), clickable: true, icon: marker.icon, label: marker.title, title: marker.key }, marker));
+						return React.createElement(Marker, _extends({ key: i, onClick: _this.handleMarkerClick.bind(_this, marker), clickable: true, icon: marker.icon, label: marker.title, title: marker.key }, marker));
 					});
 				}
 

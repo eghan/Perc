@@ -23,6 +23,7 @@ class Home extends Component {
 	}
 
 	selectPost(post){
+//		console.log('selectPost: '+post.id)
 		$('html, body').animate({
 			scrollTop: $("#"+post.id).offset().top-200
 		}, 750)
@@ -43,7 +44,7 @@ class Home extends Component {
 
 	mapMoved(location){
 		const dist = this.calculateDistance(location)
-		console.log('MAP MOVED: '+dist)
+//		console.log('MAP MOVED: '+dist)
 		if (dist < 0.02)
 			return
 
@@ -63,10 +64,6 @@ class Home extends Component {
 
 			store.currentStore().dispatch(actions.postsReceived(response.results))
 		})
-	}
-
-	viewPost(post){
-		console.log('ViewPost: '+JSON.stringify(post))
 	}
 
 	render(){
