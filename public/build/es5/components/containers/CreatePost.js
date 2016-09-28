@@ -163,6 +163,7 @@ var CreatePost = (function (Component) {
 						null,
 						"Create Listing"
 					),
+					React.createElement("hr", null),
 					React.createElement(
 						"div",
 						{ className: "row" },

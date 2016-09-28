@@ -49,9 +49,19 @@ var Map = (function (Component) {
 		},
 		handleMarkerClick: {
 			value: function handleMarkerClick(marker) {
-				//		console.log('handleMarkerClick: '+JSON.stringify(marker))
+				// console.log('handleMarkerClick: '+JSON.stringify(marker))
 
 				if (this.props.selectPost != null) this.props.selectPost(marker);
+			},
+			writable: true,
+			configurable: true
+		},
+		onMapClick: {
+			value: function onMapClick(obj) {
+				if (this.props.mapClicked != null) {
+					//			console.log('onMapClick: '+JSON.stringify(obj.latLng))
+					this.props.mapClicked(obj.latLng);
+				}
 			},
 			writable: true,
 			configurable: true
@@ -87,6 +97,7 @@ var Map = (function (Component) {
 								_this.setState({ map: map });
 							},
 							onDragend: this.mapDragged.bind(this),
+							onClick: this.onMapClick.bind(this),
 							defaultZoom: zoom,
 							defaultCenter: this.props.center,
 							options: { streetViewControl: false, mapTypeControl: false } },

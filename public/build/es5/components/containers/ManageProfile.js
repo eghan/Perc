@@ -38,6 +38,7 @@ var ManageProfile = (function (Component) {
 						null,
 						"Manage Profile"
 					),
+					React.createElement("hr", null),
 					React.createElement(
 						"div",
 						{ className: "row" },

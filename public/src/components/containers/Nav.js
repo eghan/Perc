@@ -56,7 +56,6 @@ class Nav extends Component {
 							<ul>
 								<li><Link to="/"><div>Search</div></Link></li>
 								<li><a href="/register"><div>About</div></a></li>
-								<li><a href="#"><div>Work</div></a></li>
 								<li>{accountLink}</li>
 							</ul>
 						</nav>

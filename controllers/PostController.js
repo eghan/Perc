@@ -77,7 +77,7 @@ module.exports = {
 		// https://maps.googleapis.com/maps/api/geocode/json?address=172+lexington+avenue,new+york,ny&key=AIzaSyA7ubOEswjvE09Hdpii4ZRi__SndjdE7ds
 	    var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+params.address+','+params.city+','+params.state
 
-	    Request.get(url, {key:'AIzaSyA7ubOEswjvE09Hdpii4ZRi__SndjdE7ds'})
+	    Request.get(url, {key:process.env.GOOGLE_MAPS_API_KEY})
 	    .then(function(response){
 	    	console.log(JSON.stringify(response))
 
@@ -92,22 +92,27 @@ module.exports = {
 	    	if (address_components != null){ // find zip code...
 
 	    		var zip = ''
+	    		var zone = '' // midtown, upper east side, etc
 		    	for (var i=0; i<address_components.length; i++){
 		    		var component = address_components[i]
 		    		var types = component['types'] // this is an array
 		    		if (types == null)
 		    			continue
 
-		    		if (types.indexOf('postal_code') == -1)
+		    		var value = component['long_name']
+		    		if (value == null)
 		    			continue
 
-		    		if (component['long_name'] != null){
-			    		zip = component['long_name'] // found it, break
-			    		break
-		    		}
+		    		if (types.indexOf('postal_code') != -1)
+				    	zip = value.toLowerCase()
+		    		
+		    		if (types.indexOf('neighborhood') != -1)
+				    	zone = value.toLowerCase()
+		    		
 		    	}
 
 			    params['zip'] = zip
+			    params['zone'] = zone
 	    	}
 
 			Post.create(params, function(error, post){

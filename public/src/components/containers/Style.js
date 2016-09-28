@@ -83,5 +83,13 @@ export default {
 	    top: '50%',
 	    left: '50%',
 	    scale: 1.00
-	}	
+	},
+	textarea:{
+		padding:16, 
+		fontWeight:200, 
+		background:'#f9f9f9',
+		border: 'none',
+		minHeight: 60,
+		width: 100+'%'
+	}
 }

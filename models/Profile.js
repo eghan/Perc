@@ -7,6 +7,7 @@ var ProfileSchema = new mongoose.Schema({
 	image: {type:String, trim:true, default:''},
 	email: {type:String, trim:true, lowercase:true, default:''},
 	password: {type:String, trim:true, default:''},
+	notify: {type:mongoose.Schema.Types.Mixed, default:{}}, // zips array, maxPrice number, bid value, notified array
 	timestamp: {type:Date, default:Date.now}
 })
 
@@ -17,6 +18,7 @@ ProfileSchema.methods.summary = function(){
 		phone: this.phone,
 		image: this.image,
 		email: this.email,
+		notify: this.notify,
 		timestamp: this.timestamp,
 		id: this._id
 	}

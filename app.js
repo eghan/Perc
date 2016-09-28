@@ -6,11 +6,12 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
 var sessions = require('client-sessions')
-
+require('dotenv').config()
 
 var routes = require('./routes/index')
 var api = require('./routes/api')
 var account = require('./routes/account')
+var geo = require('./routes/geo')
 
 var dbUrl = process.env.MONGODB_URI || 'mongodb://localhost/classified'
 mongoose.connect(dbUrl, function(err, res){
@@ -45,7 +46,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', routes)
 app.use('/api', api)
-app.use('/account', account);
+app.use('/account', account)
+app.use('/geo', geo)
 
 
 // catch 404 and forward to error handler

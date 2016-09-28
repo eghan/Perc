@@ -37,7 +37,7 @@ router.get('/', function(req, res, next) {
 	var initialStore = null
 	var reducers = {}
 	var tags = {
-		title: 'Perc',
+		title: 'Search',
 		type: 'article',
 		description: '',
 		image: ''
@@ -83,7 +83,6 @@ router.get('/:page', function(req, res, next) {
 
 	if (templates.indexOf(page) >= 0){ // this is a regular template page
 	    res.render(page, { title: 'Express' })
-
 	    return
 	}
 
@@ -123,7 +122,7 @@ router.get('/:page', function(req, res, next) {
 
 router.get('/:page/:slug', function(req, res, next) {
 	var page = req.params.page
-	if (page == 'api'){
+	if (page == 'api' || page == 'geo'){
 		next()
 		return
 	}

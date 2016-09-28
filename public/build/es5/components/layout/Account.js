@@ -22,6 +22,7 @@ var Nav = _containers.Nav;
 var ManageProfile = _containers.ManageProfile;
 var Posts = _containers.Posts;
 var CreatePost = _containers.CreatePost;
+var ManageNotifications = _containers.ManageNotifications;
 var actions = _interopRequire(require("../../actions/actions"));
 
 var store = _interopRequire(require("../../stores/store"));
@@ -36,7 +37,7 @@ var Account = (function (Component) {
 		_get(Object.getPrototypeOf(Account.prototype), "constructor", this).call(this, props, context);
 		this.state = {
 			selected: 0,
-			menuItems: [{ name: "Profile", component: ManageProfile }, { name: "Listings", component: Posts }, { name: "Submit Listing", component: CreatePost }]
+			menuItems: [{ name: "Profile", component: ManageProfile }, { name: "Listings", component: Posts }, { name: "Submit Listing", component: CreatePost }, { name: "Notifications", component: ManageNotifications }]
 		};
 	}
 

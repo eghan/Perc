@@ -146,7 +146,7 @@ class PostDetail extends Component {
 										<li>Place a bid for each notification.</li>
 										<li>
 											* You will be notified of new listings that fit your criteria ahead of others who 
-											placed bids lower than your. Likewise, those with higher bids get notified before you.
+											placed bids lower than yours. Likewise, those with higher bids get notified before you.
 										</li>
 										<li>Once notified, you have 24 hours before the next round of notifications are sent for the apartment.</li>
 										<li>You will be charged according to your bid price and the number of notifications received.</li>

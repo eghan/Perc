@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { APIManager } from '../../utils'
-import { Nav, ManageProfile, Posts, CreatePost } from '../containers'
+import { Nav, ManageProfile, Posts, CreatePost, ManageNotifications } from '../containers'
 import actions from '../../actions/actions'
 import store from '../../stores/store'
 import { connect } from 'react-redux'
@@ -14,7 +14,8 @@ class Account extends Component {
 			menuItems: [
 				{name:'Profile', component:ManageProfile},
 				{name:'Listings', component:Posts},
-				{name:'Submit Listing', component:CreatePost}
+				{name:'Submit Listing', component:CreatePost},
+				{name:'Notifications', component:ManageNotifications}
 			]
 		}
 	}

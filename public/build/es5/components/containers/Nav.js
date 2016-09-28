@@ -139,19 +139,6 @@ var Nav = (function (Component) {
 									React.createElement(
 										"li",
 										null,
-										React.createElement(
-											"a",
-											{ href: "#" },
-											React.createElement(
-												"div",
-												null,
-												"Work"
-											)
-										)
-									),
-									React.createElement(
-										"li",
-										null,
 										accountLink
 									)
 								)

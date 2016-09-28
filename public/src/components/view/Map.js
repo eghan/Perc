@@ -19,10 +19,17 @@ class Map extends Component {
 	}
 
 	handleMarkerClick(marker){
-//		console.log('handleMarkerClick: '+JSON.stringify(marker))
+		// console.log('handleMarkerClick: '+JSON.stringify(marker))
 
 		if (this.props.selectPost != null)
 			this.props.selectPost(marker)
+	}
+
+	onMapClick(obj){
+		if (this.props.mapClicked != null){
+//			console.log('onMapClick: '+JSON.stringify(obj.latLng))
+			this.props.mapClicked(obj.latLng)
+		}
 	}
 
 	render(){
@@ -58,6 +65,7 @@ class Map extends Component {
 			             	} 
 			         	}
 			            onDragend={this.mapDragged.bind(this)}
+			            onClick={this.onMapClick.bind(this)}
 			            defaultZoom={zoom}
 			            defaultCenter={this.props.center}
 			            options={{streetViewControl: false, mapTypeControl: false}}>

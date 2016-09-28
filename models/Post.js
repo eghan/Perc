@@ -2,12 +2,14 @@ var mongoose = require('mongoose')
 
 var PostSchema = new mongoose.Schema({
 	title: {type:String, trim:true, default:''},
+	status: {type:String, trim:true, default:''},
 	contact: {type:String, trim:true, default:''}, // email address
 	slug: {type:String, trim:true, default:''},
 	address: {type:String, trim:true, default:''},
 	city: {type:String, trim:true, default:''},
 	state: {type:String, trim:true, default:''},
 	zip: {type:String, trim:true, default:''},
+	zone: {type:String, trim:true, default:''}, // midtown east or 10016
 	image: {type:String, trim:true, default:''},
 	images: {type:Array, default:[]},
 	notified: {type:Array, default:[]},
@@ -25,12 +27,14 @@ var PostSchema = new mongoose.Schema({
 PostSchema.methods.summary = function(){
 	var summary = {
 		title: this.title,
+		status: this.status,
 		contact: this.contact,
 		slug: this.slug,
 		address: this.address,
 		city: this.city,
 		state: this.state,
 		zip: this.zip,
+		zone: this.zip,
 		image: this.image,
 		images: this.images,
 		notified: this.notified,

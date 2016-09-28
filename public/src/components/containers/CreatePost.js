@@ -122,6 +122,7 @@ class CreatePost extends Component {
 			<div style={styles.container}>
 				<Loader options={styles.loader} className="loader" loaded={!this.state.showLoader} loadedClassName="loadedContent" />
 				<h2>Create Listing</h2>
+				<hr />
 				<div className="row">
 					<div className="col-md-6">
 						<input id="title" onChange={this.updatePost.bind(this)} style={styles.input} type="text" placeholder="Title" defaultValue={post.title} />

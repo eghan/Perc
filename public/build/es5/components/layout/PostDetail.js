@@ -246,7 +246,7 @@ var PostDetail = (function (Component) {
 											React.createElement(
 												"li",
 												null,
-												"* You will be notified of new listings that fit your criteria ahead of others who placed bids lower than your. Likewise, those with higher bids get notified before you."
+												"* You will be notified of new listings that fit your criteria ahead of others who placed bids lower than yours. Likewise, those with higher bids get notified before you."
 											),
 											React.createElement(
 												"li",
