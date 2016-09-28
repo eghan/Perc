@@ -68,7 +68,7 @@ var Map = (function (Component) {
 							lng: marker.geo[1]
 						};
 
-						return React.createElement(Marker, _extends({ key: i, onClick: _this.handleMarkerClick.bind(event, marker), clickable: true, icon: marker.icon, label: marker.title, title: marker.key }, marker));
+						return React.createElement(Marker, _extends({ key: i, onClick: _this.handleMarkerClick.bind(marker), clickable: true, icon: marker.icon, label: marker.title, title: marker.key }, marker));
 					});
 				}
 

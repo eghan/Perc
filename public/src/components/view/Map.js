@@ -34,7 +34,7 @@ class Map extends Component {
 				}
 				
 		        return (
-		            <Marker key={i} onClick={this.handleMarkerClick.bind(event, marker)} clickable={true} icon={marker.icon} label={marker.title} title={marker.key} {...marker} />
+		            <Marker key={i} onClick={this.handleMarkerClick.bind(marker)} clickable={true} icon={marker.icon} label={marker.title} title={marker.key} {...marker} />
 		        )
 			})
 		}
