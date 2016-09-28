@@ -34,7 +34,7 @@ PostSchema.methods.summary = function(){
 		city: this.city,
 		state: this.state,
 		zip: this.zip,
-		zone: this.zip,
+		zone: this.zone,
 		image: this.image,
 		images: this.images,
 		notified: this.notified,

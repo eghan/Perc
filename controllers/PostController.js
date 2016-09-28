@@ -108,7 +108,6 @@ module.exports = {
 		    		
 		    		if (types.indexOf('neighborhood') != -1)
 				    	zone = value.toLowerCase()
-		    		
 		    	}
 
 			    params['zip'] = zip
