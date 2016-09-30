@@ -93,5 +93,23 @@ module.exports = {
 		border: "none",
 		minHeight: 60,
 		width: 100 + "%"
+	},
+	modal: {
+		background: "#f9f9f9",
+		padding: 24,
+		borderRadius: 3,
+		image: {
+			width: 96,
+			borderRadius: 48,
+			border: "1px solid #ddd",
+			background: "#fff",
+			marginBottom: 24
+		},
+		hr: {
+			borderTop: "1px solid #ddd"
+		},
+		input: {
+			marginRight: 8
+		}
 	}
 };

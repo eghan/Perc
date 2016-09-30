@@ -15,29 +15,37 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var APIManager = require("../../utils").APIManager;
 var Loader = _interopRequire(require("react-loader"));
 
+var Modal = require("react-bootstrap").Modal;
+var browserHistory = require("react-router").browserHistory;
+var connect = require("react-redux").connect;
+var _utils = require("../../utils");
+
+var APIManager = _utils.APIManager;
+var StripeUtils = _utils.StripeUtils;
 var actions = _interopRequire(require("../../actions/actions"));
 
 var store = _interopRequire(require("../../stores/store"));
 
-var browserHistory = require("react-router").browserHistory;
+var Map = require("../view").Map;
 var styles = _interopRequire(require("../containers/Style"));
 
-var Map = require("../view").Map;
 var ManageNotifications = (function (Component) {
 	function ManageNotifications(props, context) {
 		_classCallCheck(this, ManageNotifications);
 
 		_get(Object.getPrototypeOf(ManageNotifications.prototype), "constructor", this).call(this, props, context);
 		this.state = {
+			showModal: false,
 			showLoader: false,
 			notify: {
-				bid: null,
+				bid: 0,
 				maxPrice: null,
 				zones: [],
-				status: "off"
+				phone: "",
+				status: "on",
+				quantity: 0
 			}
 		};
 	}
@@ -45,10 +53,35 @@ var ManageNotifications = (function (Component) {
 	_inherits(ManageNotifications, Component);
 
 	_prototypeProperties(ManageNotifications, null, {
+		componentDidMount: {
+			value: function componentDidMount() {
+				var _this = this;
+
+
+				StripeUtils.initializeWithText("TEST", function (token) {
+					_this.setState({ showLoader: true });
+
+					var currentUser = _this.props.currentUser;
+					APIManager.submitStripeCharge(token, course, discountTuition, "course", function (err, response) {
+						_this.setState({ showLoader: false });
+						if (err) {
+							alert(err.message);
+							return;
+						}
+
+						console.log("Stripe Charge: " + JSON.stringify(response));
+						var currentStore = store.currentStore();
+						_this.setState({});
+					});
+				});
+
+			},
+			writable: true,
+			configurable: true
+		},
 		mapClicked: {
 			value: function mapClicked(latLng) {
 				var _this = this;
-				//		console.log('Map Clicked: '+JSON.stringify(latLng))
 				APIManager.handlePost("/geo/reversegeocode", latLng, function (err, response) {
 					if (err) {
 						alert(err);
@@ -101,10 +134,48 @@ var ManageNotifications = (function (Component) {
 			writable: true,
 			configurable: true
 		},
+		toggleModal: {
+			value: function toggleModal(event) {
+				if (event != null) event.preventDefault();
+
+				this.setState({
+					showModal: !this.state.showModal
+				});
+			},
+			writable: true,
+			configurable: true
+		},
+		purchase: {
+			value: function purchase(event) {
+				event.preventDefault();
+				var notify = Object.assign({}, this.state.notify);
+				console.log("purchase: " + JSON.stringify(notify));
+
+				this.setState({
+					showModal: false
+				});
+
+				StripeUtils.showModalWithText(notify.quantity + " notifications");
+			},
+			writable: true,
+			configurable: true
+		},
+		updatedNotify: {
+			value: function updatedNotify(event) {
+				//		console.log('updatedNotify: '+event.target.id+' = '+event.target.value)
+				var notify = Object.assign({}, this.state.notify);
+				notify[event.target.id] = event.target.value;
+				this.setState({
+					notify: notify
+				});
+			},
+			writable: true,
+			configurable: true
+		},
 		render: {
 			value: function render() {
 				var _this = this;
-				var user = this.props.user;
+				var user = this.props.currentUser;
 				var notify = this.state.notify;
 				var currentLocation = {
 					lat: 40.7575285, lng: -73.9884469
@@ -139,13 +210,10 @@ var ManageNotifications = (function (Component) {
 						React.createElement(
 							"div",
 							{ className: "col-md-6" },
-							React.createElement(
-								"h4",
-								null,
-								"Max Price & Bid"
-							),
-							React.createElement("input", { id: "maxPrice", style: styles.input, type: "text", placeholder: "Max Price of Apartment", defaultValue: notify.maxPrice }),
-							React.createElement("input", { id: "bid", style: styles.input, type: "text", placeholder: "Bid for Each Notification", defaultValue: notify.bid }),
+							React.createElement("input", { id: "email", style: styles.input, type: "text", placeholder: "Email" }),
+							React.createElement("input", { id: "password", style: styles.input, type: "password", placeholder: "Password" }),
+							React.createElement("input", { id: "phone", onChange: this.updatedNotify.bind(this), style: styles.input, type: "phone", placeholder: "Phone (notifications are sent via text)" }),
+							React.createElement("input", { id: "maxPrice", onChange: this.updatedNotify.bind(this), style: styles.input, type: "text", placeholder: "Max Price of Apartment", defaultValue: notify.maxPrice }),
 							React.createElement(
 								"div",
 								{ style: { background: "#f9f9f9", padding: 12, marginBottom: 12, border: "1px solid #ddd" } },
@@ -162,18 +230,9 @@ var ManageNotifications = (function (Component) {
 								currentZones
 							),
 							React.createElement(
-								"select",
-								{ value: notify.status, onChange: this.updateStatus.bind(this), style: { background: "#f9f9f9" }, className: "form-control" },
-								React.createElement(
-									"option",
-									{ value: "off" },
-									"Inactive"
-								),
-								React.createElement(
-									"option",
-									{ value: "on" },
-									"Active"
-								)
+								"a",
+								{ onClick: this.toggleModal.bind(this), href: "#", className: "button button-border button-dark button-rounded noleftmargin" },
+								"Next"
 							)
 						),
 						React.createElement(
@@ -188,6 +247,47 @@ var ManageNotifications = (function (Component) {
 									zoom: 13 })
 							)
 						)
+					),
+					React.createElement(
+						Modal,
+						{ bsSize: "sm", show: this.state.showModal, onHide: this.toggleModal.bind(this) },
+						React.createElement(
+							Modal.Body,
+							{ style: styles.modal },
+							React.createElement(
+								"div",
+								{ style: { textAlign: "center" } },
+								React.createElement("img", { style: styles.modal.image, src: "/images/logo_round_blue_260.png" }),
+								React.createElement(
+									"h4",
+									null,
+									"Notifications"
+								),
+								React.createElement("hr", { style: styles.modal.hr }),
+								"Your first three notifications are free. Afterwards, you can purchase notifcations in sets of 5 from below:",
+								React.createElement(
+									"div",
+									{ style: { textAlign: "left", marginLeft: 32, marginRight: "auto", padding: 16 } },
+									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updatedNotify.bind(this), type: "radio", name: "quantity", value: "5" }),
+									"5 notifcations - $5",
+									React.createElement("br", null),
+									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updatedNotify.bind(this), type: "radio", name: "quantity", value: "10" }),
+									"10 notifcations - $9",
+									React.createElement("br", null),
+									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updatedNotify.bind(this), type: "radio", name: "quantity", value: "15" }),
+									"15 notifcations - $12",
+									React.createElement("br", null),
+									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updatedNotify.bind(this), type: "radio", name: "quantity", value: "20" }),
+									"20 notifcations - $15",
+									React.createElement("br", null)
+								),
+								React.createElement(
+									"a",
+									{ onClick: this.purchase.bind(this), href: "#", className: "button button-border button-dark button-rounded button-large noleftmargin" },
+									"Next"
+								)
+							)
+						)
 					)
 				);
 			},
@@ -199,4 +299,11 @@ var ManageNotifications = (function (Component) {
 	return ManageNotifications;
 })(Component);
 
-module.exports = ManageNotifications;
+var stateToProps = function (state) {
+	return {
+		currentUser: state.accountReducer.currentUser
+	};
+};
+
+module.exports = connect(stateToProps)(ManageNotifications);
+//					showConfirmation: true

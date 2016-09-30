@@ -1,29 +1,57 @@
 import React, { Component } from 'react'
-import { APIManager } from '../../utils'
 import Loader from 'react-loader'
+import { Modal } from 'react-bootstrap'
+import { browserHistory } from 'react-router'
+import { connect } from 'react-redux'
+import { APIManager, StripeUtils } from '../../utils'
 import actions from '../../actions/actions'
 import store from '../../stores/store'
-import { browserHistory } from 'react-router'
-import styles from '../containers/Style'
 import { Map } from '../view'
+import styles from '../containers/Style'
 
 
 class ManageNotifications extends Component {
 	constructor(props, context){
 		super(props, context)
 		this.state = {
+			showModal: false,
 			showLoader: false,
 			notify: {
-				bid: null,
+				bid: 0,
 				maxPrice: null,
 				zones: [],
-				status: 'off'
+				phone: '',
+				status: 'on',
+				quantity: 0
 			}
 		}
 	}
 
+	componentDidMount(){
+
+		StripeUtils.initializeWithText('TEST', (token) => {
+			this.setState({showLoader: true})
+
+			const currentUser = this.props.currentUser
+			APIManager.submitStripeCharge(token, course, discountTuition, 'course', (err, response) => {
+				this.setState({showLoader: false})
+				if (err){
+					alert(err.message)
+					return
+				}
+				
+				console.log('Stripe Charge: '+JSON.stringify(response))
+				const currentStore = store.currentStore()
+				this.setState({
+//					showConfirmation: true
+				})
+			})
+		})
+
+
+	}
+
 	mapClicked(latLng){
-//		console.log('Map Clicked: '+JSON.stringify(latLng))
 		APIManager.handlePost('/geo/reversegeocode', latLng, (err, response) => {
 			if (err){
 				alert(err)
@@ -68,8 +96,38 @@ class ManageNotifications extends Component {
 		})
 	}
 
+	toggleModal(event){
+		if (event != null)
+			event.preventDefault()
+
+		this.setState({
+			showModal: !this.state.showModal
+		})
+	}
+
+	purchase(event){
+		event.preventDefault()
+		var notify = Object.assign({}, this.state.notify)
+		console.log('purchase: '+JSON.stringify(notify))
+
+		this.setState({
+			showModal: false
+		})
+
+		StripeUtils.showModalWithText(notify.quantity+' notifications')
+	}
+
+	updatedNotify(event){
+//		console.log('updatedNotify: '+event.target.id+' = '+event.target.value)
+		var notify = Object.assign({}, this.state.notify)
+		notify[event.target.id] = event.target.value
+		this.setState({
+			notify: notify
+		})
+	}
+
 	render(){
-		const user = this.props.user
+		const user = this.props.currentUser
 		const notify = this.state.notify
 		const currentLocation = {
 			lat: 40.7575285, lng: -73.9884469
@@ -92,9 +150,10 @@ class ManageNotifications extends Component {
 
 				<div className="row">
 					<div className="col-md-6">
-						<h4>Max Price & Bid</h4>
-						<input id="maxPrice" style={styles.input} type="text" placeholder="Max Price of Apartment" defaultValue={notify.maxPrice} />
-						<input id="bid" style={styles.input} type="text" placeholder="Bid for Each Notification" defaultValue={notify.bid} />
+						<input id="email" style={styles.input} type="text" placeholder="Email" />
+						<input id="password" style={styles.input} type="password" placeholder="Password" />
+						<input id="phone" onChange={this.updatedNotify.bind(this)} style={styles.input} type="phone" placeholder="Phone (notifications are sent via text)" />
+						<input id="maxPrice" onChange={this.updatedNotify.bind(this)} style={styles.input} type="text" placeholder="Max Price of Apartment" defaultValue={notify.maxPrice} />
 
 						<div style={{background:'#f9f9f9', padding:12, marginBottom:12, border:'1px solid #ddd'}}>
 							<h4 className="nobottommargin">Neighborhoods</h4>
@@ -105,12 +164,9 @@ class ManageNotifications extends Component {
 							{currentZones}
 						</div>
 
-						<select value={notify.status} onChange={this.updateStatus.bind(this)} style={{background:'#f9f9f9'}} className="form-control">
-							<option value="off">Inactive</option>
-							<option value="on">Active</option>
-						</select>
-
-
+						<a onClick={this.toggleModal.bind(this)} href="#" className="button button-border button-dark button-rounded noleftmargin">
+							Next
+						</a>
 					</div>
 
 					<div className="col-md-6">
@@ -121,13 +177,38 @@ class ManageNotifications extends Component {
 			            		zoom={13} />
 						</div>
 					</div>
-
 				</div>
 
+		        <Modal bsSize="sm" show={this.state.showModal} onHide={this.toggleModal.bind(this)}>
+			        <Modal.Body style={styles.modal}>
+			        	<div style={{textAlign:'center'}}>
+				        	<img style={styles.modal.image} src='/images/logo_round_blue_260.png' />
+				        	<h4>Notifications</h4>
+				        	<hr style={styles.modal.hr} />
+				        	Your first three notifications are free. Afterwards, you can purchase notifcations in 
+				        	sets of 5 from below:
+				        	<div style={{textAlign:'left', marginLeft:32, marginRight:'auto', padding:16}}>
+					        	<input id="quantity" style={styles.modal.input} onChange={this.updatedNotify.bind(this)} type="radio" name="quantity" value="5" />5 notifcations - $5<br />
+					        	<input id="quantity" style={styles.modal.input} onChange={this.updatedNotify.bind(this)} type="radio" name="quantity" value="10" />10 notifcations - $9<br />
+					        	<input id="quantity" style={styles.modal.input} onChange={this.updatedNotify.bind(this)} type="radio" name="quantity" value="15" />15 notifcations - $12<br />
+					        	<input id="quantity" style={styles.modal.input} onChange={this.updatedNotify.bind(this)} type="radio" name="quantity" value="20" />20 notifcations - $15<br />
+				        	</div>
+							<a onClick={this.purchase.bind(this)} href="#" className="button button-border button-dark button-rounded button-large noleftmargin">Next</a>
+						</div>
+			        </Modal.Body>
+		        </Modal>
 			</div>			
 		)
 
 	}
 }
 
-export default ManageNotifications
+const stateToProps = function(state){
+	return {
+		currentUser: state.accountReducer.currentUser
+	}
+}
+
+export default connect(stateToProps)(ManageNotifications)
+
+

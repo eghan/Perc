@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
 import { APIManager, TextUtils, DateUtils } from '../../utils'
 import { Map, Post } from '../view'
+import { ManageNotifications } from '../containers'
 import actions from '../../actions/actions'
 import store from '../../stores/store'
 import { connect } from 'react-redux'
+import styles from '../layout/Style'
 
 class PostDetail extends Component {
 	constructor(props, context){
 		super(props, context)
 		this.state = {
+			showModal: false,
 			markers: [],
+			showManageNotifications: false,
 			reply: {
 				message: ''
 			}
@@ -68,6 +72,13 @@ class PostDetail extends Component {
 		})
 	}
 
+	toggleManageNotifications(event){
+		event.preventDefault()
+		this.setState({
+			showManageNotifications: !this.state.showManageNotifications
+		})
+	}
+
 	render(){
 		const post = this.props.posts[this.props.params.slug]
 		const postLocation = {
@@ -88,6 +99,46 @@ class PostDetail extends Component {
 
 		const imageUrl = 'https://media-service.appspot.com/site/images/'+post.image
 
+		let notifcations = null
+		if (this.state.showManageNotifications){
+			notifcations = <ManageNotifications user={this.props.currentUser} />
+		}
+		else {
+			notifcations = (
+				<div style={styles.container}>
+					<h2>Notifications</h2>
+					<hr />
+
+					<div className="row">
+						<div className="col-md-6">
+							<h4 className="nobottommargin">Never Lose an Apartment</h4>
+							<p style={{marginTop:6}}>
+								The apartment search in large cities like New York is extremely 
+								competitive. Often, an apartment is rented merely hours after 
+								it is posted on a search board simply because someone else got to 
+								it first. On Perc, you can hear about apartments 
+								before anyone else by signing up for notifications.
+							</p>
+							<a onClick={this.toggleManageNotifications.bind(this)} href="#" className="button button-border button-dark button-rounded noleftmargin">
+								Set Up Notifications
+							</a>
+						</div>
+						<div className="col-md-6">
+							<h4 className="nobottommargin">How it Works</h4>
+							<ol style={{padding:16, paddingLeft:32, fontWeight:200, background:'#f9f9f9', marginTop:6}}>
+								<li>Specify the apartments you want to know about according to price and location.</li>
+								<li>Purchase notifications.</li>
+								<li>
+									When a new apartment in your specified price and location is posted, you will receive
+									notifications via email and text.
+								</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			)
+		}
+
 		return (
 			<div className="clearfix">
 				<header id="header" className="no-sticky">
@@ -101,6 +152,7 @@ class PostDetail extends Component {
 				<section id="content">
 					<div className="content-wrap container clearfix">
 						<div style={styles.container}>
+							<span style={{float:'right', fontWeight:800, fontSize:20}}>${post.price}</span>
 							<h2>{post.title}</h2>
 							<hr />
 							<div className="row">
@@ -121,71 +173,14 @@ class PostDetail extends Component {
 									<a onClick={this.submitReply.bind(this)} href="#" className="button button-border button-dark button-rounded noleftmargin">Submit</a>
 								</div>
 							</div>
-
 						</div>
 
-						<div style={styles.container}>
-							<h2>Notifications</h2>
-							<hr />
-
-							<div className="row">
-								<div className="col-md-6">
-									<h4 className="nobottommargin">Never Lose an Apartment</h4>
-									<p style={{marginTop:6}}>
-										The apartment search in large cities like New York is extremely 
-										competitive. Often, an apartment is rented merely hours after 
-										it is posted on a search board simply because someone else got to 
-										it first. On Perc, you can hear about apartments 
-										before anyone else by bidding for notifications.
-									</p>
-								</div>
-								<div className="col-md-6">
-									<h4 className="nobottommargin">How it Works</h4>
-									<ol style={{padding:16, paddingLeft:32, fontWeight:200, background:'#f9f9f9', marginTop:6}}>
-										<li>Specify the apartments you want to know about according to price and location.</li>
-										<li>Place a bid for each notification.</li>
-										<li>
-											* You will be notified of new listings that fit your criteria ahead of others who 
-											placed bids lower than yours. Likewise, those with higher bids get notified before you.
-										</li>
-										<li>Once notified, you have 24 hours before the next round of notifications are sent for the apartment.</li>
-										<li>You will be charged according to your bid price and the number of notifications received.</li>
-									</ol>
-								</div>
-							</div>
-						</div>
-
+						{notifcations}
 					</div>
-
 				</section>
+
 			</div>
 		)
-	}
-}
-
-const styles = {
-	container: {
-		background:'#fff',
-		padding: 24,
-		border: '1px solid #ddd',
-		marginBottom: 36
-	},
-	postImage: {
-		width: 100+'%',
-		marginTop: 12,
-		border: '1px solid #ddd',
-		padding: 8
-	},
-	description: {
-		minHeight: 220
-	},
-	reply: {
-		width:100+'%',
-		background:'#f9f9f9',
-		border:'1px solid #ddd',
-		height: 160,
-		padding: 12,
-		marginBottom: 12
 	}
 }
 

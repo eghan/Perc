@@ -24,18 +24,23 @@ var _view = require("../view");
 
 var Map = _view.Map;
 var Post = _view.Post;
+var ManageNotifications = require("../containers").ManageNotifications;
 var actions = _interopRequire(require("../../actions/actions"));
 
 var store = _interopRequire(require("../../stores/store"));
 
 var connect = require("react-redux").connect;
+var styles = _interopRequire(require("../layout/Style"));
+
 var PostDetail = (function (Component) {
 	function PostDetail(props, context) {
 		_classCallCheck(this, PostDetail);
 
 		_get(Object.getPrototypeOf(PostDetail.prototype), "constructor", this).call(this, props, context);
 		this.state = {
+			showModal: false,
 			markers: [],
+			showManageNotifications: false,
 			reply: {
 				message: ""
 			}
@@ -105,6 +110,16 @@ var PostDetail = (function (Component) {
 			writable: true,
 			configurable: true
 		},
+		toggleManageNotifications: {
+			value: function toggleManageNotifications(event) {
+				event.preventDefault();
+				this.setState({
+					showManageNotifications: !this.state.showManageNotifications
+				});
+			},
+			writable: true,
+			configurable: true
+		},
 		render: {
 			value: function render() {
 				var post = this.props.posts[this.props.params.slug];
@@ -127,6 +142,73 @@ var PostDetail = (function (Component) {
 				});
 
 				var imageUrl = "https://media-service.appspot.com/site/images/" + post.image;
+
+				var notifcations = null;
+				if (this.state.showManageNotifications) {
+					notifcations = React.createElement(ManageNotifications, { user: this.props.currentUser });
+				} else {
+					notifcations = React.createElement(
+						"div",
+						{ style: styles.container },
+						React.createElement(
+							"h2",
+							null,
+							"Notifications"
+						),
+						React.createElement("hr", null),
+						React.createElement(
+							"div",
+							{ className: "row" },
+							React.createElement(
+								"div",
+								{ className: "col-md-6" },
+								React.createElement(
+									"h4",
+									{ className: "nobottommargin" },
+									"Never Lose an Apartment"
+								),
+								React.createElement(
+									"p",
+									{ style: { marginTop: 6 } },
+									"The apartment search in large cities like New York is extremely competitive. Often, an apartment is rented merely hours after it is posted on a search board simply because someone else got to it first. On Perc, you can hear about apartments before anyone else by signing up for notifications."
+								),
+								React.createElement(
+									"a",
+									{ onClick: this.toggleManageNotifications.bind(this), href: "#", className: "button button-border button-dark button-rounded noleftmargin" },
+									"Set Up Notifications"
+								)
+							),
+							React.createElement(
+								"div",
+								{ className: "col-md-6" },
+								React.createElement(
+									"h4",
+									{ className: "nobottommargin" },
+									"How it Works"
+								),
+								React.createElement(
+									"ol",
+									{ style: { padding: 16, paddingLeft: 32, fontWeight: 200, background: "#f9f9f9", marginTop: 6 } },
+									React.createElement(
+										"li",
+										null,
+										"Specify the apartments you want to know about according to price and location."
+									),
+									React.createElement(
+										"li",
+										null,
+										"Purchase notifications."
+									),
+									React.createElement(
+										"li",
+										null,
+										"When a new apartment in your specified price and location is posted, you will receive notifications via email and text."
+									)
+								)
+							)
+						)
+					);
+				}
 
 				return React.createElement(
 					"div",
@@ -151,6 +233,12 @@ var PostDetail = (function (Component) {
 							React.createElement(
 								"div",
 								{ style: styles.container },
+								React.createElement(
+									"span",
+									{ style: { float: "right", fontWeight: 800, fontSize: 20 } },
+									"$",
+									post.price
+								),
 								React.createElement(
 									"h2",
 									null,
@@ -196,72 +284,7 @@ var PostDetail = (function (Component) {
 									)
 								)
 							),
-							React.createElement(
-								"div",
-								{ style: styles.container },
-								React.createElement(
-									"h2",
-									null,
-									"Notifications"
-								),
-								React.createElement("hr", null),
-								React.createElement(
-									"div",
-									{ className: "row" },
-									React.createElement(
-										"div",
-										{ className: "col-md-6" },
-										React.createElement(
-											"h4",
-											{ className: "nobottommargin" },
-											"Never Lose an Apartment"
-										),
-										React.createElement(
-											"p",
-											{ style: { marginTop: 6 } },
-											"The apartment search in large cities like New York is extremely competitive. Often, an apartment is rented merely hours after it is posted on a search board simply because someone else got to it first. On Perc, you can hear about apartments before anyone else by bidding for notifications."
-										)
-									),
-									React.createElement(
-										"div",
-										{ className: "col-md-6" },
-										React.createElement(
-											"h4",
-											{ className: "nobottommargin" },
-											"How it Works"
-										),
-										React.createElement(
-											"ol",
-											{ style: { padding: 16, paddingLeft: 32, fontWeight: 200, background: "#f9f9f9", marginTop: 6 } },
-											React.createElement(
-												"li",
-												null,
-												"Specify the apartments you want to know about according to price and location."
-											),
-											React.createElement(
-												"li",
-												null,
-												"Place a bid for each notification."
-											),
-											React.createElement(
-												"li",
-												null,
-												"* You will be notified of new listings that fit your criteria ahead of others who placed bids lower than yours. Likewise, those with higher bids get notified before you."
-											),
-											React.createElement(
-												"li",
-												null,
-												"Once notified, you have 24 hours before the next round of notifications are sent for the apartment."
-											),
-											React.createElement(
-												"li",
-												null,
-												"You will be charged according to your bid price and the number of notifications received."
-											)
-										)
-									)
-								)
-							)
+							notifcations
 						)
 					)
 				);
@@ -273,32 +296,6 @@ var PostDetail = (function (Component) {
 
 	return PostDetail;
 })(Component);
-
-var styles = {
-	container: {
-		background: "#fff",
-		padding: 24,
-		border: "1px solid #ddd",
-		marginBottom: 36
-	},
-	postImage: {
-		width: 100 + "%",
-		marginTop: 12,
-		border: "1px solid #ddd",
-		padding: 8
-	},
-	description: {
-		minHeight: 220
-	},
-	reply: {
-		width: 100 + "%",
-		background: "#f9f9f9",
-		border: "1px solid #ddd",
-		height: 160,
-		padding: 12,
-		marginBottom: 12
-	}
-};
 
 var stateToProps = function (state) {
 	return {

@@ -12,6 +12,7 @@ var routes = require('./routes/index')
 var api = require('./routes/api')
 var account = require('./routes/account')
 var geo = require('./routes/geo')
+var stripe = require('./routes/stripe')
 
 var dbUrl = process.env.MONGODB_URI || 'mongodb://localhost/classified'
 mongoose.connect(dbUrl, function(err, res){
@@ -48,6 +49,7 @@ app.use('/', routes)
 app.use('/api', api)
 app.use('/account', account)
 app.use('/geo', geo)
+app.use('/stripe', stripe)
 
 
 // catch 404 and forward to error handler

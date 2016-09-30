@@ -22,5 +22,23 @@ module.exports = {
 	menuItem: {
 		padding: 8,
 		background: "#fff"
+	},
+	postImage: {
+		width: 100 + "%",
+		marginTop: 12,
+		border: "1px solid #ddd",
+		padding: 8
+	},
+	description: {
+		minHeight: 220
+	},
+	reply: {
+		width: 100 + "%",
+		background: "#f9f9f9",
+		border: "1px solid #ddd",
+		height: 160,
+		padding: 12,
+		marginBottom: 12
 	}
+
 };

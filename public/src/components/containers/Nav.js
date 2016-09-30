@@ -55,7 +55,6 @@ class Nav extends Component {
 						<nav className="one-page-menu">
 							<ul>
 								<li><Link to="/"><div>Search</div></Link></li>
-								<li><a href="/register"><div>About</div></a></li>
 								<li>{accountLink}</li>
 							</ul>
 						</nav>
