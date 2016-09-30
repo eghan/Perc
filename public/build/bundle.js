@@ -37629,32 +37629,11 @@ var ManageNotifications = function (_Component) {
 
 	_createClass(ManageNotifications, [{
 		key: 'componentDidMount',
-		value: function componentDidMount() {
-			var _this2 = this;
-
-			_utils.StripeUtils.initializeWithText('TEST', function (token) {
-				_this2.setState({ showLoader: true });
-
-				var currentUser = _this2.props.currentUser;
-				_utils.APIManager.submitStripeCharge(token, course, discountTuition, 'course', function (err, response) {
-					_this2.setState({ showLoader: false });
-					if (err) {
-						alert(err.message);
-						return;
-					}
-
-					console.log('Stripe Charge: ' + JSON.stringify(response));
-					var currentStore = _store2.default.currentStore();
-					_this2.setState({
-						//					showConfirmation: true
-					});
-				});
-			});
-		}
+		value: function componentDidMount() {}
 	}, {
 		key: 'mapClicked',
 		value: function mapClicked(latLng) {
-			var _this3 = this;
+			var _this2 = this;
 
 			_utils.APIManager.handlePost('/geo/reversegeocode', latLng, function (err, response) {
 				if (err) {
@@ -37665,16 +37644,16 @@ var ManageNotifications = function (_Component) {
 				console.log('Reverse Geocode: ' + JSON.stringify(response));
 				var location = response.location;
 				var zone = location.neighborhood == null ? location.zip : location.neighborhood;
-				if (_this3.state.notify.zones.indexOf(zone) != -1) {
+				if (_this2.state.notify.zones.indexOf(zone) != -1) {
 					alert(zone + ' already included');
 					return;
 				}
 
-				var updatedNotify = Object.assign({}, _this3.state.notify);
+				var updatedNotify = Object.assign({}, _this2.state.notify);
 				var zones = Object.assign([], updatedNotify.zones);
 				zones.push(zone);
 				updatedNotify['zones'] = zones;
-				_this3.setState({
+				_this2.setState({
 					notify: updatedNotify
 				});
 			});
@@ -37713,6 +37692,8 @@ var ManageNotifications = function (_Component) {
 	}, {
 		key: 'purchase',
 		value: function purchase(event) {
+			var _this3 = this;
+
 			event.preventDefault();
 			var notify = Object.assign({}, this.state.notify);
 			console.log('purchase: ' + JSON.stringify(notify));
@@ -37721,7 +37702,31 @@ var ManageNotifications = function (_Component) {
 				showModal: false
 			});
 
-			_utils.StripeUtils.showModalWithText(notify.quantity + ' notifications');
+			var stripeHandler = _utils.StripeUtils.initializeWithText('TEST', function (token) {
+				_this3.setState({ showLoader: true });
+
+				var currentUser = _this3.props.currentUser;
+				_utils.APIManager.submitStripeCharge(token, 5, 'notifications', function (err, response) {
+					_this3.setState({ showLoader: false });
+					if (err) {
+						alert(err.message);
+						return;
+					}
+
+					console.log('Stripe Charge: ' + JSON.stringify(response));
+					var currentStore = _store2.default.currentStore();
+					_this3.setState({
+						//					showConfirmation: true
+					});
+				});
+			});
+
+			stripeHandler.open({
+				name: 'Perc',
+				description: notify.quantity + ' notifications'
+			});
+
+			//		StripeUtils.showModalWithText(notify.quantity+' notifications')
 		}
 	}, {
 		key: 'updatedNotify',
@@ -39461,12 +39466,10 @@ exports.default = {
 		});
 	},
 
-	submitStripeCharge: function submitStripeCharge(token, product, amt, type, completion) {
+	submitStripeCharge: function submitStripeCharge(token, amt, type, completion) {
 		var body = {
 			stripeToken: token.id,
 			email: token.email,
-			product: product.id,
-			description: product.title,
 			amount: amt,
 			type: type
 		};
@@ -39527,10 +39530,10 @@ exports.default = {
 
 /***/ },
 /* 386 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
@@ -39540,34 +39543,38 @@ var stripeHandler;
 
 exports.default = {
 
-	initialize: function initialize(completion) {
+	initialize: function initialize(callback) {
 		//		cbk = completion
 		stripeHandler = StripeCheckout.configure({
-			key: process.env.STRIPE_PK_LIVE,
+			key: 'pk_live_yKFwKJsJXwOxC0yZob29rIN5',
 			image: '/images/logo_round_blue_260.png',
-			address: true,
+			billingAddress: true,
 			locale: 'auto',
 			panelLabel: 'Premium: $19.99/month',
 			token: function token(_token) {
 				// You can access the token ID with `token.id`
-				completion(_token);
+				callback(_token);
 			}
 		});
+
+		return stripeHandler;
 	},
 
-	initializeWithText: function initializeWithText(text, completion) {
+	initializeWithText: function initializeWithText(text, callback) {
 		//		cbk = completion
 		stripeHandler = StripeCheckout.configure({
-			key: process.env.STRIPE_PK_LIVE,
+			key: 'pk_live_yKFwKJsJXwOxC0yZob29rIN5',
 			image: '/images/logo_round_blue_260.png',
-			address: true,
+			billingAddress: true,
 			locale: 'auto',
 			panelLabel: text,
 			token: function token(_token2) {
 				// You can access the token ID with `token.id`
-				completion(_token2);
+				callback(_token2);
 			}
 		});
+
+		return stripeHandler;
 	},
 
 	showModal: function showModal() {
@@ -39589,7 +39596,6 @@ exports.default = {
 	}
 
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
 /* 387 */

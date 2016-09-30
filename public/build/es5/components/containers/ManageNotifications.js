@@ -54,28 +54,7 @@ var ManageNotifications = (function (Component) {
 
 	_prototypeProperties(ManageNotifications, null, {
 		componentDidMount: {
-			value: function componentDidMount() {
-				var _this = this;
-
-
-				StripeUtils.initializeWithText("TEST", function (token) {
-					_this.setState({ showLoader: true });
-
-					var currentUser = _this.props.currentUser;
-					APIManager.submitStripeCharge(token, course, discountTuition, "course", function (err, response) {
-						_this.setState({ showLoader: false });
-						if (err) {
-							alert(err.message);
-							return;
-						}
-
-						console.log("Stripe Charge: " + JSON.stringify(response));
-						var currentStore = store.currentStore();
-						_this.setState({});
-					});
-				});
-
-			},
+			value: function componentDidMount() {},
 			writable: true,
 			configurable: true
 		},
@@ -147,6 +126,7 @@ var ManageNotifications = (function (Component) {
 		},
 		purchase: {
 			value: function purchase(event) {
+				var _this = this;
 				event.preventDefault();
 				var notify = Object.assign({}, this.state.notify);
 				console.log("purchase: " + JSON.stringify(notify));
@@ -155,7 +135,27 @@ var ManageNotifications = (function (Component) {
 					showModal: false
 				});
 
-				StripeUtils.showModalWithText(notify.quantity + " notifications");
+				var stripeHandler = StripeUtils.initializeWithText("TEST", function (token) {
+					_this.setState({ showLoader: true });
+
+					var currentUser = _this.props.currentUser;
+					APIManager.submitStripeCharge(token, 5, "notifications", function (err, response) {
+						_this.setState({ showLoader: false });
+						if (err) {
+							alert(err.message);
+							return;
+						}
+
+						console.log("Stripe Charge: " + JSON.stringify(response));
+						var currentStore = store.currentStore();
+						_this.setState({});
+					});
+				});
+
+				stripeHandler.open({
+					name: "Perc",
+					description: notify.quantity + " notifications"
+				});
 			},
 			writable: true,
 			configurable: true
@@ -307,3 +307,4 @@ var stateToProps = function (state) {
 
 module.exports = connect(stateToProps)(ManageNotifications);
 //					showConfirmation: true
+//		StripeUtils.showModalWithText(notify.quantity+' notifications')

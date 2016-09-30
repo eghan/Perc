@@ -107,12 +107,10 @@ module.exports = {
 		});
 	},
 
-	submitStripeCharge: function (token, product, amt, type, completion) {
+	submitStripeCharge: function (token, amt, type, completion) {
 		var body = {
 			stripeToken: token.id,
 			email: token.email,
-			product: product.id,
-			description: product.title,
 			amount: amt,
 			type: type
 		};

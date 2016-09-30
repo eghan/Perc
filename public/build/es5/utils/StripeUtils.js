@@ -5,34 +5,38 @@ var stripeHandler;
 
 module.exports = {
 
-	initialize: function (completion) {
+	initialize: function (callback) {
 		//		cbk = completion
 		stripeHandler = StripeCheckout.configure({
-			key: process.env.STRIPE_PK_LIVE,
+			key: "pk_live_yKFwKJsJXwOxC0yZob29rIN5",
 			image: "/images/logo_round_blue_260.png",
-			address: true,
+			billingAddress: true,
 			locale: "auto",
 			panelLabel: "Premium: $19.99/month",
 			token: function (token) {
 				// You can access the token ID with `token.id`
-				completion(token);
+				callback(token);
 			}
 		});
+
+		return stripeHandler;
 	},
 
-	initializeWithText: function (text, completion) {
+	initializeWithText: function (text, callback) {
 		//		cbk = completion
 		stripeHandler = StripeCheckout.configure({
-			key: process.env.STRIPE_PK_LIVE,
+			key: "pk_live_yKFwKJsJXwOxC0yZob29rIN5",
 			image: "/images/logo_round_blue_260.png",
-			address: true,
+			billingAddress: true,
 			locale: "auto",
 			panelLabel: text,
 			token: function (token) {
 				// You can access the token ID with `token.id`
-				completion(token);
+				callback(token);
 			}
 		});
+
+		return stripeHandler;
 	},
 
 	showModal: function () {

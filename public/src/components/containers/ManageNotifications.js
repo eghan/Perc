@@ -29,26 +29,6 @@ class ManageNotifications extends Component {
 
 	componentDidMount(){
 
-		StripeUtils.initializeWithText('TEST', (token) => {
-			this.setState({showLoader: true})
-
-			const currentUser = this.props.currentUser
-			APIManager.submitStripeCharge(token, course, discountTuition, 'course', (err, response) => {
-				this.setState({showLoader: false})
-				if (err){
-					alert(err.message)
-					return
-				}
-				
-				console.log('Stripe Charge: '+JSON.stringify(response))
-				const currentStore = store.currentStore()
-				this.setState({
-//					showConfirmation: true
-				})
-			})
-		})
-
-
 	}
 
 	mapClicked(latLng){
@@ -114,7 +94,31 @@ class ManageNotifications extends Component {
 			showModal: false
 		})
 
-		StripeUtils.showModalWithText(notify.quantity+' notifications')
+		var stripeHandler = StripeUtils.initializeWithText('TEST', (token) => {
+			this.setState({showLoader: true})
+
+			const currentUser = this.props.currentUser
+			APIManager.submitStripeCharge(token, 5, 'notifications', (err, response) => {
+				this.setState({showLoader: false})
+				if (err){
+					alert(err.message)
+					return
+				}
+				
+				console.log('Stripe Charge: '+JSON.stringify(response))
+				const currentStore = store.currentStore()
+				this.setState({
+//					showConfirmation: true
+				})
+			})
+		})
+
+	    stripeHandler.open({
+		    name: 'Perc',
+		    description: notify.quantity+' notifications'
+	    })
+
+//		StripeUtils.showModalWithText(notify.quantity+' notifications')
 	}
 
 	updatedNotify(event){
