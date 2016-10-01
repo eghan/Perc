@@ -96,9 +96,7 @@ router.post('/:action', function(req, res, next) {
 	var action = req.params.action
 
 	if (action == 'charge') {
-		console.log('TEST 1')
 		var customerEmail = req.body.email
-		console.log('TEST 2')
 		var type = req.body.type
 		console.log('TEST 3')
 
