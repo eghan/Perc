@@ -13,6 +13,13 @@ module.exports = {
 		};
 	},
 
+	currentUserUpdate: function (user) {
+		return {
+			type: constants.CURRENT_USER_UPDATE,
+			currentUser: user
+		};
+	},
+
 	postsReceived: function (posts) {
 		return {
 			type: constants.POSTS_RECEIVED,

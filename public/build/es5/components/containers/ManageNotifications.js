@@ -177,6 +177,8 @@ var ManageNotifications = (function (Component) {
 				var user = Object.assign({}, this.props.currentUser);
 				user[event.target.id] = event.target.value;
 				console.log("updatedProfile: " + JSON.stringify(user));
+
+				store.currentStore().dispatch(actions.currentUserUpdate(user));
 			},
 			writable: true,
 			configurable: true
@@ -315,3 +317,4 @@ var stateToProps = function (state) {
 };
 
 module.exports = connect(stateToProps)(ManageNotifications);
+// this is purely client-side, no server interaction
