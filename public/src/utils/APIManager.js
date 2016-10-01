@@ -136,7 +136,8 @@ export default {
 			stripeToken: token.id,
 			email: token.email,
 			amount: amt,
-			type: type
+			type: type,
+			description: 'description'
 		}
 
 		superagent

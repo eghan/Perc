@@ -39471,7 +39471,8 @@ exports.default = {
 			stripeToken: token.id,
 			email: token.email,
 			amount: amt,
-			type: type
+			type: type,
+			description: 'description'
 		};
 
 		_superagent2.default.post('/stripe/charge').type('form').send(body).set('Accept', 'application/json').end(function (err, res) {

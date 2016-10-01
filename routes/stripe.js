@@ -96,10 +96,14 @@ router.post('/:action', function(req, res, next) {
 	var action = req.params.action
 
 	if (action == 'charge') {
+		console.log('TEST 1')
 		var customerEmail = req.body.email
+		console.log('TEST 2')
 		var type = req.body.type
+		console.log('TEST 3')
 
 		var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+		console.log('TEST 4')
 		createNonregisteredStripeCharge(stripe, req.body.stripeToken, req.body.amount, 'Perc: '+req.body.description)
 		.then(function(charge){
 			console.log('CHARGE: '+JSON.stringify(charge))
@@ -115,7 +119,7 @@ router.post('/:action', function(req, res, next) {
 			// if (type == 'tutorial')
 			// 	return findTutorial(productId)
 
-			return findProfile(params)			
+			return findProfile({email: customerEmail})			
 		})
 		// .then(function(product){
 		// 	prod = product
