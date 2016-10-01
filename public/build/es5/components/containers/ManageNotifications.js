@@ -39,6 +39,10 @@ var ManageNotifications = (function (Component) {
 		this.state = {
 			showModal: false,
 			showLoader: false,
+			user: { // use only if currentUser not registered
+				email: "",
+				password: ""
+			},
 			notify: {
 				bid: 0,
 				maxPrice: null,
@@ -139,7 +143,7 @@ var ManageNotifications = (function (Component) {
 				var stripeHandler = StripeUtils.initializeWithText("TEST", function (token) {
 					_this.setState({ showLoader: true });
 
-					var currentUser = _this.props.currentUser;
+					var currentUser = _this.props.currentUser == null ? _this.state.user : _this.props.currentUser;
 					var description = notify.quantity + " notifications";
 					APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, function (err, response) {
 						if (err) {
@@ -174,11 +178,13 @@ var ManageNotifications = (function (Component) {
 		},
 		updatedProfile: {
 			value: function updatedProfile(event) {
-				var user = Object.assign({}, this.props.currentUser);
+				var user = Object.assign({}, this.state.user);
 				user[event.target.id] = event.target.value;
 				console.log("updatedProfile: " + JSON.stringify(user));
 
-				store.currentStore().dispatch(actions.currentUserUpdate(user));
+				this.setState({
+					user: user
+				});
 			},
 			writable: true,
 			configurable: true
@@ -317,4 +323,3 @@ var stateToProps = function (state) {
 };
 
 module.exports = connect(stateToProps)(ManageNotifications);
-// this is purely client-side, no server interaction

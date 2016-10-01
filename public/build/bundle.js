@@ -37623,6 +37623,10 @@ var ManageNotifications = function (_Component) {
 		_this.state = {
 			showModal: false,
 			showLoader: false,
+			user: { // use only if currentUser not registered
+				email: '',
+				password: ''
+			},
 			notify: {
 				bid: 0,
 				maxPrice: null,
@@ -37716,7 +37720,7 @@ var ManageNotifications = function (_Component) {
 			var stripeHandler = _utils.StripeUtils.initializeWithText('TEST', function (token) {
 				_this3.setState({ showLoader: true });
 
-				var currentUser = _this3.props.currentUser;
+				var currentUser = _this3.props.currentUser == null ? _this3.state.user : _this3.props.currentUser;
 				var description = notify.quantity + ' notifications';
 				_utils.APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, function (err, response) {
 					if (err) {
@@ -37747,11 +37751,13 @@ var ManageNotifications = function (_Component) {
 	}, {
 		key: 'updatedProfile',
 		value: function updatedProfile(event) {
-			var user = Object.assign({}, this.props.currentUser);
+			var user = Object.assign({}, this.state.user);
 			user[event.target.id] = event.target.value;
 			console.log('updatedProfile: ' + JSON.stringify(user));
 
-			_store2.default.currentStore().dispatch(_actions2.default.currentUserUpdate(user)); // this is purely client-side, no server interaction
+			this.setState({
+				user: user
+			});
 		}
 	}, {
 		key: 'render',

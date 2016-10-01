@@ -16,6 +16,10 @@ class ManageNotifications extends Component {
 		this.state = {
 			showModal: false,
 			showLoader: false,
+			user: { // use only if currentUser not registered
+				email: '',
+				password: ''
+			},
 			notify: {
 				bid: 0,
 				maxPrice: null,
@@ -99,7 +103,7 @@ class ManageNotifications extends Component {
 		var stripeHandler = StripeUtils.initializeWithText('TEST', (token) => {
 			this.setState({showLoader: true})
 
-			const currentUser = this.props.currentUser
+			const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
 			const description = notify.quantity+' notifications'
 			APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, (err, response) => {
 				if (err){
@@ -128,11 +132,13 @@ class ManageNotifications extends Component {
 	}
 
 	updatedProfile(event){
-		var user = Object.assign({}, this.props.currentUser)
+		var user = Object.assign({}, this.state.user)
 		user[event.target.id] = event.target.value
 		console.log('updatedProfile: '+JSON.stringify(user))
 
-		store.currentStore().dispatch(actions.currentUserUpdate(user)) // this is purely client-side, no server interaction
+		this.setState({
+			user: user
+		})
 	}
 
 	render(){
