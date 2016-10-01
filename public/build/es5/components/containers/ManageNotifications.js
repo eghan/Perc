@@ -176,11 +176,12 @@ var ManageNotifications = (function (Component) {
 			writable: true,
 			configurable: true
 		},
-		updatedProfile: {
-			value: function updatedProfile(event) {
+		updateProfile: {
+			value: function updateProfile(event) {
+				console.log("TEST");
 				var user = Object.assign({}, this.state.user);
+				console.log("updateProfile: " + JSON.stringify(user));
 				user[event.target.id] = event.target.value;
-				console.log("updatedProfile: " + JSON.stringify(user));
 
 				this.setState({
 					user: user
@@ -227,9 +228,9 @@ var ManageNotifications = (function (Component) {
 						React.createElement(
 							"div",
 							{ className: "col-md-6" },
-							React.createElement("input", { id: "email", onChange: this.updatedProfile.bind(this), style: styles.input, type: "text", placeholder: "Email" }),
-							React.createElement("input", { id: "password", onChange: this.updatedProfile.bind(this), style: styles.input, type: "password", placeholder: "Password" }),
-							React.createElement("input", { id: "phone", onChange: this.updatedProfile.bind(this), style: styles.input, type: "phone", placeholder: "Phone (notifications are sent via text)" }),
+							React.createElement("input", { id: "email", onChange: this.updateProfile.bind(this), style: styles.input, type: "text", placeholder: "Email" }),
+							React.createElement("input", { id: "password", onChange: this.updateProfile.bind(this), style: styles.input, type: "password", placeholder: "Password" }),
+							React.createElement("input", { id: "phone", onChange: this.updateProfile.bind(this), style: styles.input, type: "phone", placeholder: "Phone (notifications are sent via text)" }),
 							React.createElement("input", { id: "maxPrice", onChange: this.updatedNotify.bind(this), style: styles.input, type: "text", placeholder: "Max Price of Apartment", defaultValue: notify.maxPrice }),
 							React.createElement(
 								"div",

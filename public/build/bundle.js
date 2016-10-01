@@ -37749,11 +37749,12 @@ var ManageNotifications = function (_Component) {
 			});
 		}
 	}, {
-		key: 'updatedProfile',
-		value: function updatedProfile(event) {
+		key: 'updateProfile',
+		value: function updateProfile(event) {
+			console.log('TEST');
 			var user = Object.assign({}, this.state.user);
+			console.log('updateProfile: ' + JSON.stringify(user));
 			user[event.target.id] = event.target.value;
-			console.log('updatedProfile: ' + JSON.stringify(user));
 
 			this.setState({
 				user: user
@@ -37799,9 +37800,9 @@ var ManageNotifications = function (_Component) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'col-md-6' },
-						_react2.default.createElement('input', { id: 'email', onChange: this.updatedProfile.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Email' }),
-						_react2.default.createElement('input', { id: 'password', onChange: this.updatedProfile.bind(this), style: _Style2.default.input, type: 'password', placeholder: 'Password' }),
-						_react2.default.createElement('input', { id: 'phone', onChange: this.updatedProfile.bind(this), style: _Style2.default.input, type: 'phone', placeholder: 'Phone (notifications are sent via text)' }),
+						_react2.default.createElement('input', { id: 'email', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Email' }),
+						_react2.default.createElement('input', { id: 'password', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'password', placeholder: 'Password' }),
+						_react2.default.createElement('input', { id: 'phone', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'phone', placeholder: 'Phone (notifications are sent via text)' }),
 						_react2.default.createElement('input', { id: 'maxPrice', onChange: this.updatedNotify.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Max Price of Apartment', defaultValue: notify.maxPrice }),
 						_react2.default.createElement(
 							'div',

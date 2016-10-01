@@ -131,10 +131,11 @@ class ManageNotifications extends Component {
 		})
 	}
 
-	updatedProfile(event){
+	updateProfile(event){
+		console.log('TEST')
 		var user = Object.assign({}, this.state.user)
+		console.log('updateProfile: '+JSON.stringify(user))
 		user[event.target.id] = event.target.value
-		console.log('updatedProfile: '+JSON.stringify(user))
 
 		this.setState({
 			user: user
@@ -165,9 +166,9 @@ class ManageNotifications extends Component {
 
 				<div className="row">
 					<div className="col-md-6">
-						<input id="email" onChange={this.updatedProfile.bind(this)} style={styles.input} type="text" placeholder="Email" />
-						<input id="password" onChange={this.updatedProfile.bind(this)} style={styles.input} type="password" placeholder="Password" />
-						<input id="phone" onChange={this.updatedProfile.bind(this)} style={styles.input} type="phone" placeholder="Phone (notifications are sent via text)" />
+						<input id="email" onChange={this.updateProfile.bind(this)} style={styles.input} type="text" placeholder="Email" />
+						<input id="password" onChange={this.updateProfile.bind(this)} style={styles.input} type="password" placeholder="Password" />
+						<input id="phone" onChange={this.updateProfile.bind(this)} style={styles.input} type="phone" placeholder="Phone (notifications are sent via text)" />
 						<input id="maxPrice" onChange={this.updatedNotify.bind(this)} style={styles.input} type="text" placeholder="Max Price of Apartment" defaultValue={notify.maxPrice} />
 
 						<div style={{background:'#f9f9f9', padding:12, marginBottom:12, border:'1px solid #ddd'}}>
