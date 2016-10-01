@@ -9,6 +9,13 @@ export default {
 		}
 	},
 
+	currentUserUpdate: (user) => {
+		return {
+			type: constants.CURRENT_USER_UPDATE,
+			currentUser: user
+		}
+	},
+
 	postsReceived: (posts) => {
 		return {
 			type: constants.POSTS_RECEIVED,

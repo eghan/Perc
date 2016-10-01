@@ -102,19 +102,13 @@ class ManageNotifications extends Component {
 			const currentUser = this.props.currentUser
 			const description = notify.quantity+' notifications'
 			APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, (err, response) => {
-				this.setState({showLoader: false})
 				if (err){
 					alert(err.message)
 					return
 				}
 				
-				console.log('Stripe Charge: '+JSON.stringify(response))
-
-//				const currentStore = store.currentStore()
-//				this.setState({
-//					showConfirmation: true
-//				})
-
+//				console.log('Stripe Charge: '+JSON.stringify(response))
+				window.location.href = '/account'
 			})
 		})
 
@@ -138,6 +132,7 @@ class ManageNotifications extends Component {
 		user[event.target.id] = event.target.value
 		console.log('updatedProfile: '+JSON.stringify(user))
 
+		store.currentStore().dispatch(actions.currentUserUpdate(user)) // this is purely client-side, no server interaction
 	}
 
 	render(){

@@ -26,6 +26,11 @@ export default (state = initial, action) => {
 
 			return newState
 
+		case constants.CURRENT_USER_UPDATE:
+			var newState = Object.assign({}, state)
+			newState['currentUser'] = currentUser
+			return newState
+
 		default:
 			return state
 	}

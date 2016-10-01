@@ -142,13 +142,13 @@ var ManageNotifications = (function (Component) {
 					var currentUser = _this.props.currentUser;
 					var description = notify.quantity + " notifications";
 					APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, function (err, response) {
-						_this.setState({ showLoader: false });
 						if (err) {
 							alert(err.message);
 							return;
 						}
 
-						console.log("Stripe Charge: " + JSON.stringify(response));
+						//				console.log('Stripe Charge: '+JSON.stringify(response))
+						window.location.href = "/account";
 					});
 				});
 
@@ -315,7 +315,3 @@ var stateToProps = function (state) {
 };
 
 module.exports = connect(stateToProps)(ManageNotifications);
-//				const currentStore = store.currentStore()
-//				this.setState({
-//					showConfirmation: true
-//				})

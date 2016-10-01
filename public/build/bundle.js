@@ -8415,6 +8415,13 @@ exports.default = {
 		};
 	},
 
+	currentUserUpdate: function currentUserUpdate(user) {
+		return {
+			type: _constants2.default.CURRENT_USER_UPDATE,
+			currentUser: user
+		};
+	},
+
 	postsReceived: function postsReceived(posts) {
 		return {
 			type: _constants2.default.POSTS_RECEIVED,
@@ -13014,6 +13021,7 @@ exports.default = {
 	POSTS_RECEIVED: 'POSTS_RECEIVED',
 
 	CURRENT_USER_RECEIVED: 'CURRENT_USER_RECEIVED',
+	CURRENT_USER_UPDATE: 'CURRENT_USER_UPDATE',
 
 	USER_POSTS_RECEIVED: 'USER_POSTS_RECEIVED'
 
@@ -37711,18 +37719,13 @@ var ManageNotifications = function (_Component) {
 				var currentUser = _this3.props.currentUser;
 				var description = notify.quantity + ' notifications';
 				_utils.APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, function (err, response) {
-					_this3.setState({ showLoader: false });
 					if (err) {
 						alert(err.message);
 						return;
 					}
 
-					console.log('Stripe Charge: ' + JSON.stringify(response));
-
-					//				const currentStore = store.currentStore()
-					//				this.setState({
-					//					showConfirmation: true
-					//				})
+					//				console.log('Stripe Charge: '+JSON.stringify(response))
+					window.location.href = '/account';
 				});
 			});
 
@@ -37747,6 +37750,8 @@ var ManageNotifications = function (_Component) {
 			var user = Object.assign({}, this.props.currentUser);
 			user[event.target.id] = event.target.value;
 			console.log('updatedProfile: ' + JSON.stringify(user));
+
+			_store2.default.currentStore().dispatch(_actions2.default.currentUserUpdate(user)); // this is purely client-side, no server interaction
 		}
 	}, {
 		key: 'render',
@@ -39263,6 +39268,11 @@ exports.default = function () {
 			var newState = Object.assign({}, state);
 			newState['posts'] = action.posts;
 
+			return newState;
+
+		case _constants2.default.CURRENT_USER_UPDATE:
+			var newState = Object.assign({}, state);
+			newState['currentUser'] = currentUser;
 			return newState;
 
 		default:
