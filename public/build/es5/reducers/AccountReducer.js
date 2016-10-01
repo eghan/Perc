@@ -32,7 +32,7 @@ module.exports = function (_x, action) {
 
 		case constants.CURRENT_USER_UPDATE:
 			var newState = Object.assign({}, state);
-			newState.currentUser = currentUser;
+			newState.currentUser = action.currentUser;
 			return newState;
 
 		default:

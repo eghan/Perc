@@ -39272,7 +39272,7 @@ exports.default = function () {
 
 		case _constants2.default.CURRENT_USER_UPDATE:
 			var newState = Object.assign({}, state);
-			newState['currentUser'] = currentUser;
+			newState['currentUser'] = action.currentUser;
 			return newState;
 
 		default:
