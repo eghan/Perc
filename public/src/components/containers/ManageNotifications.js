@@ -20,15 +20,10 @@ class ManageNotifications extends Component {
 				bid: 0,
 				maxPrice: null,
 				zones: [],
-				phone: '',
 				status: 'on',
 				quantity: 0
 			}
 		}
-	}
-
-	componentDidMount(){
-
 	}
 
 	mapClicked(latLng){
@@ -94,11 +89,19 @@ class ManageNotifications extends Component {
 			showModal: false
 		})
 
+		var amounts = {
+			5: 5,
+			10: 9,
+			15: 12,
+			20: 15
+		}
+
 		var stripeHandler = StripeUtils.initializeWithText('TEST', (token) => {
 			this.setState({showLoader: true})
 
 			const currentUser = this.props.currentUser
-			APIManager.submitStripeCharge(token, 5, 'notifications', (err, response) => {
+			const description = notify.quantity+' notifications'
+			APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, (err, response) => {
 				this.setState({showLoader: false})
 				if (err){
 					alert(err.message)
@@ -106,10 +109,12 @@ class ManageNotifications extends Component {
 				}
 				
 				console.log('Stripe Charge: '+JSON.stringify(response))
-				const currentStore = store.currentStore()
-				this.setState({
+
+//				const currentStore = store.currentStore()
+//				this.setState({
 //					showConfirmation: true
-				})
+//				})
+
 			})
 		})
 
@@ -117,8 +122,6 @@ class ManageNotifications extends Component {
 		    name: 'Perc',
 		    description: notify.quantity+' notifications'
 	    })
-
-//		StripeUtils.showModalWithText(notify.quantity+' notifications')
 	}
 
 	updatedNotify(event){
@@ -128,6 +131,13 @@ class ManageNotifications extends Component {
 		this.setState({
 			notify: notify
 		})
+	}
+
+	updatedProfile(event){
+		var user = Object.assign({}, this.props.currentUser)
+		user[event.target.id] = event.target.value
+		console.log('updatedProfile: '+JSON.stringify(user))
+
 	}
 
 	render(){
@@ -154,9 +164,9 @@ class ManageNotifications extends Component {
 
 				<div className="row">
 					<div className="col-md-6">
-						<input id="email" style={styles.input} type="text" placeholder="Email" />
-						<input id="password" style={styles.input} type="password" placeholder="Password" />
-						<input id="phone" onChange={this.updatedNotify.bind(this)} style={styles.input} type="phone" placeholder="Phone (notifications are sent via text)" />
+						<input id="email" onChange={this.updatedProfile.bind(this)} style={styles.input} type="text" placeholder="Email" />
+						<input id="password" onChange={this.updatedProfile.bind(this)} style={styles.input} type="password" placeholder="Password" />
+						<input id="phone" onChange={this.updatedProfile.bind(this)} style={styles.input} type="phone" placeholder="Phone (notifications are sent via text)" />
 						<input id="maxPrice" onChange={this.updatedNotify.bind(this)} style={styles.input} type="text" placeholder="Max Price of Apartment" defaultValue={notify.maxPrice} />
 
 						<div style={{background:'#f9f9f9', padding:12, marginBottom:12, border:'1px solid #ddd'}}>

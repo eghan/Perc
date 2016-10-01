@@ -43,7 +43,6 @@ var ManageNotifications = (function (Component) {
 				bid: 0,
 				maxPrice: null,
 				zones: [],
-				phone: "",
 				status: "on",
 				quantity: 0
 			}
@@ -53,11 +52,6 @@ var ManageNotifications = (function (Component) {
 	_inherits(ManageNotifications, Component);
 
 	_prototypeProperties(ManageNotifications, null, {
-		componentDidMount: {
-			value: function componentDidMount() {},
-			writable: true,
-			configurable: true
-		},
 		mapClicked: {
 			value: function mapClicked(latLng) {
 				var _this = this;
@@ -135,11 +129,19 @@ var ManageNotifications = (function (Component) {
 					showModal: false
 				});
 
+				var amounts = {
+					5: 5,
+					10: 9,
+					15: 12,
+					20: 15
+				};
+
 				var stripeHandler = StripeUtils.initializeWithText("TEST", function (token) {
 					_this.setState({ showLoader: true });
 
 					var currentUser = _this.props.currentUser;
-					APIManager.submitStripeCharge(token, 5, "notifications", function (err, response) {
+					var description = notify.quantity + " notifications";
+					APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, function (err, response) {
 						_this.setState({ showLoader: false });
 						if (err) {
 							alert(err.message);
@@ -147,8 +149,6 @@ var ManageNotifications = (function (Component) {
 						}
 
 						console.log("Stripe Charge: " + JSON.stringify(response));
-						var currentStore = store.currentStore();
-						_this.setState({});
 					});
 				});
 
@@ -168,6 +168,15 @@ var ManageNotifications = (function (Component) {
 				this.setState({
 					notify: notify
 				});
+			},
+			writable: true,
+			configurable: true
+		},
+		updatedProfile: {
+			value: function updatedProfile(event) {
+				var user = Object.assign({}, this.props.currentUser);
+				user[event.target.id] = event.target.value;
+				console.log("updatedProfile: " + JSON.stringify(user));
 			},
 			writable: true,
 			configurable: true
@@ -210,9 +219,9 @@ var ManageNotifications = (function (Component) {
 						React.createElement(
 							"div",
 							{ className: "col-md-6" },
-							React.createElement("input", { id: "email", style: styles.input, type: "text", placeholder: "Email" }),
-							React.createElement("input", { id: "password", style: styles.input, type: "password", placeholder: "Password" }),
-							React.createElement("input", { id: "phone", onChange: this.updatedNotify.bind(this), style: styles.input, type: "phone", placeholder: "Phone (notifications are sent via text)" }),
+							React.createElement("input", { id: "email", onChange: this.updatedProfile.bind(this), style: styles.input, type: "text", placeholder: "Email" }),
+							React.createElement("input", { id: "password", onChange: this.updatedProfile.bind(this), style: styles.input, type: "password", placeholder: "Password" }),
+							React.createElement("input", { id: "phone", onChange: this.updatedProfile.bind(this), style: styles.input, type: "phone", placeholder: "Phone (notifications are sent via text)" }),
 							React.createElement("input", { id: "maxPrice", onChange: this.updatedNotify.bind(this), style: styles.input, type: "text", placeholder: "Max Price of Apartment", defaultValue: notify.maxPrice }),
 							React.createElement(
 								"div",
@@ -306,5 +315,7 @@ var stateToProps = function (state) {
 };
 
 module.exports = connect(stateToProps)(ManageNotifications);
+//				const currentStore = store.currentStore()
+//				this.setState({
 //					showConfirmation: true
-//		StripeUtils.showModalWithText(notify.quantity+' notifications')
+//				})

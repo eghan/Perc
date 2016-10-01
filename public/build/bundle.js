@@ -37619,7 +37619,6 @@ var ManageNotifications = function (_Component) {
 				bid: 0,
 				maxPrice: null,
 				zones: [],
-				phone: '',
 				status: 'on',
 				quantity: 0
 			}
@@ -37628,9 +37627,6 @@ var ManageNotifications = function (_Component) {
 	}
 
 	_createClass(ManageNotifications, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {}
-	}, {
 		key: 'mapClicked',
 		value: function mapClicked(latLng) {
 			var _this2 = this;
@@ -37702,11 +37698,19 @@ var ManageNotifications = function (_Component) {
 				showModal: false
 			});
 
+			var amounts = {
+				5: 5,
+				10: 9,
+				15: 12,
+				20: 15
+			};
+
 			var stripeHandler = _utils.StripeUtils.initializeWithText('TEST', function (token) {
 				_this3.setState({ showLoader: true });
 
 				var currentUser = _this3.props.currentUser;
-				_utils.APIManager.submitStripeCharge(token, 5, 'notifications', function (err, response) {
+				var description = notify.quantity + ' notifications';
+				_utils.APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, function (err, response) {
 					_this3.setState({ showLoader: false });
 					if (err) {
 						alert(err.message);
@@ -37714,10 +37718,11 @@ var ManageNotifications = function (_Component) {
 					}
 
 					console.log('Stripe Charge: ' + JSON.stringify(response));
-					var currentStore = _store2.default.currentStore();
-					_this3.setState({
-						//					showConfirmation: true
-					});
+
+					//				const currentStore = store.currentStore()
+					//				this.setState({
+					//					showConfirmation: true
+					//				})
 				});
 			});
 
@@ -37725,8 +37730,6 @@ var ManageNotifications = function (_Component) {
 				name: 'Perc',
 				description: notify.quantity + ' notifications'
 			});
-
-			//		StripeUtils.showModalWithText(notify.quantity+' notifications')
 		}
 	}, {
 		key: 'updatedNotify',
@@ -37737,6 +37740,13 @@ var ManageNotifications = function (_Component) {
 			this.setState({
 				notify: notify
 			});
+		}
+	}, {
+		key: 'updatedProfile',
+		value: function updatedProfile(event) {
+			var user = Object.assign({}, this.props.currentUser);
+			user[event.target.id] = event.target.value;
+			console.log('updatedProfile: ' + JSON.stringify(user));
 		}
 	}, {
 		key: 'render',
@@ -37778,9 +37788,9 @@ var ManageNotifications = function (_Component) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'col-md-6' },
-						_react2.default.createElement('input', { id: 'email', style: _Style2.default.input, type: 'text', placeholder: 'Email' }),
-						_react2.default.createElement('input', { id: 'password', style: _Style2.default.input, type: 'password', placeholder: 'Password' }),
-						_react2.default.createElement('input', { id: 'phone', onChange: this.updatedNotify.bind(this), style: _Style2.default.input, type: 'phone', placeholder: 'Phone (notifications are sent via text)' }),
+						_react2.default.createElement('input', { id: 'email', onChange: this.updatedProfile.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Email' }),
+						_react2.default.createElement('input', { id: 'password', onChange: this.updatedProfile.bind(this), style: _Style2.default.input, type: 'password', placeholder: 'Password' }),
+						_react2.default.createElement('input', { id: 'phone', onChange: this.updatedProfile.bind(this), style: _Style2.default.input, type: 'phone', placeholder: 'Phone (notifications are sent via text)' }),
 						_react2.default.createElement('input', { id: 'maxPrice', onChange: this.updatedNotify.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Max Price of Apartment', defaultValue: notify.maxPrice }),
 						_react2.default.createElement(
 							'div',
@@ -39466,13 +39476,14 @@ exports.default = {
 		});
 	},
 
-	submitStripeCharge: function submitStripeCharge(token, amt, type, completion) {
+	submitStripeCharge: function submitStripeCharge(token, amt, type, user, completion) {
 		var body = {
 			stripeToken: token.id,
 			email: token.email,
 			amount: amt,
 			type: type,
-			description: type
+			description: type,
+			profile: user
 		};
 
 		_superagent2.default.post('/stripe/charge').type('form').send(body).set('Accept', 'application/json').end(function (err, res) {

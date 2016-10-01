@@ -107,13 +107,14 @@ module.exports = {
 		});
 	},
 
-	submitStripeCharge: function (token, amt, type, completion) {
+	submitStripeCharge: function (token, amt, type, user, completion) {
 		var body = {
 			stripeToken: token.id,
 			email: token.email,
 			amount: amt,
 			type: type,
-			description: type
+			description: type,
+			profile: user
 		};
 
 		superagent.post("/stripe/charge").type("form").send(body).set("Accept", "application/json").end(function (err, res) {
