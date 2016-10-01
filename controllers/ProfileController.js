@@ -1,8 +1,28 @@
 var Profile = require('../models/Profile')
 var bcrypt = require('bcrypt')
+var Promise = require('bluebird')
 
 module.exports = {
 	plural: 'profiles',
+
+	find: function(params){
+		return new Promise(function(resolve, reject){
+			Profile.find(params, function(err, profiles){
+				if (err){
+					reject(err)
+					return
+				}
+
+				var summaries = []
+				for (var i=0; i<profiles.length; i++){
+					var profile = profiles[i]
+					summaries.push(profile.summary())
+				}
+
+				resolve(summaries)
+			})
+		})
+	},
 
 	get: function(params, isRaw, callback){
 		Profile.find(params, function(err, profiles){

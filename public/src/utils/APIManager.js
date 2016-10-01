@@ -137,7 +137,7 @@ export default {
 			email: token.email,
 			amount: amt,
 			type: type,
-			description: 'description'
+			description: type
 		}
 
 		superagent

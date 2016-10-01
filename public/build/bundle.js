@@ -39472,7 +39472,7 @@ exports.default = {
 			email: token.email,
 			amount: amt,
 			type: type,
-			description: 'description'
+			description: type
 		};
 
 		_superagent2.default.post('/stripe/charge').type('form').send(body).set('Accept', 'application/json').end(function (err, res) {

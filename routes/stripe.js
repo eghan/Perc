@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var Profile = require('../models/Profile')
+var ProfileController = require('../controllers/ProfileController')
 var EmailUtils = require('../utils/EmailUtils')
 var Promise = require('bluebird')
 
@@ -98,10 +99,8 @@ router.post('/:action', function(req, res, next) {
 	if (action == 'charge') {
 		var customerEmail = req.body.email
 		var type = req.body.type
-		console.log('TEST 3')
 
 		var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
-		console.log('TEST 4')
 		createNonregisteredStripeCharge(stripe, req.body.stripeToken, req.body.amount, 'Perc: '+req.body.description)
 		.then(function(charge){
 			console.log('CHARGE: '+JSON.stringify(charge))
@@ -117,7 +116,7 @@ router.post('/:action', function(req, res, next) {
 			// if (type == 'tutorial')
 			// 	return findTutorial(productId)
 
-			return findProfile({email: customerEmail})			
+			return ProfileController.find({email: customerEmail})			
 		})
 		// .then(function(product){
 		// 	prod = product
@@ -133,7 +132,7 @@ router.post('/:action', function(req, res, next) {
 		// 	return findProfile(params)
 		// })
 		.then(function(profiles){
-			var text = customerEmail+' purchased '+prod.title
+			var text = customerEmail+' purchased '+req.body.description
 			EmailUtils.sendEmails('info@thegridmedia.com', ['dkwon@velocity360.io'], type.toUpperCase()+' Purchase', text)
 
 			if (profiles.length == 0){ // unregistered user
@@ -146,16 +145,16 @@ router.post('/:action', function(req, res, next) {
 
 			// registered user
 			var profile = profiles[0]
-			req.session.user = profile.id // login as user
-			var subscribers = prod.subscribers
+			// req.session.user = profile.id // login as user
+			// var subscribers = prod.subscribers
 
 			var response = {
 				confirmation:'success',
 				profile:profile.summary()
 			}
 
-			response[req.body.type] = prod.summary()
-			res.jsonsend(response)
+//			response[req.body.type] = prod.summary()
+			res.json(response)
 		})
 		.catch(function(err){
 			console.log('CHARGE ERROR: '+err.message)

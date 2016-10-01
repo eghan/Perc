@@ -113,7 +113,7 @@ module.exports = {
 			email: token.email,
 			amount: amt,
 			type: type,
-			description: "description"
+			description: type
 		};
 
 		superagent.post("/stripe/charge").type("form").send(body).set("Accept", "application/json").end(function (err, res) {
