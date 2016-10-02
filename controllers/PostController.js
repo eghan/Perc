@@ -154,15 +154,19 @@ module.exports = {
 		})
 		.then(function(profiles){
 			var emails = []
+			var notified = newPost.notified
 			for (var i=0; i<profiles.length; i++){
 				var profile = profiles[i]
 				emails.push(profile.email)
-				if (newPost.notified.indexOf(profile.id) != -1)
-					newPost.notified.push(profile.id)
+				if (notified.indexOf(profile.id) != -1)
+					notified.push(profile.id)
 			}
 
-			EmailUtils.sendEmails('info@thegridmedia.com', emails, 'Test Notification', 'This is a test Notification')
+			newPost['notified'] = notified
+			newPost.markModified('notified')
 			newPost.save()
+			
+			EmailUtils.sendEmails('info@thegridmedia.com', emails, 'Test Notification', 'This is a test Notification')
 			completion(null, newPost.summary())
 			return
 		})
