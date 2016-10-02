@@ -22,7 +22,7 @@ ProfileSchema.methods.summary = function(){
 		credits: this.credits,
 		notify: this.notify,
 		timestamp: this.timestamp,
-		id: this._id
+		id: this._id.toString()
 	}
 
 	return summary
