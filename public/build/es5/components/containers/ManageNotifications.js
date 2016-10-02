@@ -141,13 +141,10 @@ var ManageNotifications = (function (Component) {
 				};
 
 				var currentUser = this.props.currentUser == null ? this.state.user : this.props.currentUser;
-				console.log("CURRENT USER: " + JSON.stringify(currentUser));
-
 				var qty = notify.quantity;
 				var stripeHandler = StripeUtils.initializeWithText("TEST", function (token) {
 					_this.setState({ showLoader: true });
 
-					//			const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
 					var description = qty + " notifications";
 					APIManager.submitStripeCharge(token, amounts[qty], description, currentUser, function (err, response) {
 						if (err) {

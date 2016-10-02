@@ -103,22 +103,6 @@ router.post('/:action', function(req, res, next) {
 		var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 		createNonregisteredStripeCharge(stripe, req.body.stripeToken, req.body.amount, 'Perc: '+req.body.description)
 		.then(function(charge){
-//			console.log('CHARGE: '+JSON.stringify(charge))
-			// {"id":"ch_18zf6oC5b8QCRB75OIl7flYq","object":"charge","amount":500,"amount_refunded":0,
-			// "application_fee":null,"balance_transaction":"txn_18zf6pC5b8QCRB75wiIc511E","captured":true,
-			// "created":1475296102,"currency":"usd","customer":null,"description":"Perc: notifications",
-			// "destination":null,"dispute":null,"failure_code":null,"failure_message":null,"fraud_details":{},
-			// "invoice":null,"livemode":true,"metadata":{},"order":null,"paid":true,"receipt_email":null,
-			// "receipt_number":null,"refunded":false,"refunds":{"object":"list","data":[],"has_more":false,
-			// "total_count":0,"url":"/v1/charges/ch_18zf6oC5b8QCRB75OIl7flYq/refunds"},"shipping":null,
-			// "source":{"id":"card_18zf6jC5b8QCRB75Rb5ATOMI","object":"card","address_city":"Woodcliff Lake",
-			// "address_country":"United States","address_line1":"12 Lyons Court","address_line1_check":"pass",
-			// "address_line2":null,"address_state":"NJ","address_zip":"07677","address_zip_check":"pass",
-			// "brand":"Visa","country":"US","customer":null,"cvc_check":"pass","dynamic_last4":null,
-			// "exp_month":6,"exp_year":2020,"fingerprint":"hltRklDPg2R0e0Tx","funding":"debit","last4":"9072",
-			// "metadata":{},"name":"denny kwon","tokenization_method":null},"source_transfer":null,
-			// "statement_descriptor":null,"status":"succeeded"}
-
 			return ProfileController.find({email: customerEmail})			
 		})
 		.then(function(profiles){
@@ -127,6 +111,14 @@ router.post('/:action', function(req, res, next) {
 
 			if (profiles.length == 0){ // unregistered user, create profile
 				var profileInfo = JSON.parse(req.body.profile)
+
+				// grab name from Stripe token:
+				var name = charge.source.name
+				var parts = name.split(' ')
+				profileInfo['firstName'] = parts[0]
+				if (parts.length > 1)
+					profileInfo['lastName'] = parts[parts.length-1]
+
 				console.log('NEW PROFILE: '+JSON.stringify(profileInfo))
 				Profile.create(profileInfo, function(err, profile){
 					if (err){
