@@ -267,6 +267,7 @@ var ManageNotifications = (function (Component) {
 					);
 				}
 
+				var maxPrice = notify.maxPrice > 0 ? "$" + notify.maxPrice : null;
 
 				return React.createElement(
 					"div",
@@ -285,7 +286,7 @@ var ManageNotifications = (function (Component) {
 							"div",
 							{ className: "col-md-6" },
 							registrationForm,
-							React.createElement("input", { id: "maxPrice", onChange: this.updateNotify.bind(this), style: styles.input, type: "text", value: "$" + notify.maxPrice, placeholder: "Max Price of Apartment" }),
+							React.createElement("input", { id: "maxPrice", onChange: this.updateNotify.bind(this), style: styles.input, type: "text", value: maxPrice, placeholder: "Max Price of Apartment" }),
 							React.createElement(
 								"div",
 								{ style: { background: "#f9f9f9", padding: 12, marginBottom: 12, border: "1px solid #ddd" } },

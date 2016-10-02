@@ -209,6 +209,7 @@ class ManageNotifications extends Component {
 			)
 		}
 
+		const maxPrice = (notify.maxPrice>0) ? '$'+notify.maxPrice : null
 
 		return (
 			<div style={styles.container}>
@@ -219,7 +220,7 @@ class ManageNotifications extends Component {
 				<div className="row">
 					<div className="col-md-6">
 						{registrationForm}
-						<input id="maxPrice" onChange={this.updateNotify.bind(this)} style={styles.input} type="text" value={'$'+notify.maxPrice} placeholder="Max Price of Apartment" />
+						<input id="maxPrice" onChange={this.updateNotify.bind(this)} style={styles.input} type="text" value={maxPrice} placeholder="Max Price of Apartment" />
 
 						<div style={{background:'#f9f9f9', padding:12, marginBottom:12, border:'1px solid #ddd'}}>
 							<h4 className="nobottommargin">Neighborhoods</h4>
