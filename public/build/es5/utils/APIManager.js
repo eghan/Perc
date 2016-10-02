@@ -114,7 +114,7 @@ module.exports = {
 			amount: amt,
 			type: type,
 			description: type,
-			profile: user
+			profile: JSON.stringify(user)
 		};
 
 		superagent.post("/stripe/charge").type("form").send(body).set("Accept", "application/json").end(function (err, res) {

@@ -39502,7 +39502,7 @@ exports.default = {
 			amount: amt,
 			type: type,
 			description: type,
-			profile: user
+			profile: JSON.stringify(user)
 		};
 
 		_superagent2.default.post('/stripe/charge').type('form').send(body).set('Accept', 'application/json').end(function (err, res) {

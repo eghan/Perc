@@ -138,7 +138,7 @@ export default {
 			amount: amt,
 			type: type,
 			description: type,
-			profile: user
+			profile: JSON.stringify(user)
 		}
 
 		superagent
