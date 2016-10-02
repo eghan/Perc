@@ -14,6 +14,7 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 var Nav = require("./containers").Nav;
+var APIManager = require("../utils").APIManager;
 var Main = (function (Component) {
 	function Main() {
 		_classCallCheck(this, Main);
@@ -26,6 +27,26 @@ var Main = (function (Component) {
 	_inherits(Main, Component);
 
 	_prototypeProperties(Main, null, {
+		componentDidMount: {
+			value: function componentDidMount() {
+				console.log(this.props.location.pathname);
+
+				var body = {
+					path: this.props.location.pathname
+				};
+
+				APIManager.handlePost("/track", body, function (err, response) {
+					if (err) {
+						console.log("ERROR: " + JSON.stringify(err));
+						return;
+					}
+
+					console.log(JSON.stringify(response));
+				});
+			},
+			writable: true,
+			configurable: true
+		},
 		render: {
 			value: function render() {
 				return React.createElement(

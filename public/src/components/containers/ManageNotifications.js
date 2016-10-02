@@ -209,7 +209,7 @@ class ManageNotifications extends Component {
 			)
 		}
 
-		const maxPrice = (notify.maxPrice>0) ? '$'+notify.maxPrice : null
+		const maxPrice = (notify.maxPrice>0) ? '$'+notify.maxPrice : ''
 
 		return (
 			<div style={styles.container}>

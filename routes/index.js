@@ -14,7 +14,7 @@ var Account = require('../public/build/es5/components/layout/Account')
 var controllers = require('../controllers')
 
 var templates = ['register']
-var ignore = ['api', 'geo', 'account']
+var ignore = ['api', 'geo', 'account', 'track']
 
 matchRoutes = function(req, routes, initialStore){
 	return new Promise(function(resolve, reject){
@@ -84,6 +84,11 @@ router.get('/:page', function(req, res, next) {
 
 	if (templates.indexOf(page) >= 0){ // this is a regular template page
 	    res.render(page, { title: 'Express' })
+	    return
+	}
+
+	if (ignore.indexOf(page) >= 0){
+	    next()
 	    return
 	}
 

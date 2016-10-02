@@ -267,7 +267,7 @@ var ManageNotifications = (function (Component) {
 					);
 				}
 
-				var maxPrice = notify.maxPrice > 0 ? "$" + notify.maxPrice : null;
+				var maxPrice = notify.maxPrice > 0 ? "$" + notify.maxPrice : "";
 
 				return React.createElement(
 					"div",
