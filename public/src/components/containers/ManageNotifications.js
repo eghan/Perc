@@ -37,7 +37,7 @@ class ManageNotifications extends Component {
 				return
 			}
 
-			console.log('Reverse Geocode: '+JSON.stringify(response))
+//			console.log('Reverse Geocode: '+JSON.stringify(response))
 			const location = response.location
 			const zone = (location.neighborhood==null) ? location.zip : location.neighborhood
 			if (this.state.notify.zones.indexOf(zone) != -1){
@@ -87,13 +87,14 @@ class ManageNotifications extends Component {
 	purchase(event){
 		event.preventDefault()
 		var notify = Object.assign({}, this.state.notify)
-		console.log('purchase: '+JSON.stringify(notify))
+//		console.log('purchase: '+JSON.stringify(notify))
 
 		this.setState({
 			showModal: false
 		})
 
 		var amounts = {
+			0: 0,
 			5: 5,
 			10: 9,
 			15: 12,
@@ -103,11 +104,28 @@ class ManageNotifications extends Component {
 		let currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
 		currentUser['notify'] = notify
 		const qty = notify.quantity
+
+		if (qty == 0){ // standard registration, skip stripe
+			this.setState({showLoader: true})
+			APIManager.handlePost('/account/register', currentUser, (err, response) => {
+				if (err){
+					this.setState({showLoader: false})
+					alert(err)
+					return
+				}
+
+				window.location.href = '/account'
+			})
+
+			return
+		}
+
+		const amount = amounts[qty] // amount to charge
 		var stripeHandler = StripeUtils.initializeWithText('Purchase Notifications', (token) => {
 			this.setState({showLoader: true})
 
 			const description = qty+' notifications'
-			APIManager.submitStripeCharge(token, amounts[qty], description, currentUser, (err, response) => {
+			APIManager.submitStripeCharge(token, amount, description, currentUser, (err, response) => {
 				if (err){
 					alert(err.message)
 					return
@@ -134,7 +152,7 @@ class ManageNotifications extends Component {
 
 	updateProfile(event){
 		var user = Object.assign({}, this.state.user)
-		console.log('updateProfile: '+JSON.stringify(user))
+//		console.log('updateProfile: '+JSON.stringify(user))
 		user[event.target.id] = event.target.value
 
 		this.setState({
@@ -210,6 +228,7 @@ class ManageNotifications extends Component {
 					        	<input id="quantity" style={styles.modal.input} onChange={this.updateNotify.bind(this)} type="radio" name="quantity" value="20" />20 notifcations - $15<br />
 				        	</div>
 							<a onClick={this.purchase.bind(this)} href="#" className="button button-border button-dark button-rounded button-large noleftmargin">Next</a>
+							<a onClick={this.purchase.bind(this)} href="#" className="button button-border button-dark button-rounded button-large noleftmargin">Skip</a>
 						</div>
 			        </Modal.Body>
 		        </Modal>

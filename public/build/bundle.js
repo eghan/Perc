@@ -37649,7 +37649,7 @@ var ManageNotifications = function (_Component) {
 					return;
 				}
 
-				console.log('Reverse Geocode: ' + JSON.stringify(response));
+				//			console.log('Reverse Geocode: '+JSON.stringify(response))
 				var location = response.location;
 				var zone = location.neighborhood == null ? location.zip : location.neighborhood;
 				if (_this2.state.notify.zones.indexOf(zone) != -1) {
@@ -37704,13 +37704,14 @@ var ManageNotifications = function (_Component) {
 
 			event.preventDefault();
 			var notify = Object.assign({}, this.state.notify);
-			console.log('purchase: ' + JSON.stringify(notify));
+			//		console.log('purchase: '+JSON.stringify(notify))
 
 			this.setState({
 				showModal: false
 			});
 
 			var amounts = {
+				0: 0,
 				5: 5,
 				10: 9,
 				15: 12,
@@ -37720,11 +37721,29 @@ var ManageNotifications = function (_Component) {
 			var currentUser = this.props.currentUser == null ? this.state.user : this.props.currentUser;
 			currentUser['notify'] = notify;
 			var qty = notify.quantity;
+
+			if (qty == 0) {
+				// standard registration, skip stripe
+				this.setState({ showLoader: true });
+				_utils.APIManager.handlePost('/account/register', currentUser, function (err, response) {
+					if (err) {
+						_this3.setState({ showLoader: false });
+						alert(err);
+						return;
+					}
+
+					window.location.href = '/account';
+				});
+
+				return;
+			}
+
+			var amount = amounts[qty]; // amount to charge
 			var stripeHandler = _utils.StripeUtils.initializeWithText('Purchase Notifications', function (token) {
 				_this3.setState({ showLoader: true });
 
 				var description = qty + ' notifications';
-				_utils.APIManager.submitStripeCharge(token, amounts[qty], description, currentUser, function (err, response) {
+				_utils.APIManager.submitStripeCharge(token, amount, description, currentUser, function (err, response) {
 					if (err) {
 						alert(err.message);
 						return;
@@ -37753,7 +37772,7 @@ var ManageNotifications = function (_Component) {
 		key: 'updateProfile',
 		value: function updateProfile(event) {
 			var user = Object.assign({}, this.state.user);
-			console.log('updateProfile: ' + JSON.stringify(user));
+			//		console.log('updateProfile: '+JSON.stringify(user))
 			user[event.target.id] = event.target.value;
 
 			this.setState({
@@ -37875,6 +37894,11 @@ var ManageNotifications = function (_Component) {
 								'a',
 								{ onClick: this.purchase.bind(this), href: '#', className: 'button button-border button-dark button-rounded button-large noleftmargin' },
 								'Next'
+							),
+							_react2.default.createElement(
+								'a',
+								{ onClick: this.purchase.bind(this), href: '#', className: 'button button-border button-dark button-rounded button-large noleftmargin' },
+								'Skip'
 							)
 						)
 					)

@@ -111,8 +111,6 @@ router.post('/:action', function(req, res, next) {
 			if (parts.length > 1)
 				profileInfo['lastName'] = parts[parts.length-1]
 
-			console.log('PROFILE INFO: '+JSON.stringify(profileInfo))
-
 			return ProfileController.find({email: customerEmail})			
 		})
 		.then(function(profiles){
@@ -120,6 +118,7 @@ router.post('/:action', function(req, res, next) {
 			EmailUtils.sendEmails('info@thegridmedia.com', ['dkwon@velocity360.io'], type.toUpperCase()+' Purchase', text)
 
 			if (profiles.length == 0){ // unregistered user, create profile
+				profileInfo['credits'] = profileInfo.notify.quantity + 3 // 3 free credits
 				Profile.create(profileInfo, function(err, profile){
 					if (err){
 						res.json({

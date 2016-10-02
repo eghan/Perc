@@ -69,6 +69,11 @@ module.exports = {
 		var hashedPassword = bcrypt.hashSync(password, 10)
 		params['password'] = hashedPassword
 
+		if (params['firstName'] == null)
+			params['firstName'] = params.email
+
+		console.log('NEW PROFILE: '+JSON.stringify(params))
+
 		Profile.create(params, function(err, profile){
 			if (err){
 				if (callback != null)
