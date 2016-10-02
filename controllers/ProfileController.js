@@ -72,7 +72,9 @@ module.exports = {
 		if (params['firstName'] == null)
 			params['firstName'] = params.email
 
-		console.log('NEW PROFILE: '+JSON.stringify(params))
+		delete params.notify['quantity']
+
+//		console.log('NEW PROFILE: '+JSON.stringify(params))
 
 		Profile.create(params, function(err, profile){
 			if (err){

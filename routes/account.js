@@ -7,9 +7,7 @@ router.get('/:action', function(req, res, next) {
 	var action = req.params.action
 
 	if (action == 'currentuser') {
-		console.log('TEST 1')
 		var accountController = controllers.account
-		console.log('TEST 2')
 		accountController.checkCurrentUser(req, function(err, results){
 			if (err){
 				res.json({confirmation:'fail', message:err.message})

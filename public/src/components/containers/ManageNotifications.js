@@ -176,6 +176,18 @@ class ManageNotifications extends Component {
 			)
 		})
 
+		let registrationForm = null
+		if (user == null){
+			registrationForm = (
+				<div>
+					<input id="email" onChange={this.updateProfile.bind(this)} style={styles.input} type="text" placeholder="Email" />
+					<input id="password" onChange={this.updateProfile.bind(this)} style={styles.input} type="password" placeholder="Password" />
+					<input id="phone" onChange={this.updateProfile.bind(this)} style={styles.input} type="phone" placeholder="Phone (notifications are sent via text)" />
+				</div>
+			)
+		}
+
+
 		return (
 			<div style={styles.container}>
 				<Loader options={styles.loader} className="loader" loaded={!this.state.showLoader} loadedClassName="loadedContent" />
@@ -184,9 +196,7 @@ class ManageNotifications extends Component {
 
 				<div className="row">
 					<div className="col-md-6">
-						<input id="email" onChange={this.updateProfile.bind(this)} style={styles.input} type="text" placeholder="Email" />
-						<input id="password" onChange={this.updateProfile.bind(this)} style={styles.input} type="password" placeholder="Password" />
-						<input id="phone" onChange={this.updateProfile.bind(this)} style={styles.input} type="phone" placeholder="Phone (notifications are sent via text)" />
+						{registrationForm}
 						<input id="maxPrice" onChange={this.updateNotify.bind(this)} style={styles.input} type="text" placeholder="Max Price of Apartment" defaultValue={notify.maxPrice} />
 
 						<div style={{background:'#f9f9f9', padding:12, marginBottom:12, border:'1px solid #ddd'}}>

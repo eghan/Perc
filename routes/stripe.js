@@ -131,8 +131,8 @@ router.post('/:action', function(req, res, next) {
 
 					req.session.user = profile.id // login as user
 					res.json({
-						confirmation:'success',
-						profile:profile.summary()
+						confirmation: 'success',
+						profile: profile.summary()
 					})
 				})
 

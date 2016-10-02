@@ -53,6 +53,7 @@ module.exports = {
 			}
 			
 			if (profile == null){
+				req.session.reset()
 				completion({message:'Profile '+userId+' not found'}, null)
 				return
 			}

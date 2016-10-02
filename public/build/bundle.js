@@ -37803,6 +37803,17 @@ var ManageNotifications = function (_Component) {
 				);
 			});
 
+			var registrationForm = null;
+			if (user == null) {
+				registrationForm = _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement('input', { id: 'email', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Email' }),
+					_react2.default.createElement('input', { id: 'password', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'password', placeholder: 'Password' }),
+					_react2.default.createElement('input', { id: 'phone', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'phone', placeholder: 'Phone (notifications are sent via text)' })
+				);
+			}
+
 			return _react2.default.createElement(
 				'div',
 				{ style: _Style2.default.container },
@@ -37819,9 +37830,7 @@ var ManageNotifications = function (_Component) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'col-md-6' },
-						_react2.default.createElement('input', { id: 'email', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Email' }),
-						_react2.default.createElement('input', { id: 'password', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'password', placeholder: 'Password' }),
-						_react2.default.createElement('input', { id: 'phone', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'phone', placeholder: 'Phone (notifications are sent via text)' }),
+						registrationForm,
 						_react2.default.createElement('input', { id: 'maxPrice', onChange: this.updateNotify.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Max Price of Apartment', defaultValue: notify.maxPrice }),
 						_react2.default.createElement(
 							'div',

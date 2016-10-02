@@ -231,6 +231,18 @@ var ManageNotifications = (function (Component) {
 					);
 				});
 
+				var registrationForm = null;
+				if (user == null) {
+					registrationForm = React.createElement(
+						"div",
+						null,
+						React.createElement("input", { id: "email", onChange: this.updateProfile.bind(this), style: styles.input, type: "text", placeholder: "Email" }),
+						React.createElement("input", { id: "password", onChange: this.updateProfile.bind(this), style: styles.input, type: "password", placeholder: "Password" }),
+						React.createElement("input", { id: "phone", onChange: this.updateProfile.bind(this), style: styles.input, type: "phone", placeholder: "Phone (notifications are sent via text)" })
+					);
+				}
+
+
 				return React.createElement(
 					"div",
 					{ style: styles.container },
@@ -247,9 +259,7 @@ var ManageNotifications = (function (Component) {
 						React.createElement(
 							"div",
 							{ className: "col-md-6" },
-							React.createElement("input", { id: "email", onChange: this.updateProfile.bind(this), style: styles.input, type: "text", placeholder: "Email" }),
-							React.createElement("input", { id: "password", onChange: this.updateProfile.bind(this), style: styles.input, type: "password", placeholder: "Password" }),
-							React.createElement("input", { id: "phone", onChange: this.updateProfile.bind(this), style: styles.input, type: "phone", placeholder: "Phone (notifications are sent via text)" }),
+							registrationForm,
 							React.createElement("input", { id: "maxPrice", onChange: this.updateNotify.bind(this), style: styles.input, type: "text", placeholder: "Max Price of Apartment", defaultValue: notify.maxPrice }),
 							React.createElement(
 								"div",
