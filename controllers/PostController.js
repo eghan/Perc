@@ -146,7 +146,7 @@ module.exports = {
 		.then(function(post){
 			newPost = post
 			var filter = {
-				$gte: newPost.price,
+				'notify.maxPrice': {$gte: newPost.price},
 				'notify.zones':newPost.zone
 			}
 
