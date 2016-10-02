@@ -37433,8 +37433,6 @@ var CreatePost = function (_Component) {
 					return;
 				}
 
-				//			console.log('UPLOAD IMAGE: '+JSON.stringify(response))
-
 				var updatedPost = Object.assign({}, _this2.state.post);
 				if (type == 'primary') updatedPost['image'] = response.id;else {
 					var images = Object.assign([], updatedPost.images);
@@ -37454,7 +37452,7 @@ var CreatePost = function (_Component) {
 			var post = this.state.post;
 			var primaryImage = post.image.length == 0 ? null : _react2.default.createElement('img', { style: { width: 96, marginRight: 12, marginTop: 12 }, src: 'https://media-service.appspot.com/site/images/' + post.image + '?crop=260' });
 			var secondaryImages = post.images.map(function (image, i) {
-				return _react2.default.createElement('img', { style: _Style2.default.icon, src: 'https://media-service.appspot.com/site/images/' + image + '?crop=260' });
+				return _react2.default.createElement('img', { key: image, style: _Style2.default.icon, src: 'https://media-service.appspot.com/site/images/' + image + '?crop=260' });
 			});
 
 			return _react2.default.createElement(

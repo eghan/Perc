@@ -91,8 +91,6 @@ class CreatePost extends Component {
 				return
 			}
 
-//			console.log('UPLOAD IMAGE: '+JSON.stringify(response))
-
 			var updatedPost = Object.assign({}, this.state.post)
 			if (type == 'primary')
 				updatedPost['image'] = response.id
@@ -114,7 +112,7 @@ class CreatePost extends Component {
 		const primaryImage = (post.image.length == 0) ? null : <img style={{width:96, marginRight:12, marginTop:12}} src={'https://media-service.appspot.com/site/images/'+post.image+'?crop=260'} />
 		const secondaryImages = post.images.map((image, i) => {
 			return (
-				<img style={styles.icon} src={'https://media-service.appspot.com/site/images/'+image+'?crop=260'} />
+				<img key={image} style={styles.icon} src={'https://media-service.appspot.com/site/images/'+image+'?crop=260'} />
 			)
 		})
 

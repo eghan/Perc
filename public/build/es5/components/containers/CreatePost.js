@@ -128,8 +128,6 @@ var CreatePost = (function (Component) {
 						return;
 					}
 
-					//			console.log('UPLOAD IMAGE: '+JSON.stringify(response))
-
 					var updatedPost = Object.assign({}, _this.state.post);
 					if (type == "primary") updatedPost.image = response.id;else {
 						var images = Object.assign([], updatedPost.images);
@@ -151,7 +149,7 @@ var CreatePost = (function (Component) {
 				var post = this.state.post;
 				var primaryImage = post.image.length == 0 ? null : React.createElement("img", { style: { width: 96, marginRight: 12, marginTop: 12 }, src: "https://media-service.appspot.com/site/images/" + post.image + "?crop=260" });
 				var secondaryImages = post.images.map(function (image, i) {
-					return React.createElement("img", { style: styles.icon, src: "https://media-service.appspot.com/site/images/" + image + "?crop=260" });
+					return React.createElement("img", { key: image, style: styles.icon, src: "https://media-service.appspot.com/site/images/" + image + "?crop=260" });
 				});
 
 				return React.createElement(
