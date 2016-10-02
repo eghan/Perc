@@ -66,14 +66,17 @@ var PostDetail = (function (Component) {
 		submitReply: {
 			value: function submitReply(event) {
 				event.preventDefault();
-				var user = this.props.currentUser;
 				var reply = Object.assign({}, this.state.reply);
-				reply.profile = {
-					id: user.id,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					email: user.email
-				};
+
+				var user = this.props.currentUser;
+				if (user != null) {
+					reply.profile = {
+						id: user.id,
+						firstName: user.firstName,
+						lastName: user.lastName,
+						email: user.email
+					};
+				}
 
 				var post = this.props.posts[this.props.params.slug];
 				reply.recipient = {
@@ -275,7 +278,7 @@ var PostDetail = (function (Component) {
 									React.createElement(
 										"div",
 										{ className: "col-md-12" },
-										React.createElement("textarea", { onChange: this.updateReply.bind(this), style: styles.reply, placeholder: "Reply" }),
+										React.createElement("textarea", { onChange: this.updateReply.bind(this), style: styles.reply, placeholder: "Reply. Include contact info." }),
 										React.createElement(
 											"a",
 											{ onClick: this.submitReply.bind(this), href: "#", className: "button button-border button-dark button-rounded noleftmargin" },

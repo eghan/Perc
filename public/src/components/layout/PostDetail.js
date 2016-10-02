@@ -32,13 +32,16 @@ class PostDetail extends Component {
 
 	submitReply(event){
 		event.preventDefault()
-		const user = this.props.currentUser
 		var reply = Object.assign({}, this.state.reply)
-		reply['profile'] = {
-			id: user.id,
-			firstName: user.firstName,
-			lastName: user.lastName,
-			email: user.email
+
+		const user = this.props.currentUser
+		if (user != null){
+			reply['profile'] = {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				email: user.email
+			}
 		}
 
 		const post = this.props.posts[this.props.params.slug]
@@ -60,7 +63,6 @@ class PostDetail extends Component {
 			console.log('submitReply:'+JSON.stringify(result))
 			alert('Notification Sent')
 		})
-
 	}
 
 	updateReply(event){
@@ -169,7 +171,7 @@ class PostDetail extends Component {
 							<hr />
 							<div className="row">
 								<div className="col-md-12">
-									<textarea onChange={this.updateReply.bind(this)} style={styles.reply} placeholder="Reply"></textarea>
+									<textarea onChange={this.updateReply.bind(this)} style={styles.reply} placeholder="Reply. Include contact info."></textarea>
 									<a onClick={this.submitReply.bind(this)} href="#" className="button button-border button-dark button-rounded noleftmargin">Submit</a>
 								</div>
 							</div>
