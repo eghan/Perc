@@ -158,14 +158,14 @@ module.exports = {
 			for (var i=0; i<profiles.length; i++){
 				var profile = profiles[i]
 				emails.push(profile.email)
-				if (notified.indexOf(profile.id) != -1)
+				if (notified.indexOf(profile.id) == -1)
 					notified.push(profile.id)
 			}
 
 			newPost['notified'] = notified
 			newPost.markModified('notified')
 			newPost.save()
-			
+
 			EmailUtils.sendEmails('info@thegridmedia.com', emails, 'Test Notification', 'This is a test Notification')
 			completion(null, newPost.summary())
 			return
