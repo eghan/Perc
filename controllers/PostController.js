@@ -9,6 +9,7 @@ var Promise = require('bluebird')
 
 function createPost(params){
 	return new Promise(function(resolve, reject){
+
 		Post.create(params, function(error, post){
 			if (error){
 				reject(err)
@@ -18,6 +19,7 @@ function createPost(params){
 			resolve(post)
 			return
 		})
+
 	})
 }
 
@@ -96,7 +98,7 @@ module.exports = {
 
 	    var url = 'https://maps.googleapis.com/maps/api/geocode/json'
 	    var address = params.address+','+params.city+','+params.state
-	    var params = {
+	    var mapsQuery = {
 	    	address: address,
 	    	key:process.env.GOOGLE_MAPS_API_KEY
 	    }
@@ -104,7 +106,7 @@ module.exports = {
 	    var newPost = null
 
 //	    Request.get(url, {key:process.env.GOOGLE_MAPS_API_KEY})
-	    Request.get(url, params)
+	    Request.get(url, mapsQuery)
 	    .then(function(response){
 	    	console.log(JSON.stringify(response))
 
@@ -165,10 +167,12 @@ module.exports = {
 
 			EmailUtils.sendEmails('info@thegridmedia.com', emails, 'Test Notification', 'This is a test Notification')
 			completion(null, newPost.summary())
+			return
 		})
 	    .catch(function(err){
 	    	console.log('ERROR: '+err)
 			completion({confirmation:'fail', message:err}, null)
+			return
 	    })
 	},
 
