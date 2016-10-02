@@ -126,8 +126,9 @@ router.post('/:action', function(req, res, next) {
 			EmailUtils.sendEmails('info@thegridmedia.com', ['dkwon@velocity360.io'], type.toUpperCase()+' Purchase', text)
 
 			if (profiles.length == 0){ // unregistered user, create profile
-				console.log('NEW PROFILE: '+JSON.stringify(req.body.profile))
-				Profile.create(req.body.profile, function(err, profile){
+				var profileInfo = JSON.parse(req.body.profile)
+				console.log('NEW PROFILE: '+JSON.stringify(profileInfo))
+				Profile.create(profileInfo, function(err, profile){
 					if (err){
 						res.json({
 							confirmation: 'fail',

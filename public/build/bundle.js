@@ -37717,14 +37717,14 @@ var ManageNotifications = function (_Component) {
 				20: 15
 			};
 
-			// const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
-			// console.log('CURRENT USER: '+JSON.stringify(currentUser))
+			var currentUser = this.props.currentUser == null ? this.state.user : this.props.currentUser;
+			console.log('CURRENT USER: ' + JSON.stringify(currentUser));
 
+			var qty = notify.quantity;
 			var stripeHandler = _utils.StripeUtils.initializeWithText('TEST', function (token) {
 				_this3.setState({ showLoader: true });
 
-				var currentUser = _this3.props.currentUser == null ? _this3.state.user : _this3.props.currentUser;
-				var qty = notify.quantity;
+				//			const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
 				var description = qty + ' notifications';
 				_utils.APIManager.submitStripeCharge(token, amounts[qty], description, currentUser, function (err, response) {
 					if (err) {
@@ -37738,7 +37738,7 @@ var ManageNotifications = function (_Component) {
 
 			stripeHandler.open({
 				name: 'Perc',
-				description: notify.quantity + ' notifications'
+				description: qty + ' notifications'
 			});
 		}
 	}, {

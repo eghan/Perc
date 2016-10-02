@@ -100,14 +100,14 @@ class ManageNotifications extends Component {
 			20: 15
 		}
 
-		// const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
-		// console.log('CURRENT USER: '+JSON.stringify(currentUser))
+		const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
+		console.log('CURRENT USER: '+JSON.stringify(currentUser))
 
+		const qty = notify.quantity
 		var stripeHandler = StripeUtils.initializeWithText('TEST', (token) => {
 			this.setState({showLoader: true})
 
-			const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
-			const qty = notify.quantity
+//			const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
 			const description = qty+' notifications'
 			APIManager.submitStripeCharge(token, amounts[qty], description, currentUser, (err, response) => {
 				if (err){
@@ -121,7 +121,7 @@ class ManageNotifications extends Component {
 
 	    stripeHandler.open({
 		    name: 'Perc',
-		    description: notify.quantity+' notifications'
+		    description: qty+' notifications'
 	    })
 	}
 
