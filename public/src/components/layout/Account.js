@@ -12,7 +12,6 @@ class Account extends Component {
 		this.state = {
 			selected: 0,
 			menuItems: [
-				{name:'Profile', component:ManageProfile},
 				{name:'Listings', component:Posts},
 				{name:'Submit Listing', component:CreatePost},
 				{name:'Manage Notifications', component:ManageNotifications}

@@ -38267,7 +38267,7 @@ var Posts = function (_Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			if (this.props.user != null) {
-				if (this.props.userPosts.length == 0) this.fetchPosts({ notified: this.props.user.id });
+				if (this.props.userPosts.length == 0) this.fetchPosts({ 'profile.id': this.props.user.id });
 				return;
 			}
 
@@ -38389,7 +38389,7 @@ var Account = function (_Component) {
 
 		_this.state = {
 			selected: 0,
-			menuItems: [{ name: 'Profile', component: _containers.ManageProfile }, { name: 'Listings', component: _containers.Posts }, { name: 'Submit Listing', component: _containers.CreatePost }, { name: 'Manage Notifications', component: _containers.ManageNotifications }]
+			menuItems: [{ name: 'Listings', component: _containers.Posts }, { name: 'Submit Listing', component: _containers.CreatePost }, { name: 'Manage Notifications', component: _containers.ManageNotifications }]
 		};
 		return _this;
 	}

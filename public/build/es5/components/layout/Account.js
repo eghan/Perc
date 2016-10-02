@@ -37,7 +37,7 @@ var Account = (function (Component) {
 		_get(Object.getPrototypeOf(Account.prototype), "constructor", this).call(this, props, context);
 		this.state = {
 			selected: 0,
-			menuItems: [{ name: "Profile", component: ManageProfile }, { name: "Listings", component: Posts }, { name: "Submit Listing", component: CreatePost }, { name: "Manage Notifications", component: ManageNotifications }]
+			menuItems: [{ name: "Listings", component: Posts }, { name: "Submit Listing", component: CreatePost }, { name: "Manage Notifications", component: ManageNotifications }]
 		};
 	}
 

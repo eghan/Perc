@@ -20,7 +20,7 @@ class Posts extends Component {
 	componentDidMount() {
 		if (this.props.user != null) {
 			if (this.props.userPosts.length == 0)
-				this.fetchPosts({notified:this.props.user.id})
+				this.fetchPosts({'profile.id':this.props.user.id})
 			return
 		}
 
