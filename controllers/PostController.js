@@ -104,8 +104,6 @@ module.exports = {
 	    }
 
 	    var newPost = null
-
-//	    Request.get(url, {key:process.env.GOOGLE_MAPS_API_KEY})
 	    Request.get(url, mapsQuery)
 	    .then(function(response){
 	    	console.log(JSON.stringify(response))
@@ -144,19 +142,15 @@ module.exports = {
 	    	}
 
 	    	return createPost(params)
-			// Post.create(params, function(error, post){
-			// 	if (error){
-					// completion({confirmation:'fail', message:error.message}, null)
-			// 		return
-			// 	}
-				
-				// completion(null, post.summary())
-			// 	return
-			// })
 	    })
 		.then(function(post){
 			newPost = post
-			return ProfileController.find({'notify.zones':newPost.zone})
+			var filter = {
+				$gte: newPost.price,
+				'notify.zones':newPost.zone
+			}
+
+			return ProfileController.find(filter})
 		})
 		.then(function(profiles){
 			var emails = []
