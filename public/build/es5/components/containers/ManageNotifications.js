@@ -141,8 +141,9 @@ var ManageNotifications = (function (Component) {
 				};
 
 				var currentUser = this.props.currentUser == null ? this.state.user : this.props.currentUser;
+				currentUser.notify = notify;
 				var qty = notify.quantity;
-				var stripeHandler = StripeUtils.initializeWithText("TEST", function (token) {
+				var stripeHandler = StripeUtils.initializeWithText("Purchase Notifications", function (token) {
 					_this.setState({ showLoader: true });
 
 					var description = qty + " notifications";

@@ -100,9 +100,10 @@ class ManageNotifications extends Component {
 			20: 15
 		}
 
-		const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
+		let currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
+		currentUser['notify'] = notify
 		const qty = notify.quantity
-		var stripeHandler = StripeUtils.initializeWithText('TEST', (token) => {
+		var stripeHandler = StripeUtils.initializeWithText('Purchase Notifications', (token) => {
 			this.setState({showLoader: true})
 
 			const description = qty+' notifications'

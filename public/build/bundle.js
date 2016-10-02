@@ -37718,8 +37718,9 @@ var ManageNotifications = function (_Component) {
 			};
 
 			var currentUser = this.props.currentUser == null ? this.state.user : this.props.currentUser;
+			currentUser['notify'] = notify;
 			var qty = notify.quantity;
-			var stripeHandler = _utils.StripeUtils.initializeWithText('TEST', function (token) {
+			var stripeHandler = _utils.StripeUtils.initializeWithText('Purchase Notifications', function (token) {
 				_this3.setState({ showLoader: true });
 
 				var description = qty + ' notifications';
