@@ -76,7 +76,7 @@ module.exports = {
 			var userId = req.session.user
 			Profile.findById(userId, function(err, profile){
 				if (err){
-					reject(err)
+					resolve(null)
 					return
 				}
 				

@@ -37717,18 +37717,21 @@ var ManageNotifications = function (_Component) {
 				20: 15
 			};
 
+			// const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
+			// console.log('CURRENT USER: '+JSON.stringify(currentUser))
+
 			var stripeHandler = _utils.StripeUtils.initializeWithText('TEST', function (token) {
 				_this3.setState({ showLoader: true });
 
 				var currentUser = _this3.props.currentUser == null ? _this3.state.user : _this3.props.currentUser;
-				var description = notify.quantity + ' notifications';
-				_utils.APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, function (err, response) {
+				var qty = notify.quantity;
+				var description = qty + ' notifications';
+				_utils.APIManager.submitStripeCharge(token, amounts[qty], description, currentUser, function (err, response) {
 					if (err) {
 						alert(err.message);
 						return;
 					}
 
-					//				console.log('Stripe Charge: '+JSON.stringify(response))
 					window.location.href = '/account';
 				});
 			});
@@ -37739,8 +37742,8 @@ var ManageNotifications = function (_Component) {
 			});
 		}
 	}, {
-		key: 'updatedNotify',
-		value: function updatedNotify(event) {
+		key: 'updateNotify',
+		value: function updateNotify(event) {
 			//		console.log('updatedNotify: '+event.target.id+' = '+event.target.value)
 			var notify = Object.assign({}, this.state.notify);
 			notify[event.target.id] = event.target.value;
@@ -37751,7 +37754,6 @@ var ManageNotifications = function (_Component) {
 	}, {
 		key: 'updateProfile',
 		value: function updateProfile(event) {
-			console.log('TEST');
 			var user = Object.assign({}, this.state.user);
 			console.log('updateProfile: ' + JSON.stringify(user));
 			user[event.target.id] = event.target.value;
@@ -37803,7 +37805,7 @@ var ManageNotifications = function (_Component) {
 						_react2.default.createElement('input', { id: 'email', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Email' }),
 						_react2.default.createElement('input', { id: 'password', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'password', placeholder: 'Password' }),
 						_react2.default.createElement('input', { id: 'phone', onChange: this.updateProfile.bind(this), style: _Style2.default.input, type: 'phone', placeholder: 'Phone (notifications are sent via text)' }),
-						_react2.default.createElement('input', { id: 'maxPrice', onChange: this.updatedNotify.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Max Price of Apartment', defaultValue: notify.maxPrice }),
+						_react2.default.createElement('input', { id: 'maxPrice', onChange: this.updateNotify.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Max Price of Apartment', defaultValue: notify.maxPrice }),
 						_react2.default.createElement(
 							'div',
 							{ style: { background: '#f9f9f9', padding: 12, marginBottom: 12, border: '1px solid #ddd' } },
@@ -37858,16 +37860,16 @@ var ManageNotifications = function (_Component) {
 							_react2.default.createElement(
 								'div',
 								{ style: { textAlign: 'left', marginLeft: 32, marginRight: 'auto', padding: 16 } },
-								_react2.default.createElement('input', { id: 'quantity', style: _Style2.default.modal.input, onChange: this.updatedNotify.bind(this), type: 'radio', name: 'quantity', value: '5' }),
+								_react2.default.createElement('input', { id: 'quantity', style: _Style2.default.modal.input, onChange: this.updateNotify.bind(this), type: 'radio', name: 'quantity', value: '5' }),
 								'5 notifcations - $5',
 								_react2.default.createElement('br', null),
-								_react2.default.createElement('input', { id: 'quantity', style: _Style2.default.modal.input, onChange: this.updatedNotify.bind(this), type: 'radio', name: 'quantity', value: '10' }),
+								_react2.default.createElement('input', { id: 'quantity', style: _Style2.default.modal.input, onChange: this.updateNotify.bind(this), type: 'radio', name: 'quantity', value: '10' }),
 								'10 notifcations - $9',
 								_react2.default.createElement('br', null),
-								_react2.default.createElement('input', { id: 'quantity', style: _Style2.default.modal.input, onChange: this.updatedNotify.bind(this), type: 'radio', name: 'quantity', value: '15' }),
+								_react2.default.createElement('input', { id: 'quantity', style: _Style2.default.modal.input, onChange: this.updateNotify.bind(this), type: 'radio', name: 'quantity', value: '15' }),
 								'15 notifcations - $12',
 								_react2.default.createElement('br', null),
-								_react2.default.createElement('input', { id: 'quantity', style: _Style2.default.modal.input, onChange: this.updatedNotify.bind(this), type: 'radio', name: 'quantity', value: '20' }),
+								_react2.default.createElement('input', { id: 'quantity', style: _Style2.default.modal.input, onChange: this.updateNotify.bind(this), type: 'radio', name: 'quantity', value: '20' }),
 								'20 notifcations - $15',
 								_react2.default.createElement('br', null)
 							),

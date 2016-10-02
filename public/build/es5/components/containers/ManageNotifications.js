@@ -140,18 +140,21 @@ var ManageNotifications = (function (Component) {
 					20: 15
 				};
 
+				// const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
+				// console.log('CURRENT USER: '+JSON.stringify(currentUser))
+
 				var stripeHandler = StripeUtils.initializeWithText("TEST", function (token) {
 					_this.setState({ showLoader: true });
 
 					var currentUser = _this.props.currentUser == null ? _this.state.user : _this.props.currentUser;
-					var description = notify.quantity + " notifications";
-					APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, function (err, response) {
+					var qty = notify.quantity;
+					var description = qty + " notifications";
+					APIManager.submitStripeCharge(token, amounts[qty], description, currentUser, function (err, response) {
 						if (err) {
 							alert(err.message);
 							return;
 						}
 
-						//				console.log('Stripe Charge: '+JSON.stringify(response))
 						window.location.href = "/account";
 					});
 				});
@@ -164,8 +167,8 @@ var ManageNotifications = (function (Component) {
 			writable: true,
 			configurable: true
 		},
-		updatedNotify: {
-			value: function updatedNotify(event) {
+		updateNotify: {
+			value: function updateNotify(event) {
 				//		console.log('updatedNotify: '+event.target.id+' = '+event.target.value)
 				var notify = Object.assign({}, this.state.notify);
 				notify[event.target.id] = event.target.value;
@@ -178,7 +181,6 @@ var ManageNotifications = (function (Component) {
 		},
 		updateProfile: {
 			value: function updateProfile(event) {
-				console.log("TEST");
 				var user = Object.assign({}, this.state.user);
 				console.log("updateProfile: " + JSON.stringify(user));
 				user[event.target.id] = event.target.value;
@@ -231,7 +233,7 @@ var ManageNotifications = (function (Component) {
 							React.createElement("input", { id: "email", onChange: this.updateProfile.bind(this), style: styles.input, type: "text", placeholder: "Email" }),
 							React.createElement("input", { id: "password", onChange: this.updateProfile.bind(this), style: styles.input, type: "password", placeholder: "Password" }),
 							React.createElement("input", { id: "phone", onChange: this.updateProfile.bind(this), style: styles.input, type: "phone", placeholder: "Phone (notifications are sent via text)" }),
-							React.createElement("input", { id: "maxPrice", onChange: this.updatedNotify.bind(this), style: styles.input, type: "text", placeholder: "Max Price of Apartment", defaultValue: notify.maxPrice }),
+							React.createElement("input", { id: "maxPrice", onChange: this.updateNotify.bind(this), style: styles.input, type: "text", placeholder: "Max Price of Apartment", defaultValue: notify.maxPrice }),
 							React.createElement(
 								"div",
 								{ style: { background: "#f9f9f9", padding: 12, marginBottom: 12, border: "1px solid #ddd" } },
@@ -286,16 +288,16 @@ var ManageNotifications = (function (Component) {
 								React.createElement(
 									"div",
 									{ style: { textAlign: "left", marginLeft: 32, marginRight: "auto", padding: 16 } },
-									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updatedNotify.bind(this), type: "radio", name: "quantity", value: "5" }),
+									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updateNotify.bind(this), type: "radio", name: "quantity", value: "5" }),
 									"5 notifcations - $5",
 									React.createElement("br", null),
-									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updatedNotify.bind(this), type: "radio", name: "quantity", value: "10" }),
+									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updateNotify.bind(this), type: "radio", name: "quantity", value: "10" }),
 									"10 notifcations - $9",
 									React.createElement("br", null),
-									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updatedNotify.bind(this), type: "radio", name: "quantity", value: "15" }),
+									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updateNotify.bind(this), type: "radio", name: "quantity", value: "15" }),
 									"15 notifcations - $12",
 									React.createElement("br", null),
-									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updatedNotify.bind(this), type: "radio", name: "quantity", value: "20" }),
+									React.createElement("input", { id: "quantity", style: styles.modal.input, onChange: this.updateNotify.bind(this), type: "radio", name: "quantity", value: "20" }),
 									"20 notifcations - $15",
 									React.createElement("br", null)
 								),

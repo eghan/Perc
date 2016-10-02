@@ -100,18 +100,21 @@ class ManageNotifications extends Component {
 			20: 15
 		}
 
+		// const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
+		// console.log('CURRENT USER: '+JSON.stringify(currentUser))
+
 		var stripeHandler = StripeUtils.initializeWithText('TEST', (token) => {
 			this.setState({showLoader: true})
 
 			const currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
-			const description = notify.quantity+' notifications'
-			APIManager.submitStripeCharge(token, amounts[notify.quantity], description, currentUser, (err, response) => {
+			const qty = notify.quantity
+			const description = qty+' notifications'
+			APIManager.submitStripeCharge(token, amounts[qty], description, currentUser, (err, response) => {
 				if (err){
 					alert(err.message)
 					return
 				}
 				
-//				console.log('Stripe Charge: '+JSON.stringify(response))
 				window.location.href = '/account'
 			})
 		})
@@ -122,7 +125,7 @@ class ManageNotifications extends Component {
 	    })
 	}
 
-	updatedNotify(event){
+	updateNotify(event){
 //		console.log('updatedNotify: '+event.target.id+' = '+event.target.value)
 		var notify = Object.assign({}, this.state.notify)
 		notify[event.target.id] = event.target.value
@@ -132,7 +135,6 @@ class ManageNotifications extends Component {
 	}
 
 	updateProfile(event){
-		console.log('TEST')
 		var user = Object.assign({}, this.state.user)
 		console.log('updateProfile: '+JSON.stringify(user))
 		user[event.target.id] = event.target.value
@@ -169,7 +171,7 @@ class ManageNotifications extends Component {
 						<input id="email" onChange={this.updateProfile.bind(this)} style={styles.input} type="text" placeholder="Email" />
 						<input id="password" onChange={this.updateProfile.bind(this)} style={styles.input} type="password" placeholder="Password" />
 						<input id="phone" onChange={this.updateProfile.bind(this)} style={styles.input} type="phone" placeholder="Phone (notifications are sent via text)" />
-						<input id="maxPrice" onChange={this.updatedNotify.bind(this)} style={styles.input} type="text" placeholder="Max Price of Apartment" defaultValue={notify.maxPrice} />
+						<input id="maxPrice" onChange={this.updateNotify.bind(this)} style={styles.input} type="text" placeholder="Max Price of Apartment" defaultValue={notify.maxPrice} />
 
 						<div style={{background:'#f9f9f9', padding:12, marginBottom:12, border:'1px solid #ddd'}}>
 							<h4 className="nobottommargin">Neighborhoods</h4>
@@ -204,10 +206,10 @@ class ManageNotifications extends Component {
 				        	Your first three notifications are free. Afterwards, you can purchase notifcations in 
 				        	sets of 5 from below:
 				        	<div style={{textAlign:'left', marginLeft:32, marginRight:'auto', padding:16}}>
-					        	<input id="quantity" style={styles.modal.input} onChange={this.updatedNotify.bind(this)} type="radio" name="quantity" value="5" />5 notifcations - $5<br />
-					        	<input id="quantity" style={styles.modal.input} onChange={this.updatedNotify.bind(this)} type="radio" name="quantity" value="10" />10 notifcations - $9<br />
-					        	<input id="quantity" style={styles.modal.input} onChange={this.updatedNotify.bind(this)} type="radio" name="quantity" value="15" />15 notifcations - $12<br />
-					        	<input id="quantity" style={styles.modal.input} onChange={this.updatedNotify.bind(this)} type="radio" name="quantity" value="20" />20 notifcations - $15<br />
+					        	<input id="quantity" style={styles.modal.input} onChange={this.updateNotify.bind(this)} type="radio" name="quantity" value="5" />5 notifcations - $5<br />
+					        	<input id="quantity" style={styles.modal.input} onChange={this.updateNotify.bind(this)} type="radio" name="quantity" value="10" />10 notifcations - $9<br />
+					        	<input id="quantity" style={styles.modal.input} onChange={this.updateNotify.bind(this)} type="radio" name="quantity" value="15" />15 notifcations - $12<br />
+					        	<input id="quantity" style={styles.modal.input} onChange={this.updateNotify.bind(this)} type="radio" name="quantity" value="20" />20 notifcations - $15<br />
 				        	</div>
 							<a onClick={this.purchase.bind(this)} href="#" className="button button-border button-dark button-rounded button-large noleftmargin">Next</a>
 						</div>
