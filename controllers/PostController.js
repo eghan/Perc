@@ -150,7 +150,7 @@ module.exports = {
 				'notify.zones':newPost.zone
 			}
 
-			return ProfileController.find(filter})
+			return ProfileController.find(filter)
 		})
 		.then(function(profiles){
 			var emails = []
