@@ -98,11 +98,21 @@ router.post('/:action', function(req, res, next) {
 
 	if (action == 'charge') {
 		var customerEmail = req.body.email
+		var profileInfo = JSON.parse(req.body.profile)
 		var type = req.body.type
 
 		var stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 		createNonregisteredStripeCharge(stripe, req.body.stripeToken, req.body.amount, 'Perc: '+req.body.description)
 		.then(function(charge){
+			// grab name from Stripe token:
+			var name = charge.source.name
+			var parts = name.split(' ')
+			profileInfo['firstName'] = parts[0]
+			if (parts.length > 1)
+				profileInfo['lastName'] = parts[parts.length-1]
+
+			console.log('PROFILE INFO: '+JSON.stringify(profileInfo))
+
 			return ProfileController.find({email: customerEmail})			
 		})
 		.then(function(profiles){
@@ -110,16 +120,6 @@ router.post('/:action', function(req, res, next) {
 			EmailUtils.sendEmails('info@thegridmedia.com', ['dkwon@velocity360.io'], type.toUpperCase()+' Purchase', text)
 
 			if (profiles.length == 0){ // unregistered user, create profile
-				var profileInfo = JSON.parse(req.body.profile)
-
-				// grab name from Stripe token:
-				var name = charge.source.name
-				var parts = name.split(' ')
-				profileInfo['firstName'] = parts[0]
-				if (parts.length > 1)
-					profileInfo['lastName'] = parts[parts.length-1]
-
-				console.log('NEW PROFILE: '+JSON.stringify(profileInfo))
 				Profile.create(profileInfo, function(err, profile){
 					if (err){
 						res.json({
