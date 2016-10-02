@@ -65,16 +65,15 @@ module.exports = {
 	},
 
 	post: function(params, callback){
-		var password = params['password'] // plain text password
-		var hashedPassword = bcrypt.hashSync(password, 10)
-		params['password'] = hashedPassword
-
+		params['password'] = bcrypt.hashSync(params['password'], 10) // hash password
 		if (params['firstName'] == null)
 			params['firstName'] = params.email
 
 		delete params.notify['quantity']
 
-//		console.log('NEW PROFILE: '+JSON.stringify(params))
+		var notify = params.notify
+		notify['maxPrice'] = parseInt(notify.maxPrice)
+		params['notify'] = notify
 
 		Profile.create(params, function(err, profile){
 			if (err){
@@ -90,6 +89,10 @@ module.exports = {
 	},
 
 	put: function(id, params, callback){
+		var notify = params.notify
+		notify['maxPrice'] = parseInt(notify.maxPrice)
+		params['notify'] = notify
+
 		Profile.findByIdAndUpdate(id, params, {new:true}, function(err, profile){
 			if (err){
 				if (callback != null)
