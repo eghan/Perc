@@ -101,6 +101,8 @@ module.exports = {
 	    	key:process.env.GOOGLE_MAPS_API_KEY
 	    }
 
+	    var newPost = null
+
 //	    Request.get(url, {key:process.env.GOOGLE_MAPS_API_KEY})
 	    Request.get(url, params)
 	    .then(function(response){
@@ -151,7 +153,8 @@ module.exports = {
 			// })
 	    })
 		.then(function(post){
-			return ProfileController.find({'notify.zones':post.zone})
+			newPost = post
+			return ProfileController.find({'notify.zones':newPost.zone})
 		})
 		.then(function(profiles){
 			var emails = []
@@ -161,7 +164,7 @@ module.exports = {
 			}
 
 			EmailUtils.sendEmails('info@thegridmedia.com', emails, 'Test Notification', 'This is a test Notification')
-			completion(null, post.summary())
+			completion(null, newPost.summary())
 		})
 	    .catch(function(err){
 	    	console.log('ERROR: '+err)
