@@ -2,7 +2,24 @@ var Post = require('../models/Post')
 var resource = require('../utils/Resource')
 var Request = require('../utils/Request')
 var TextUtils = require('../utils/TextUtils')
+var EmailUtils = require('../utils/EmailUtils')
+var ProfileController = require('../controllers/ProfileController')
 var Promise = require('bluebird')
+
+
+function createPost(params){
+	return new Promise(function(resolve, reject){
+		Post.create(params, function(error, post){
+			if (error){
+				reject(err)
+				return
+			}
+			
+			resolve(post)
+			return
+		})
+	})
+}
 
 module.exports = {
 	plural: 'posts',
@@ -75,9 +92,17 @@ module.exports = {
 		params['slug'] = TextUtils.slugVersion(params.title)
 
 		// https://maps.googleapis.com/maps/api/geocode/json?address=172+lexington+avenue,new+york,ny&key=AIzaSyA7ubOEswjvE09Hdpii4ZRi__SndjdE7ds
-	    var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+params.address+','+params.city+','+params.state
+	    // var url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+params.address+','+params.city+','+params.state
 
-	    Request.get(url, {key:process.env.GOOGLE_MAPS_API_KEY})
+	    var url = 'https://maps.googleapis.com/maps/api/geocode/json'
+	    var address = params.address+','+params.city+','+params.state
+	    var params = {
+	    	address: address,
+	    	key:process.env.GOOGLE_MAPS_API_KEY
+	    }
+
+//	    Request.get(url, {key:process.env.GOOGLE_MAPS_API_KEY})
+	    Request.get(url, params)
 	    .then(function(response){
 	    	console.log(JSON.stringify(response))
 
@@ -114,19 +139,33 @@ module.exports = {
 			    params['zone'] = zone
 	    	}
 
-			Post.create(params, function(error, post){
-				if (error){
-					completion({confirmation:'fail', message:error.message}, null)
-					return
-				}
+	    	return createPost(params)
+			// Post.create(params, function(error, post){
+			// 	if (error){
+					// completion({confirmation:'fail', message:error.message}, null)
+			// 		return
+			// 	}
 				
-				completion(null, post.summary())
-				return
-			})
+				// completion(null, post.summary())
+			// 	return
+			// })
 	    })
+		.then(function(post){
+			return ProfileController.find({'notify.zones':post.zone})
+		})
+		.then(function(profiles){
+			var emails = []
+			for (var i=0; i<profiles.length; i++){
+				var profile = profiles[i]
+				emails.push(profile.email)
+			}
+
+			EmailUtils.sendEmails('info@thegridmedia.com', emails, 'Test Notification', 'This is a test Notification')
+			completion(null, post.summary())
+		})
 	    .catch(function(err){
 	    	console.log('ERROR: '+err)
-
+			completion({confirmation:'fail', message:err}, null)
 	    })
 	},
 

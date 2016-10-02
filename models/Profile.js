@@ -8,7 +8,7 @@ var ProfileSchema = new mongoose.Schema({
 	email: {type:String, trim:true, lowercase:true, default:''},
 	credits: {type:Number, default:3}, // first 3 are free
 	password: {type:String, trim:true, default:''},
-	notify: {type:mongoose.Schema.Types.Mixed, default:{}}, // zips array, maxPrice number, bid value, notified array
+	notify: {type:mongoose.Schema.Types.Mixed, default:{}}, // zones array, maxPrice number, bid value
 	timestamp: {type:Date, default:Date.now}
 })
 
