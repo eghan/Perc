@@ -14,6 +14,7 @@ var Account = require('../public/build/es5/components/layout/Account')
 var controllers = require('../controllers')
 
 var templates = ['register']
+var ignore = ['api', 'geo', 'account']
 
 matchRoutes = function(req, routes, initialStore){
 	return new Promise(function(resolve, reject){
@@ -122,17 +123,18 @@ router.get('/:page', function(req, res, next) {
 
 router.get('/:page/:slug', function(req, res, next) {
 	var page = req.params.page
-	if (page == 'api' || page == 'geo'){
-		next()
-		return
-	}
-
-	console.log('Request Page: '+page)
-
-	if (templates.indexOf(page) >= 0){ // this is a regular template page
+	if (templates.indexOf(page) >= 0){ // this is a regular template page, render
 	    res.render(page, null)
 	    return
 	}
+
+	if (ignore.indexOf(page) >= 0){
+	    next()
+	    return
+	}
+
+
+	console.log('Request Page: '+page)
 
 	// react page
 	var initialStore = null
