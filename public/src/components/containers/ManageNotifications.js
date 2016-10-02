@@ -17,17 +17,27 @@ class ManageNotifications extends Component {
 			showModal: false,
 			showLoader: false,
 			user: { // use only if currentUser not registered
+				id: null,
 				email: '',
 				password: ''
 			},
 			notify: {
-				bid: 0,
-				maxPrice: null,
+				maxPrice: 0,
 				zones: [],
 				status: 'on',
 				quantity: 0
 			}
 		}
+	}
+
+	componentDidMount(){
+		if (this.props.currentUser == null)
+			return
+
+		const notify = Object.assign({}, this.props.currentUser.notify)
+		this.setState({
+			notify: notify
+		})
 	}
 
 	mapClicked(latLng){
@@ -37,7 +47,6 @@ class ManageNotifications extends Component {
 				return
 			}
 
-//			console.log('Reverse Geocode: '+JSON.stringify(response))
 			const location = response.location
 			const zone = (location.neighborhood==null) ? location.zip : location.neighborhood
 			if (this.state.notify.zones.indexOf(zone) != -1){
@@ -86,8 +95,6 @@ class ManageNotifications extends Component {
 
 	purchase(event){
 		event.preventDefault()
-		var notify = Object.assign({}, this.state.notify)
-//		console.log('purchase: '+JSON.stringify(notify))
 
 		this.setState({
 			showModal: false
@@ -102,12 +109,30 @@ class ManageNotifications extends Component {
 		}
 
 		let currentUser = (this.props.currentUser == null) ? this.state.user : this.props.currentUser
+
+		var notify = Object.assign({}, this.state.notify)
 		currentUser['notify'] = notify
 		const qty = notify.quantity
 
-		if (qty == 0){ // standard registration, skip stripe
+		if (qty == 0 || qty == null){ // not buying notifications, skip stripe
 			this.setState({showLoader: true})
-			APIManager.handlePost('/account/register', currentUser, (err, response) => {
+			if (currentUser.id == null){ // sign up
+				APIManager.handlePost('/account/register', currentUser, (err, response) => {
+					if (err){
+						this.setState({showLoader: false})
+						alert(err)
+						return
+					}
+
+					window.location.href = '/account'
+				})
+				return
+			}
+
+
+			// update profile
+			const url = '/api/profile/'+currentUser.id
+			APIManager.handlePut(url, currentUser, (err, response) => {
 				if (err){
 					this.setState({showLoader: false})
 					alert(err)
@@ -116,7 +141,6 @@ class ManageNotifications extends Component {
 
 				window.location.href = '/account'
 			})
-
 			return
 		}
 
@@ -142,9 +166,8 @@ class ManageNotifications extends Component {
 	}
 
 	updateNotify(event){
-//		console.log('updatedNotify: '+event.target.id+' = '+event.target.value)
 		var notify = Object.assign({}, this.state.notify)
-		notify[event.target.id] = event.target.value
+		notify[event.target.id] = event.target.value.replace('$', '')
 		this.setState({
 			notify: notify
 		})
@@ -152,7 +175,6 @@ class ManageNotifications extends Component {
 
 	updateProfile(event){
 		var user = Object.assign({}, this.state.user)
-//		console.log('updateProfile: '+JSON.stringify(user))
 		user[event.target.id] = event.target.value
 
 		this.setState({
@@ -197,7 +219,7 @@ class ManageNotifications extends Component {
 				<div className="row">
 					<div className="col-md-6">
 						{registrationForm}
-						<input id="maxPrice" onChange={this.updateNotify.bind(this)} style={styles.input} type="text" placeholder="Max Price of Apartment" defaultValue={notify.maxPrice} />
+						<input id="maxPrice" onChange={this.updateNotify.bind(this)} style={styles.input} type="text" value={'$'+notify.maxPrice} placeholder="Max Price of Apartment" />
 
 						<div style={{background:'#f9f9f9', padding:12, marginBottom:12, border:'1px solid #ddd'}}>
 							<h4 className="nobottommargin">Neighborhoods</h4>

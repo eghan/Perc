@@ -37624,12 +37624,12 @@ var ManageNotifications = function (_Component) {
 			showModal: false,
 			showLoader: false,
 			user: { // use only if currentUser not registered
+				id: null,
 				email: '',
 				password: ''
 			},
 			notify: {
-				bid: 0,
-				maxPrice: null,
+				maxPrice: 0,
 				zones: [],
 				status: 'on',
 				quantity: 0
@@ -37639,6 +37639,16 @@ var ManageNotifications = function (_Component) {
 	}
 
 	_createClass(ManageNotifications, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			if (this.props.currentUser == null) return;
+
+			var notify = Object.assign({}, this.props.currentUser.notify);
+			this.setState({
+				notify: notify
+			});
+		}
+	}, {
 		key: 'mapClicked',
 		value: function mapClicked(latLng) {
 			var _this2 = this;
@@ -37649,7 +37659,6 @@ var ManageNotifications = function (_Component) {
 					return;
 				}
 
-				//			console.log('Reverse Geocode: '+JSON.stringify(response))
 				var location = response.location;
 				var zone = location.neighborhood == null ? location.zip : location.neighborhood;
 				if (_this2.state.notify.zones.indexOf(zone) != -1) {
@@ -37703,8 +37712,6 @@ var ManageNotifications = function (_Component) {
 			var _this3 = this;
 
 			event.preventDefault();
-			var notify = Object.assign({}, this.state.notify);
-			//		console.log('purchase: '+JSON.stringify(notify))
 
 			this.setState({
 				showModal: false
@@ -37719,13 +37726,31 @@ var ManageNotifications = function (_Component) {
 			};
 
 			var currentUser = this.props.currentUser == null ? this.state.user : this.props.currentUser;
+
+			var notify = Object.assign({}, this.state.notify);
 			currentUser['notify'] = notify;
 			var qty = notify.quantity;
 
-			if (qty == 0) {
-				// standard registration, skip stripe
+			if (qty == 0 || qty == null) {
+				// not buying notifications, skip stripe
 				this.setState({ showLoader: true });
-				_utils.APIManager.handlePost('/account/register', currentUser, function (err, response) {
+				if (currentUser.id == null) {
+					// sign up
+					_utils.APIManager.handlePost('/account/register', currentUser, function (err, response) {
+						if (err) {
+							_this3.setState({ showLoader: false });
+							alert(err);
+							return;
+						}
+
+						window.location.href = '/account';
+					});
+					return;
+				}
+
+				// update profile
+				var url = '/api/profile/' + currentUser.id;
+				_utils.APIManager.handlePut(url, currentUser, function (err, response) {
 					if (err) {
 						_this3.setState({ showLoader: false });
 						alert(err);
@@ -37734,7 +37759,6 @@ var ManageNotifications = function (_Component) {
 
 					window.location.href = '/account';
 				});
-
 				return;
 			}
 
@@ -37761,9 +37785,8 @@ var ManageNotifications = function (_Component) {
 	}, {
 		key: 'updateNotify',
 		value: function updateNotify(event) {
-			//		console.log('updatedNotify: '+event.target.id+' = '+event.target.value)
 			var notify = Object.assign({}, this.state.notify);
-			notify[event.target.id] = event.target.value;
+			notify[event.target.id] = event.target.value.replace('$', '');
 			this.setState({
 				notify: notify
 			});
@@ -37772,7 +37795,6 @@ var ManageNotifications = function (_Component) {
 		key: 'updateProfile',
 		value: function updateProfile(event) {
 			var user = Object.assign({}, this.state.user);
-			//		console.log('updateProfile: '+JSON.stringify(user))
 			user[event.target.id] = event.target.value;
 
 			this.setState({
@@ -37831,7 +37853,7 @@ var ManageNotifications = function (_Component) {
 						'div',
 						{ className: 'col-md-6' },
 						registrationForm,
-						_react2.default.createElement('input', { id: 'maxPrice', onChange: this.updateNotify.bind(this), style: _Style2.default.input, type: 'text', placeholder: 'Max Price of Apartment', defaultValue: notify.maxPrice }),
+						_react2.default.createElement('input', { id: 'maxPrice', onChange: this.updateNotify.bind(this), style: _Style2.default.input, type: 'text', value: '$' + notify.maxPrice, placeholder: 'Max Price of Apartment' }),
 						_react2.default.createElement(
 							'div',
 							{ style: { background: '#f9f9f9', padding: 12, marginBottom: 12, border: '1px solid #ddd' } },
@@ -38369,7 +38391,7 @@ var Account = function (_Component) {
 
 		_this.state = {
 			selected: 0,
-			menuItems: [{ name: 'Profile', component: _containers.ManageProfile }, { name: 'Listings', component: _containers.Posts }, { name: 'Submit Listing', component: _containers.CreatePost }, { name: 'Notifications', component: _containers.ManageNotifications }]
+			menuItems: [{ name: 'Profile', component: _containers.ManageProfile }, { name: 'Listings', component: _containers.Posts }, { name: 'Submit Listing', component: _containers.CreatePost }, { name: 'Manage Notifications', component: _containers.ManageNotifications }]
 		};
 		return _this;
 	}

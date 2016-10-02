@@ -15,7 +15,7 @@ class Account extends Component {
 				{name:'Profile', component:ManageProfile},
 				{name:'Listings', component:Posts},
 				{name:'Submit Listing', component:CreatePost},
-				{name:'Notifications', component:ManageNotifications}
+				{name:'Manage Notifications', component:ManageNotifications}
 			]
 		}
 	}
